@@ -16,11 +16,12 @@ class CreateMonitorTable extends Migration
         //Historial cambios
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
+            $table->text('description');
+            $table->unsignedBigInteger('subject_id')->nullable();
+            $table->string('subject_type')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('model',100);
-            $table->string('action',7);
-            $table->text('message');
-            $table->json('models');
+            $table->text('properties')->nullable();
+            $table->string('host', 46)->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });
