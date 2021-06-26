@@ -18,7 +18,7 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->string('ruc',11)->unique();
             $table->string('name',50);
-            $table->string('contact',11)->nullable();
+            $table->string('contact',17)->nullable();
             $table->string('email')->nullable();
             $table->unsignedBigInteger('company_id');
             $table->timestamps();

@@ -21,11 +21,15 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function index(Request $request)
     {
-        /** @var $MODEL_NAME$ $$MODEL_NAME_PLURAL_CAMEL$ */
-        $$MODEL_NAME_PLURAL_CAMEL$ = $MODEL_NAME$::$RENDER_TYPE$;
-
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index')
-            ->with('$MODEL_NAME_PLURAL_CAMEL$', $$MODEL_NAME_PLURAL_CAMEL$);
+        if($request->ajax()){
+            /** @var $MODEL_NAME$ $$MODEL_NAME_PLURAL_CAMEL$ */
+            $$MODEL_NAME_PLURAL_CAMEL$ = $MODEL_NAME$::$RENDER_TYPE$;
+            return DataTables::of($$MODEL_NAME_PLURAL_CAMEL$)
+            ->addColumn('action','$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.actions')
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index');
     }
 
     /**

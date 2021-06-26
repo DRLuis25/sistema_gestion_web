@@ -5,11 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>@lang('models/$MODEL_NAME_PLURAL_CAMEL$.plural')</h1>
+                    <h1>@lang('models/roles.plural')</h1>
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
-                       href="{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.create') }}">
+                       href="{{ route('roles.create') }}">
                        @lang('crud.add_new')
                     </a>
                 </div>
@@ -24,12 +24,12 @@
         <div class="clearfix"></div>
 
         <div class="card">
-            <div class="card-body">
-                @include('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.table')
+            <div class="card-body p-0">
+                @include('roles.table')
 
                 <div class="card-footer clearfix float-right">
                     <div class="float-right">
-                        $PAGINATE$
+                        
                     </div>
                 </div>
             </div>

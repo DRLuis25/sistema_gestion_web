@@ -24,12 +24,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 
-
-
-
-
-
-
-
-
 Route::resource('categorias', 'CategoriaController');
+
+Route::resource('users', 'UserController');
+
+Route::resource('roles', 'RoleController');

@@ -19,7 +19,7 @@ class CreateCompaniesTable extends Migration
             $table->string('ruc',11)->unique();
             $table->string('name',60);
             $table->string('description',100)->nullable();
-            $table->string('phone',9)->nullable();
+            $table->string('phone',17)->nullable();
             $table->string('address',100)->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -1,14 +1,21 @@
-<table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="$MODEL_NAME_PLURAL_CAMEL$-table">
-    <thead>
-        <tr>
-            <th style="color:white">x</th>
-            $FIELD_HEADERS$
-            <th width="100px">@lang('crud.action')</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div >
+    <table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="users-table">
+        <thead>
+            <tr>
+                <th style="color:white">x</th>
+                <th>@lang('models/users.fields.dni')</th>
+                <th>@lang('models/users.fields.lastNamePat')</th>
+                <th>@lang('models/users.fields.lastNameMat')</th>
+                <th>@lang('models/users.fields.names')</th>
+                <th>@lang('models/users.fields.email')</th>
+                <th>@lang('models/users.fields.rol')</th>
+                <th width="100px">@lang('crud.action')</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 @push('scripts')
     <script>
         $(function () {
@@ -94,9 +101,10 @@
                         }
                     },
                 ],
+
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index')}}",
+                ajax: "{{ route('users.index')}}",
                 columns: [
                     { "data":null, render:function(){return "";}},
                     { data: 'dni', name: 'dni'},

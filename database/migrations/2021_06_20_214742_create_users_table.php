@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('names', 50);
             $table->string('lastNamePat', 25);
             $table->string('lastNameMat', 25);
-            $table->string('phone', 10)->nullable();
+            $table->string('phone', 17)->nullable();
             $table->string('address',100)->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
