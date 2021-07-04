@@ -19,7 +19,11 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+            if (Auth::user()->isSuperAdmin) {
+                return redirect('home');
+            }
+            return redirect(route('company.showCompany', [Auth::user()->company_id]));
+            //return redirect(RouteServiceProvider::HOME);
         }
 
         return $next($request);

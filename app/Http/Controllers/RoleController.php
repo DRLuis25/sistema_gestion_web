@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Controllers\AppBaseController;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role as ModelsRole;
+use Yajra\DataTables\DataTables;
 
 class RoleController extends AppBaseController
 {
@@ -21,11 +24,16 @@ class RoleController extends AppBaseController
      */
     public function index(Request $request)
     {
-        /** @var Role $roles */
         $roles = Role::all();
-
-        return view('roles.index')
-            ->with('roles', $roles);
+        if($request->ajax()){
+            /** @var Role $roles */
+            $roles = Role::all();
+            return DataTables::of($roles)
+            ->addColumn('action','roles.actions')
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        return view('roles.index');
     }
 
     /**
@@ -35,6 +43,9 @@ class RoleController extends AppBaseController
      */
     public function create()
     {
+        $permissions = Permission::all();
+        $roles = ModelsRole::all();
+        //return $roles;
         return view('roles.create');
     }
 

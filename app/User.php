@@ -87,6 +87,31 @@ class User extends Authenticatable
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $updateRules = [
+        'company_id' => 'nullable',
+        'dni' => 'required|string|max:8',
+        'names' => 'required|string|max:50',
+        'lastNamePat' => 'required|string|max:25',
+        'lastNameMat' => 'required|string|max:25',
+        'phone' => 'nullable|string|max:17',
+        'address' => 'nullable|string|max:100',
+        'email' => 'required|string|max:255',
+        'email_verified_at' => 'nullable',
+        'password' => 'nullable|string|max:255',
+        'isSuperAdmin' => 'required|boolean',
+        'isAdmin' => 'boolean',
+        'remember_token' => 'nullable|string|max:100',
+        'created_at' => 'nullable',
+        'updated_at' => 'nullable',
+        'deleted_at' => 'nullable'
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/

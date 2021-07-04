@@ -18,10 +18,13 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->string('ruc',11)->unique();
             $table->string('name',50);
+            $table->string('contact_name',50)->nullable();
             $table->string('contact',17)->nullable();
             $table->string('email')->nullable();
+            $table->string('address',100)->nullable();
             $table->unsignedBigInteger('company_id');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('company_id')->references('id')->on('companies');
         });
     }

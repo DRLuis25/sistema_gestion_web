@@ -1,7 +1,13 @@
 <!-- Company Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('company_id', __('models/users.fields.company_id').':') !!}
-    {!! Form::number('company_id', null, ['class' => 'form-control']) !!}
+
+    <select class="form-control" name="company_id" id="company_id" required>
+        <option value="">Seleccione empresa</option>
+        @foreach($companies as $id => $entry)
+            <option value="{{ $id }}" {{ old('company_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+        @endforeach
+    </select>
 </div>
 
 <!-- Dni Field -->
@@ -64,6 +70,6 @@
 <!-- Issuperadmin Field -->
 <div class="form-group col-sm-6">
     {!! Form::hidden('isSuperAdmin', 0, ['class' => 'form-check-input']) !!}
-    {!! Form::checkbox('isSuperAdmin', '1', null, ['class' => '']) !!} 1
+    {!! Form::checkbox('isSuperAdmin', '1', null, ['class' => '']) !!}
     {!! Form::label('isSuperAdmin', __('models/users.fields.isSuperAdmin').':', ['class' => 'form-check-label']) !!}
 </div>

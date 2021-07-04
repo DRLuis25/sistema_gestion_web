@@ -41,6 +41,7 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+        $('#company_id').selectize();
         $('#role').selectize();
     });
 </script>

@@ -19,7 +19,6 @@ class CreateBusinessUnitsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->string('name',60);
             $table->string('description',100)->nullable();
-            //$table->boolean('removable')->default(false);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('company_id')->references('id')->on('companies');

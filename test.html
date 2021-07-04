@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>State Chart</title>
+<meta name="description" content="A finite state machine chart with editable and interactive features." />
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.7.27/go.js"></script>
+<script src="https://gojs.net/latest/extensions/TextEditorRadioButtons.js"></script>
+<script src="https://gojs.net/latest/extensions/TextEditorSelectBox.js"></script>
+<script src="https://gojs.net/latest/extensions/DataInspector.js"></script>
+<link href="https://gojs.net/latest/extensions/DataInspector.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script id="code">
+
+    function init() {
+
+        var $ = go.GraphObject.make;
+        myDiagram =
+        $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+        {
+            // start everything in the middle of the viewport
+            initialContentAlignment: go.Spot.Center,
+            // have mouse wheel events zoom in and out instead of scroll up and down
+            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
+            // support double-click in background creating a new node
+            "clickCreatingTool.archetypeNodeData": { text: "new node" },
+            // enable undo & redo
+            "undoManager.isEnabled": true,
+            "layout": new go.ForceDirectedLayout()
+        });
+
+
+        // when the document is modified, add a "*" to the title and enable the "Save" button
+        myDiagram.addDiagramListener("Modified", function(e) {
+            var button = document.getElementById("SaveButton");
+            if (button) button.disabled = !myDiagram.isModified;
+            var idx = document.title.indexOf("*");
+            if (myDiagram.isModified) {
+            if (idx < 0) document.title += "*";
+            } else {
+            if (idx >= 0) document.title = document.title.substr(0, idx);
+            }
+        });
+
+            // define the Node template
+        myDiagram.nodeTemplate =
+          $(go.Node, "Auto",
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            // define the node's outer shape, which will surround the TextBlock
+            $(go.Shape, "RoundedRectangle",
+              {
+                parameter1: 20,  // the corner has a large radius
+                fill: $(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
+                stroke: null,
+                portId: "",  // this Shape is the Node's port, not the whole Node
+                fromLinkable: true, fromLinkableDuplicates: true,
+                toLinkable: true, toLinkableDuplicates: true,
+                cursor: "pointer"
+              }),
+            $(go.TextBlock,
+              {
+                font: "bold 11pt helvetica, bold arial, sans-serif",
+                editable: true  // editing the text automatically updates the model data
+                //textEditor: window.TextEditorRadioButtons, // defined in textEditorRadioButtons.js
+                // this specific TextBlock has its own choices:
+                //choices: ['One', 'Two', 'Three', 'Four']
+              },
+            new go.Binding("text").makeTwoWay())
+        );
+
+        myDiagram.nodeTemplate.selectionAdornmentTemplate =
+        $(go.Adornment, "Spot",
+            $(go.Panel, "Auto",
+            $(go.Shape, { stroke: "dodgerblue", strokeWidth: 2, fill: null }),
+            $(go.Placeholder)
+        ),
+        $(go.Panel, "Horizontal",
+            { alignment: go.Spot.Top, alignmentFocus: go.Spot.Bottom },
+            $("Button",
+                { click: editText },  // defined below, to support editing the text of the node
+                $(go.TextBlock, "t",
+                { font: "bold 10pt sans-serif", desiredSize: new go.Size(15, 15), textAlign: "center" })
+            ),
+            $("Button",
+            { // drawLink is defined below, to support interactively drawing new links
+                click: drawLink,  // click on Button and then click on target node
+                actionMove: drawLink  // drag from Button to the target node
+            },
+            $(go.Shape,
+                { geometryString: "M0 0 L8 0 8 12 14 12 M12 10 L14 12 12 14" })
+            ),
+            $("Button",
+            {
+                actionMove: dragNewNode,  // defined below, to support dragging from the button
+                _dragData: { text: "?????", color: "lightgray" },  // node data to copy
+                click: clickNewNode  // defined below, to support a click on the button
+            },
+            $(go.Shape,
+                { geometryString: "M0 0 L3 0 3 10 6 10 x F1 M6 6 L14 6 14 14 6 14z", fill: "gray" })
+          )
+        )
+      );
+
+    function editText(e, button) {
+        //console.log(e);
+
+      var node = button.part.adornedPart;
+      console.log("node");
+      //console.log(node);
+      e.diagram.commandHandler.editTextBlock(node.findObject("TEXTBLOCK"));
+      //$("#nodeText").val(node.findObject("TEXTBLOCK"));
+    }
+
+    function drawLink(e, button) {
+      var node = button.part.adornedPart;
+      var tool = e.diagram.toolManager.linkingTool;
+      tool.startObject = node.port;
+      e.diagram.currentTool = tool;
+      tool.doActivate();
+    }
+
+   // used by both clickNewNode and dragNewNode to create a node and a link
+    // from a given node to the new node
+    function createNodeAndLink(data, fromnode) {
+        var diagram = fromnode.diagram;
+        var model = diagram.model;
+        var nodedata = model.copyNodeData(data);
+        model.addNodeData(nodedata);
+        var newnode = diagram.findNodeForData(nodedata);
+        var linkdata = model.copyLinkData({});
+        model.setFromKeyForLinkData(linkdata, model.getKeyForNodeData(fromnode.data));
+        model.setToKeyForLinkData(linkdata, model.getKeyForNodeData(newnode.data));
+        model.addLinkData(linkdata);
+        diagram.select(newnode);
+        return newnode;
+    }
+
+    // the Button.click event handler, called when the user clicks the "N" button
+    function clickNewNode(e, button) {
+        var data = button._dragData;
+        if (!data) return;
+        e.diagram.startTransaction("Create Node and Link");
+        var fromnode = button.part.adornedPart;
+        var newnode = createNodeAndLink(button._dragData, fromnode);
+        newnode.location = new go.Point(fromnode.location.x + 200, fromnode.location.y);
+        e.diagram.commitTransaction("Create Node and Link");
+    }
+
+    // the Button.actionMove event handler, called when the user drags within the "N" button
+    function dragNewNode(e, button) {
+        var tool = e.diagram.toolManager.draggingTool;
+        if (tool.isBeyondDragSize()) {
+            var data = button._dragData;
+            if (!data) return;
+            e.diagram.startTransaction("button drag");  // see doDeactivate, below
+            var newnode = createNodeAndLink(data, button.part.adornedPart);
+            newnode.location = e.diagram.lastInput.documentPoint;
+            // don't commitTransaction here, but in tool.doDeactivate, after drag operation finished
+            // set tool.currentPart to a selected movable Part and then activate the DraggingTool
+            tool.currentPart = newnode;
+            e.diagram.currentTool = tool;
+            tool.doActivate();
+        }
+    }
+
+    // using dragNewNode also requires modifying the standard DraggingTool so that it
+    // only calls commitTransaction when dragNewNode started a "button drag" transaction;
+    // do this by overriding DraggingTool.doDeactivate:
+    var tool = myDiagram.toolManager.draggingTool;
+    tool.doDeactivate = function() {
+        // commit "button drag" transaction, if it is ongoing; see dragNewNode, above
+        if (tool.diagram.undoManager.nestedTransactionNames.elt(0) === "button drag") {
+            tool.diagram.commitTransaction();
+        }
+        go.DraggingTool.prototype.doDeactivate.call(tool);  // call the base method
+    };
+
+    // replace the default Link template in the linkTemplateMap
+    myDiagram.linkTemplate =
+        $(go.Link,  // the whole link panel
+        {
+            curve: go.Link.Bezier,
+            adjusting: go.Link.Stretch,
+            reshapable: true,
+            relinkableFrom: true,
+            relinkableTo: true,
+            toShortLength: 3
+        },
+        new go.Binding("points").makeTwoWay(),
+        new go.Binding("curviness"),
+        $(go.Shape,  // the link shape
+            { strokeWidth: 1.5 }),
+        $(go.Shape,  // the arrowhead
+            { toArrow: "standard", stroke: null }),
+        $(go.Panel, "Auto",
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+            {
+                fill: $(go.Brush, "Radial",
+                      { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                stroke: null
+            }),
+            $(go.TextBlock, "?????",  // the label text
+            {
+                textAlign: "center",
+                font: "9pt helvetica, arial, sans-serif",
+                margin: 4,
+                editable: true  // enable in-place editing
+            },
+            // editing the text automatically updates the model data
+            new go.Binding("text").makeTwoWay())
+        )
+    );
+
+
+    var inspector = new Inspector('myInspectorDiv', myDiagram,
+    {
+        // uncomment this line to only inspect the named properties below instead of all properties on each object:
+        // includesOwnProperties: false,
+        properties: {
+            "text": { },
+            // an example of specifying the type
+            "password": { show: Inspector.showIfPresent, type: 'password' },
+            // key would be automatically added for nodes, but we want to declare it read-only also:
+            "key": { readOnly: true, show: Inspector.showIfPresent },
+            // color would be automatically added for nodes, but we want to declare it a color also:
+            "color": { show: Inspector.showIfPresent, type: 'color' },
+            // Comments and LinkComments are not in any node or link data (yet), so we add them here:
+            "Comments": { show: Inspector.showIfNode  },
+            "flag": { show: Inspector.showIfNode, type: 'checkbox' },
+            "LinkComments": { show: Inspector.showIfLink },
+            "isGroup": { readOnly: true, show: Inspector.showIfPresent }
+        }
+    });
+
+    // read in the JSON data from flask
+    loadGraphData();
+
+    }
+
+    function loadGraphData() {
+        var graphDataString = JSON.parse('{{ diagramData | tojson | safe}}');
+        console.log("graphDataString");
+        console.log(graphDataString);
+
+        myDiagram.model = go.Model.fromJson(graphDataString);
+    }
+
+    function saveGraphData(form, event) {
+        console.log("inside saveGraphData");
+        event.preventDefault();
+
+        document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+        form.submit();
+    }
+
+    function zoomToFit(){
+        console.log("inside zoomToFit");
+        myDiagram.zoomToRect(myDiagram.documentBounds);
+    }
+
+    function zoomIn(){
+        console.log("inside zoomIn");
+        myDiagram.commandHandler.increaseZoom();
+    }
+    function zoomOut(){
+        console.log("inside zoomOut");
+        myDiagram.commandHandler.decreaseZoom();
+    }
+
+</script>
+</head>
+<body onload="init()">
+
+    <div id=formWrapper style="padding: 30px;">
+
+        <form method="POST" action="http://localhost:5000/updateResultFile" name="updateResultFileForm"
+        id="updateResultFileForm"
+        onsubmit="saveGraphData(this, event);">
+
+            <div id="graphWrapper" style="margin-bottom: 15px;">
+                <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 800px;margin-bottom: 15px;"></div>
+                <div style="display: none;"><input id="mySavedModel" name="mySavedModel"></div>
+
+                <button class="btn btn-default" type="submit"> Save <i class="fa fa-save"> </i> </button>
+
+            </div>
+
+        </form>
+
+        <div id="myInspectorDiv">
+        </div>
+
+        <div>
+            <button class="btn btn-default" onclick="zoomToFit()"> Zoom to fit  <i class="fa fa-search"> </i> </button>
+            <button class="btn btn-default" onclick="zoomIn()"> Zoom in  <i class="fa fa-search-plus"> </i> </button>
+            <button class="btn btn-default" onclick="zoomOut()"> Zoom out  <i class="fa fa-search-minus"> </i> </button>
+        </div>
+
+
+    </div>
+
+</body>
+</html>

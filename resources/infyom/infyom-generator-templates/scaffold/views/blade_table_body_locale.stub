@@ -1,30 +1,117 @@
-<div class="table-responsive">
-    <table class="table" id="$MODEL_NAME_PLURAL_CAMEL$-table">
-        <thead>
-            <tr>
-                $FIELD_HEADERS$
-                <th colspan="3">@lang('crud.action')</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach($$MODEL_NAME_PLURAL_CAMEL$ as $$MODEL_NAME_CAMEL$)
-            <tr>
-                $FIELD_BODY$
-                <td width="120">
-                    {!! Form::open(['route' => ['$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.destroy', $$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$], 'method' => 'delete']) !!}
-                    <div class='btn-group'>
-                        <a href="{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.show', [$$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$]) }}" class='btn btn-default btn-xs'>
-                            <i class="far fa-eye"></i>
-                        </a>
-                        <a href="{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.edit', [$$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$]) }}" class='btn btn-default btn-xs'>
-                        <i class="far fa-edit"></i>
-                        </a>
-                        {!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'return confirm("'.__('crud.are_you_sure').'")']) !!}
-                    </div>
-                    {!! Form::close() !!}
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
+<table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="$MODEL_NAME_PLURAL_CAMEL$-table">
+    <thead>
+        <tr>
+            <th style="color:white">x</th>
+            $FIELD_HEADERS$
+            <th width="100px">@lang('crud.action')</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@push('scripts')
+    <script>
+        $(function () {
+            let table = $('.data-table').DataTable({
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                languages:{
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json'
+                },
+                select:true,
+                columnDefs: [ {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets:   0,
+                    data: null,
+                } ],
+                select: {
+                    style:    'multi',
+                    selector: 'td:first-child'
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pageLength',
+                    'selectAll',
+                    'selectNone',
+                    'colvis',
+                    {
+
+                        extend: 'copyHtml5',
+                        title: '',
+                        text: 'Copiar',
+                        exportOptions: {
+                            columns: function (idx, data, node) {
+                                if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
+                                    return false;
+                                return true;
+                            }
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: '',
+                        exportOptions: {
+                            columns: function (idx, data, node) {
+                                if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
+                                    return false;
+                                return true;
+                            }
+                        }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: '',
+                        exportOptions: {
+                            columns: function (idx, data, node) {
+                                if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
+                                    return false;
+                                return true;
+                            }
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: '',
+                        exportOptions: {
+                            columns: function (idx, data, node) {
+                                if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
+                                    return false;
+                                return true;
+                            }
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        title: '',
+                        exportOptions: {
+                            columns: ':visible'/*
+                            columns: function (idx, data, node) {
+                                if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
+                                    return false;
+                                return true;
+                            }*/
+                        }
+                    },
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index')}}",
+                columns: [
+                    { "data":null, render:function(){return "";}},
+                    { data: 'dni', name: 'dni'},
+                    { data: 'lastNamePat', name: 'lastNamePat'},
+                    { data: 'lastNameMat', name: 'lastNameMat'},
+                    { data: 'names', name: 'names'},
+                    { data: 'email', name: 'email'},
+                    { data: 'rol', name: 'rol'},
+                    { data: 'action', name: 'Action', orderable: false, searchable: false},
+                ],
+                orderCellsTop: true,
+                order: [[ 2, 'asc' ]],
+                pageLength: 10,
+            });
+        })
+    </script>
+@endpush

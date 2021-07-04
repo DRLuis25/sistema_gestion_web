@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Company;
 use App\User;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Hash;
 use Response;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 use Spatie\Permission\Models\Role;
 
@@ -47,8 +50,9 @@ class UserController extends AppBaseController
      */
     public function create()
     {
+        $companies = Company::all()->pluck('name','id');
         $roles = Role::all()->pluck('name', 'name');
-        return view('users.create',compact('roles'));
+        return view('users.create',compact('roles','companies'));
     }
 
     /**
@@ -60,12 +64,12 @@ class UserController extends AppBaseController
      */
     public function store(CreateUserRequest $request)
     {
-        return $request;
+        //return $request;
         $input = $request->all();
-
+        $input['password'] = Hash::make($input['password']);
         /** @var User $user */
         $user = User::create($input);
-
+        $user->syncRoles($request->role);
         Flash::success(__('messages.saved', ['model' => __('models/users.singular')]));
 
         return redirect(route('users.index'));
@@ -101,6 +105,10 @@ class UserController extends AppBaseController
      */
     public function edit($id)
     {
+
+        $companies = Company::all()->pluck('name','id');
+        $roles = Role::all()->pluck('name', 'name');
+
         /** @var User $user */
         $user = User::find($id);
 
@@ -110,7 +118,7 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
 
-        return view('users.edit')->with('user', $user);
+        return view('users.edit',compact('roles','companies'))->with('user', $user);
     }
 
     /**
@@ -131,7 +139,13 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
-
+        if ($request['password']) {
+            $request['password'] = Hash::make($request['password']);
+        }
+        else {
+            unset($request['password']);
+        }
+        $user->syncRoles($request->role);
         $user->fill($request->all());
         $user->save();
 

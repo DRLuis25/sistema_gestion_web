@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\supplyChainCustomer;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
+use Yajra\DataTables\Facades\DataTables;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +21,35 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::group(['middleware' => ['auth']], function()
+{
+    Route::middleware(['issuperadmin'])->group(function () {
+        Route::get('/home', 'HomeController@index')->name('home');
+        Route::resource('users', 'UserController');
+        Route::resource('roles', 'RoleController');
+        Route::resource('audits', 'AuditController');
+        Route::resource('companies', 'CompanyController');
+    });
 
-Route::get('/home', 'HomeController@index')->name('home');
+    Route::middleware(['companycheck'])->group(function () {
+        Route::get('/company/{id}', 'CompanyController@showCompany')->name('company.showCompany');
+        Route::resource('/company/{id}/suppliers', 'SupplierController')->names('suppliers');
+        Route::resource('/company/{id}/customers', 'CustomerController')->names('customers');
+        Route::resource('/company/{id}/businessUnits', 'businessUnitController')->names('businessUnits');
+        Route::resource('/company/{id}/supplyChains', 'supplyChainController')->names('supplyChains');
 
+        Route::resource('supplyChainCustomers', 'supplyChainCustomerController');
+        Route::get('getSupplyChainCustomers/{id}', 'supplyChainCustomerController@getSupplyChainCustomers')->name('getSupplyChainCusto');
+        Route::get('getSupplyChainSupplier/{id}', 'supplyChainSupplierController@getSupplyChainSuppliers')->name('getSupplyChainSupp');
+        Route::resource('supplyChainSuppliers', 'supplyChainSupplierController');
 
+        //Para generar la cadena de suministro
+        Route::get('getCustomers/{id}', 'CustomerController@getCustomers');
+        Route::get('getSuppliers/{id}', 'SupplierController@getSuppliers');//$id: company_id
+        Route::get('getSupplyChainCustomersParents/{id}/{id2}', 'supplyChainCustomerController@getSupplyChainCustomerParents');
+        Route::get('getSupplyChainSuppliersParents/{id}/{id2}', 'supplyChainSupplierController@getSupplyChainSupplierParents');
+        Route::get('generateSupplyChain/{id}','supplyChainController@generateSupplyChain');
 
-
-Route::resource('categorias', 'CategoriaController');
-
-Route::resource('users', 'UserController');
-
-Route::resource('roles', 'RoleController');
+        Route::resource('historials', 'historialController');
+    });
+});

@@ -9,6 +9,7 @@ use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
+use Yajra\DataTables\DataTables;
 
 class $MODEL_NAME$Controller extends AppBaseController
 {

@@ -37,7 +37,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.3/css/fixedColumns.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css" integrity="sha512-MMojOrCQrqLg4Iarid2YMYyZ7pzjPeXKRvhW9nZqLo6kPBBTuvNET9DBVWptAo/Q20Fy11EIHM5ig4WlIrJfQw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="/js/blob-stream.js"></script>
+    <script src="/js/pdfkit.js"></script>
     @yield('third_party_stylesheets')
     @stack('page_css')
 </head>
@@ -110,6 +111,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -120,6 +123,9 @@
 <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/3.3.3/js/dataTables.fixedColumns.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.colVis.min.js"></script>
+
+<script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+
 @stack('scripts')
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
@@ -166,5 +172,8 @@
 @yield('third_party_scripts')
 
 @stack('page_scripts')
+@stack('scripts-supplyChains')
+@stack('scripts-supplyChains-2')
+@stack('scripts-historial')
 </body>
 </html>

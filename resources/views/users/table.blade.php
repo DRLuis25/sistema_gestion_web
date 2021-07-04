@@ -8,7 +8,7 @@
                 <th>@lang('models/users.fields.lastNameMat')</th>
                 <th>@lang('models/users.fields.names')</th>
                 <th>@lang('models/users.fields.email')</th>
-                <th>@lang('models/users.fields.rol')</th>
+                <th>@lang('models/users.fields.role')</th>
                 <th width="100px">@lang('crud.action')</th>
             </tr>
         </thead>
