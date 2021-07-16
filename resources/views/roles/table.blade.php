@@ -3,7 +3,7 @@
         <tr>
             <th style="color:white">x</th>
             <th>@lang('models/roles.fields.name')</th>
-            <th>@lang('models/roles.fields.guard_name')</th>
+            <th>@lang('models/roles.fields.permissions')</th>
             <th width="100px">@lang('crud.action')</th>
         </tr>
     </thead>
@@ -102,7 +102,7 @@
                 columns: [
                     { "data":null, render:function(){return "";}},
                     { data: 'name', name: 'name'},
-                    { data: 'guard_name', name: 'guard_name'},
+                    { data: 'permission', name: 'permission'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,

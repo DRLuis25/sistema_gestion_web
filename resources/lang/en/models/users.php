@@ -3,7 +3,7 @@
 return array (
   'singular' => 'User',
   'plural' => 'Users',
-  'fields' => 
+  'fields' =>
   array (
     'id' => 'Id',
     'company_id' => 'Company Id',
@@ -16,7 +16,7 @@ return array (
     'email' => 'Email',
     'email_verified_at' => 'Email Verified At',
     'password' => 'Password',
-    'isSuperAdmin' => 'Issuperadmin',
+    'is_admin' => 'Issuperadmin',
     'isAdmin' => 'Isadmin',
     'remember_token' => 'Remember Token',
     'created_at' => 'Created At',

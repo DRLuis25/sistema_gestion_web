@@ -7,7 +7,7 @@
 <!-- Description Field -->
 <div class="col-sm-4">
     {!! Form::label('created_at', __('models/historials.fields.created_at').':') !!}
-    <p>{{ $historial->created_at->format("d/m/Y") }}</p>
+    <p>{{ $historial->created_at->format("d-m-Y H:i:s") }}</p>
 </div>
 
 <!-- Description Field -->
@@ -33,8 +33,10 @@
         var $$ = go.GraphObject.make;
         myDiagram = $$(go.Diagram, "showDiagramDiv",{
             initialContentAlignment: go.Spot.Center,
+            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
             "undoManager.isEnabled": true,//enable Ctrl z
             "isReadOnly": true,
+            "layout": new go.LayeredDigraphLayout()
         });
         myDiagram.nodeTemplate =$$(go.Node,
             "Auto",
@@ -51,12 +53,23 @@
             new go.Binding("text", "name")
             )
         );
-        myDiagram.layout = new go.TreeLayout();
-        myDiagram.linkTemplate =$$(go.Link,
-            new go.Binding("routing", "routing"),
-            $$(go.Shape),
-            $$(go.Shape, { toArrow: "Standard" })
-        );
+        /*myDiagram.linkTemplate =
+        $$(go.Link,  // the whole link panel
+        {
+            curve: go.Link.Bezier,
+            adjusting: go.Link.Stretch,
+            reshapable: true,
+            relinkableFrom: false,
+            relinkableTo: false,
+            toShortLength: 3
+        },
+        new go.Binding("points").makeTwoWay(),
+        new go.Binding("curviness"),
+        $$(go.Shape,  // the link shape
+            { strokeWidth: 2, stroke: "#555" }),
+        $$(go.Shape,  // the arrowhead
+            { toArrow: "standard", stroke: "#555", scale: 1.5 })
+        );*/
         myDiagram.model = go.Model.fromJson(document.getElementById("dataDiagram").value);
     }
 </script>

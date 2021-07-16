@@ -23,9 +23,10 @@
 @endpush
 
 <!-- Status Field -->
-<div class="form-check col-sm-6">
-        {!! Form::hidden('status', 0, ['class' => 'form-check-input']) !!}
+{!! Form::hidden('status', 1, ['class' => 'form-check-input']) !!}
+{{-- <div class="form-check col-sm-6">
+
         {!! Form::checkbox('status', '1', null, ['class' => 'form-check-input']) !!} 1
         {!! Form::label('status', __('models/supplyChains.fields.status').':', ['class' => 'form-check-label']) !!}
 </div>
-
+ --}}

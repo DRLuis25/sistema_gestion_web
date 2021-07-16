@@ -5,7 +5,11 @@
     <select class="form-control" name="company_id" id="company_id" required>
         <option value="">Seleccione empresa</option>
         @foreach($companies as $id => $entry)
-            <option value="{{ $id }}" {{ old('company_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+            <option value="{{ $id }}"
+            @isset($user) {{ $id == $user->company_id ? 'selected' : ''}} @endisset
+            {{ old('company_id') == $id ? 'selected' : '' }}/>
+            {{ $entry }}
+            </option>
         @endforeach
     </select>
 </div>
@@ -60,16 +64,21 @@
 
 <div class="form-group col-sm-6">
     <label for="role">{{  __('models/users.fields.role').':' }}</label> <br>
-    <select class="form-control" name="role[]" id="role" multiple>
-        @foreach($roles as $id => $entry)
-            <option value="{{ $entry }}" {{ old('role') == $entry ? 'selected' : '' }}>{{ $entry }}</option>
+    <select id="role" name="role[]" multiple class="form-control chosen">
+        <option value="">Selecciona una opción</option>
+        @foreach($roles as $key => $entry)
+            <option value="{{ $entry }}"
+            {{ (collect(old('role'))->contains($key)) ? 'selected':'' }}
+            @isset($user) {{ (in_array($key,$user->roles->pluck('name')->toArray())) ? 'selected' : ''}} @endisset
+            />
+            {{ $entry }}</option>
         @endforeach
     </select>
 </div>
 
-<!-- Issuperadmin Field -->
+<!-- is_admin Field -->
 <div class="form-group col-sm-6">
-    {!! Form::hidden('isSuperAdmin', 0, ['class' => 'form-check-input']) !!}
-    {!! Form::checkbox('isSuperAdmin', '1', null, ['class' => '']) !!}
-    {!! Form::label('isSuperAdmin', __('models/users.fields.isSuperAdmin').':', ['class' => 'form-check-label']) !!}
+    {!! Form::hidden('is_admin', 0, ['class' => 'form-check-input']) !!}
+    {!! Form::checkbox('is_admin', '1', null, ['class' => '']) !!}
+    {!! Form::label('is_admin', __('models/users.fields.is_admin').':', ['class' => 'form-check-label']) !!}
 </div>

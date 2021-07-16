@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\AuditLog;
+use App\Models\Audit;
 use Illuminate\Database\Eloquent\Model;
 
 trait Auditable
@@ -14,7 +14,7 @@ trait Auditable
         });
 
         static::updated(function (Model $model) {
-            $model->attributes = array_merge($model->getChanges(), ['id' => $model->id]);
+            $model->attributes = array_merge(['original' => $model->getOriginal()], ['changes' => $model->getChanges()], ['id' => $model->id]);
 
             self::audit('audit:updated', $model);
         });
@@ -26,7 +26,7 @@ trait Auditable
 
     protected static function audit($description, $model)
     {
-        AuditLog::create([
+        Audit::create([
             'description'  => $description,
             'subject_id'   => $model->id ?? null,
             'subject_type' => sprintf('%s#%s', get_class($model), $model->id) ?? null,

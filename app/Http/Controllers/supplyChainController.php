@@ -71,7 +71,7 @@ class supplyChainController extends AppBaseController
 
         Flash::success(__('messages.saved', ['model' => __('models/supplyChains.singular')]));
 
-        return redirect(route('supplyChains.index',[$supplyChain->company_id]));
+        return redirect(route('supplyChains.index',[$supplyChain->company_id,$supplyChain->id]));
     }
 
     /**
@@ -89,7 +89,7 @@ class supplyChainController extends AppBaseController
         if (empty($supplyChain)) {
             Flash::error(__('models/supplyChains.singular').' '.__('messages.not_found'));
 
-            return redirect(route('supplyChains.index'));
+            return redirect(route('supplyChains.index',[$id]));
         }
 
         return view('supply_chains.show')->with('supplyChain', $supplyChain)->with('company_id',$id);
@@ -162,8 +162,9 @@ class supplyChainController extends AppBaseController
 
             return redirect(route('companies.index'));
         }
-
-        $supplyChain->delete();
+        $supplyChain->status = 0;
+        $supplyChain->save();
+        //$supplyChain->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/supplyChains.singular')]));
 

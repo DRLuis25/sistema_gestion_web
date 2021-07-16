@@ -8,10 +8,12 @@
                     <h1>@lang('models/suppliers.plural')</h1>
                 </div>
                 <div class="col-sm-6">
+                    @can('crear_proveedores')
                     <a class="btn btn-primary float-right"
                        href="{{ route('suppliers.create',[$company_id]) }}">
                        @lang('crud.add_new')
                     </a>
+                    @endcan
                 </div>
             </div>
         </div>

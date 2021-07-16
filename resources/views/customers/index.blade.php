@@ -8,10 +8,12 @@
                     <h1>@lang('models/customers.plural')</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('customers.create',[$company_id]) }}">
-                       @lang('crud.add_new')
-                    </a>
+                    @can('crear_clientes')
+                        <a class="btn btn-primary float-right"
+                        href="{{ route('customers.create',[$company_id]) }}">
+                        @lang('crud.add_new')
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>

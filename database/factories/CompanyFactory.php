@@ -9,7 +9,7 @@ $factory->define(Company::class, function (Faker $faker) {
 
     return [
         'ruc' => $faker->numberBetween(11111111111, 99999999999),
-        'name' => $faker->name(),
+        'name' => $faker->company,
         'description' => $faker->word,
         'phone' => $faker->tollFreePhoneNumber(),
         'address' => $faker->streetAddress(),

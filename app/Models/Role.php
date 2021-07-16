@@ -33,7 +33,6 @@ class Role extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
-        'guard_name' => 'string'
     ];
 
     /**
@@ -43,7 +42,7 @@ class Role extends Model
      */
     public static $rules = [
         'name' => 'required|string|max:255',
-        'guard_name' => 'required|string|max:255',
+        'permission' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
@@ -59,7 +58,7 @@ class Role extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
-    public function permissions()
+    public function permissionss()
     {
         return $this->belongsToMany(\App\Models\Permission::class, 'role_has_permissions');
     }

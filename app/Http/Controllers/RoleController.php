@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Controllers\AppBaseController;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role as ModelsRole;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class RoleController extends AppBaseController
@@ -24,11 +23,16 @@ class RoleController extends AppBaseController
      */
     public function index(Request $request)
     {
+
         $roles = Role::all();
+        //return $roles;
         if($request->ajax()){
             /** @var Role $roles */
             $roles = Role::all();
             return DataTables::of($roles)
+            ->addColumn('permission',function($role){
+                return implode(", ",$role->getPermissionNames()->toArray());
+            })
             ->addColumn('action','roles.actions')
             ->rawColumns(['action'])
             ->make(true);
@@ -44,9 +48,9 @@ class RoleController extends AppBaseController
     public function create()
     {
         $permissions = Permission::all();
-        $roles = ModelsRole::all();
+        $roles = Role::all();
         //return $roles;
-        return view('roles.create');
+        return view('roles.create',compact('permissions'));
     }
 
     /**
@@ -59,10 +63,10 @@ class RoleController extends AppBaseController
     public function store(CreateRoleRequest $request)
     {
         $input = $request->all();
-
+        unset($input['permission']);
         /** @var Role $role */
         $role = Role::create($input);
-
+        $role->syncPermissions($request->permission);
         Flash::success(__('messages.saved', ['model' => __('models/roles.singular')]));
 
         return redirect(route('roles.index'));
@@ -100,14 +104,14 @@ class RoleController extends AppBaseController
     {
         /** @var Role $role */
         $role = Role::find($id);
+        $permissions = Permission::all();
 
         if (empty($role)) {
             Flash::error(__('messages.not_found', ['model' => __('models/roles.singular')]));
 
             return redirect(route('roles.index'));
         }
-
-        return view('roles.edit')->with('role', $role);
+        return view('roles.edit',compact('permissions'))->with('role', $role);
     }
 
     /**
@@ -120,6 +124,8 @@ class RoleController extends AppBaseController
      */
     public function update($id, UpdateRoleRequest $request)
     {
+        $input = $request->all();
+        unset($input['permission']);
         /** @var Role $role */
         $role = Role::find($id);
 
@@ -128,8 +134,9 @@ class RoleController extends AppBaseController
 
             return redirect(route('roles.index'));
         }
-
-        $role->fill($request->all());
+        $role->permissions()->detach();
+        $role->fill($input);
+        $role->syncPermissions($request->permission);
         $role->save();
 
         Flash::success(__('messages.updated', ['model' => __('models/roles.singular')]));

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class supplyChain extends Model
 {
     use SoftDeletes;
-
+    use Auditable;
     public $table = 'supply_chains';
 
     const CREATED_AT = 'created_at';

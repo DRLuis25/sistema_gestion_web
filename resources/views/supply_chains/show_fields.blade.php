@@ -13,6 +13,6 @@
 <!-- Launch Field -->
 <div class="col-sm-2">
     {!! Form::label('launch', __('models/supplyChains.fields.launch').':') !!}
-    <p>{{ $supplyChain->launch }}</p>
+    <p>{{ date('d-m-Y',strtotime($supplyChain->launch))  }}</p>
 </div>
 

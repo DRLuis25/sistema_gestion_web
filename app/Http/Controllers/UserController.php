@@ -86,7 +86,6 @@ class UserController extends AppBaseController
     {
         /** @var User $user */
         $user = User::find($id);
-
         if (empty($user)) {
             Flash::error(__('models/users.singular').' '.__('messages.not_found'));
 
@@ -117,7 +116,6 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
-
         return view('users.edit',compact('roles','companies'))->with('user', $user);
     }
 

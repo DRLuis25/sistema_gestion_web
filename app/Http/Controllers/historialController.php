@@ -6,6 +6,7 @@ use App\Http\Requests\CreatehistorialRequest;
 use App\Http\Requests\UpdatehistorialRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\historial;
+use App\Models\supplyChain;
 use Exception;
 use Illuminate\Http\Request;
 use Flash;
@@ -28,6 +29,9 @@ class historialController extends AppBaseController
             $historials = historial::all();
             return DataTables::of($historials)
             ->addColumn('action','historials.actions')
+            ->addColumn('created',function($historial){
+                return date('d-m-Y H:i:s',strtotime($historial->created_at));
+            })
             ->rawColumns(['action'])
             ->make(true);
         }
@@ -146,7 +150,9 @@ class historialController extends AppBaseController
     {
         /** @var historial $historial */
         $historial = historial::find($id);
-
+        $supplyChain = supplyChain::find($historial->supply_chain_id);
+        $company_id = $supplyChain->company_id;
+        $cod = $supplyChain->id;
         if (empty($historial)) {
             Flash::error(__('messages.not_found', ['model' => __('models/historials.singular')]));
 
@@ -157,6 +163,32 @@ class historialController extends AppBaseController
 
         Flash::success(__('messages.deleted', ['model' => __('models/historials.singular')]));
 
-        return redirect(route('historials.index'));
+        //return redirect(route('historials.index'));
+        return redirect()->route('supplyChains.show',[$company_id, $cod]);
+    }
+/**
+     * Show the form for editing the specified getHistorial.
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function getHistorial($id,Request $request)
+    {
+        /*$supplyChainCustomers = supplyChainCustomer::where('supply_chain_id','=',$id)
+            ->with('supplyChain','customer','parentCustomer')
+            ->get();
+            return $supplyChainCustomers[0];*/
+        if($request->ajax()){
+            /** @var historial $historials */
+            $historials = historial::where('supply_chain_id','=',$id)->get();
+            return DataTables::of($historials)
+            ->addColumn('action','historials.actions')
+            ->addColumn('created',function($historial){
+                return date('d-m-Y H:i:s',strtotime($historial->created_at));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
     }
 }

@@ -17,7 +17,7 @@ class isSuperAdmin
     public function handle($request, Closure $next)
     {
         if (Auth::user()) {
-            if (Auth::user()->isSuperAdmin) {
+            if (Auth::user()->is_admin) {
                 return $next($request);
             }
             return redirect(route('company.showCompany', [Auth::user()->company_id]));

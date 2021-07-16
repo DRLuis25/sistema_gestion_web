@@ -36,7 +36,7 @@
                 columns: [
                     { "data":null, render:function(){return "";}},
                     { data: 'description', name: 'description'},
-                    { data: 'created_at', name: 'created_at'},
+                    { data: 'created', name: 'created'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,

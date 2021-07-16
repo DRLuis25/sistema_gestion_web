@@ -16,7 +16,7 @@ return array (
     'email' => 'Email',
     'email_verified_at' => 'Email Verified At',
     'password' => 'Password',
-    'isSuperAdmin' => 'Super Admin',
+    'is_admin' => 'Super Admin',
     'isAdmin' => 'Admin',
     'remember_token' => 'Remember Token',
     'created_at' => 'Creado el',

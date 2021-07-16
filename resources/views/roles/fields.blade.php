@@ -6,6 +6,17 @@
 
 <!-- Guard Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('guard_name', __('models/roles.fields.guard_name').':') !!}
-    {!! Form::text('guard_name', null, ['class' => 'form-control']) !!}
+    <label for="permission">{{  __('models/roles.fields.permissions').':' }}</label> <br>
+
+    <select id="permission" name="permission[]" multiple class="form-control chosen">
+
+        <option value="">Selecciona una opción</option>
+        @foreach($permissions as $key => $entry)
+            <option value="{{ $entry->name }}"
+            {{ (collect(old('permission'))->contains($entry->name)) ? 'selected':'' }}
+            @isset($role) {{ (in_array($entry->name,$role->getPermissionNames()->toArray())) ? 'selected' : ''}} @endisset
+            />
+            {{ $entry->name }}</option>
+        @endforeach
+    </select>
 </div>

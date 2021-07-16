@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,9 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Categoria extends Model
 {
     use SoftDeletes;
-
+    use Auditable;
     public $table = 'categorias';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -46,5 +47,5 @@ class Categoria extends Model
         'descripcion' => 'required'
     ];
 
-    
+
 }

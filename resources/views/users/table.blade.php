@@ -1,29 +1,29 @@
-<div >
-    <table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="users-table">
-        <thead>
-            <tr>
-                <th style="color:white">x</th>
-                <th>@lang('models/users.fields.dni')</th>
-                <th>@lang('models/users.fields.lastNamePat')</th>
-                <th>@lang('models/users.fields.lastNameMat')</th>
-                <th>@lang('models/users.fields.names')</th>
-                <th>@lang('models/users.fields.email')</th>
-                <th>@lang('models/users.fields.role')</th>
-                <th width="100px">@lang('crud.action')</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="users-table">
+            <thead>
+                <tr>
+                    <th style="color:white">x</th>
+                    <th>@lang('models/users.fields.dni')</th>
+                    <th>@lang('models/users.fields.lastNamePat')</th>
+                    <th>@lang('models/users.fields.lastNameMat')</th>
+                    <th>@lang('models/users.fields.names')</th>
+                    <th>@lang('models/users.fields.email')</th>
+                    <th>@lang('models/users.fields.role')</th>
+                    <th width="100px">@lang('crud.action')</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
 @push('scripts')
     <script>
         $(function () {
             let table = $('.data-table').DataTable({
+                responsive: true,
                 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                languages:{
-                    url: 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json'
-                },
                 select:true,
                 columnDefs: [ {
                     orderable: false,
@@ -101,7 +101,6 @@
                         }
                     },
                 ],
-
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('users.index')}}",

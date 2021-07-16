@@ -147,6 +147,7 @@ class supplyChainCustomerController extends AppBaseController
     {
         /** @var supplyChainCustomer $supplyChainCustomer */
         $supplyChainCustomer = supplyChainCustomer::find($id);
+        $company_id = $supplyChainCustomer->supplyChain->company_id;
         $cod = $supplyChainCustomer->supply_chain_id;
 
         if (empty($supplyChainCustomer)) {
@@ -159,7 +160,7 @@ class supplyChainCustomerController extends AppBaseController
 
         Flash::success(__('messages.deleted', ['model' => __('models/supplyChainCustomers.singular')]));
 
-        return redirect()->route('supplyChains.show', $cod);
+        return redirect()->route('supplyChains.show', [$company_id,$cod]);
     }
 
     /**

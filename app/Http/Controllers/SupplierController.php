@@ -80,7 +80,7 @@ class SupplierController extends AppBaseController
         if (empty($supplier)) {
             Flash::error(__('models/suppliers.singular').' '.__('messages.not_found'));
 
-            return redirect(route('companies.index'));
+            return redirect(route('companies.index',[$id]));
         }
 
         return view('suppliers.show')->with('supplier', $supplier)->with('company_id',$supplier->company_id);

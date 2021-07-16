@@ -132,7 +132,7 @@
         "inView": true
     },
     {
-        "name": "isSuperAdmin",
+        "name": "is_admin",
         "dbType": "boolean",
         "htmlType": "checkbox,1",
         "validations": "required|boolean|boolean",

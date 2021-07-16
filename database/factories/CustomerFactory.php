@@ -9,8 +9,8 @@ $factory->define(Customer::class, function (Faker $faker) {
 
     return [
         'dni' => $faker->randomNumber(8, true),
-        'name' => $faker->name(),
-        'last_name' => $faker->lastName(),
+        'name' => $faker->company,
+        'last_name' => $faker->companySuffix,
         'contact' => $faker->tollFreePhoneNumber(),
         'email' => $faker->safeEmail(),
         'address' => $faker->streetAddress(),

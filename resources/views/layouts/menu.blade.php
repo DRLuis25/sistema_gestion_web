@@ -39,7 +39,7 @@
     </li>
 @endif
 @if (Request::is('company*','suppliers*','customers*','businessUnits*','supplyChains*'))
-    @can('admin_empresas')
+
         <li class="nav-item">
             {{-- <a href="{{ route('suppliers.index') }}" --}}
             <a href="{{ route('company.showCompany', [$company_id]) }}"
@@ -47,8 +47,7 @@
                 <p>@lang('models/companies.singular')</p>
             </a>
         </li>
-    @endcan
-    @can('admin_proveedores')
+    @canany(['crear_proveedores', 'leer_proveedores', 'modificar_proveedores','eliminar_proveedores'])
         <li class="nav-item">
             {{-- <a href="{{ route('suppliers.index') }}" --}}
             <a href="{{ route('suppliers.index', [$company_id]) }}"
@@ -57,7 +56,7 @@
             </a>
         </li>
     @endcan
-    @can('admin_clientes')
+    @canany(['crear_clientes', 'leer_clientes', 'modificar_clientes','eliminar_clientes'])
         <li class="nav-item">
             <a href="{{ route('customers.index', [$company_id]) }}"
             class="nav-link {{ Request::is('*customers') ? 'active' : '' }}">
@@ -65,7 +64,7 @@
             </a>
         </li>
     @endcan
-    @can('admin_unidad_negocio')
+    @canany(['crear_unidad_de_negocio', 'leer_unidad_de_negocio', 'modificar_unidad_de_negocio','eliminar_unidad_de_negocio'])
         <li class="nav-item">
             <a href="{{ route('businessUnits.index', [$company_id]) }}"
             class="nav-link {{ Request::is('*businessUnits') ? 'active' : '' }}">
@@ -73,7 +72,7 @@
             </a>
         </li>
     @endcan
-    @can('admin_cadena_suministro')
+    @canany(['crear_cadena_suministro', 'modificar_cadena_suministro', 'eliminar_cadena_suministro','registrar_proveedor_cadena_suministro','eliminar_proveedor_cadena_suministro','registrar_cliente_cadena_suministro','eliminar_cliente_cadena_suministro','ver_grafico_cadena_suministro','exportar_grafico_cadena_suministro','crear_historial_cadena_suministro','leer_historial_cadena_suministro','eliminar_historial_cadena_suministro'])
         <li class="nav-item">
             <a href="{{ route('supplyChains.index', [$company_id]) }}"
             class="nav-link {{ Request::is('*supplyChains') ? 'active' : '' }}">

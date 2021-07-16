@@ -80,7 +80,7 @@ class CustomerController extends AppBaseController
         if (empty($customer)) {
             Flash::error(__('models/customers.singular').' '.__('messages.not_found'));
 
-            return redirect(route('companies.index'));
+            return redirect(route('companies.index',[$id]));
         }
 
         return view('customers.show')->with('customer', $customer)->with('company_id',$customer->id);

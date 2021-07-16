@@ -1,14 +1,16 @@
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade " id="customers" role="tabpanel" aria-labelledby="customers-tab">
+    <div class="tab-pane fade" id="customers" role="tabpanel" aria-labelledby="customers-tab">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>@lang('models/supplyChainCustomers.plural')</h1>
                     </div>
-                    <div class="col-sm-6">
-                        @include('supply_chains.customers.create')
-                    </div>
+                    @can('registrar_cliente_cadena_suministro')
+                        <div class="col-sm-6">
+                            @include('supply_chains.customers.create')
+                        </div>
+                    @endcan
                 </div>
             </div>
         </section>
@@ -34,9 +36,11 @@
                     <div class="col-sm-6">
                         <h1>@lang('models/supplyChainSuppliers.plural')</h1>
                     </div>
-                    <div class="col-sm-6">
-                        @include('supply_chains.suppliers.create')
-                    </div>
+                    @can('registrar_proveedor_cadena_suministro')
+                        <div class="col-sm-6">
+                            @include('supply_chains.suppliers.create')
+                        </div>
+                    @endcan
                 </div>
             </div>
         </section>
@@ -54,17 +58,21 @@
             </tbody>
         </table>
     </div>
-    <div class="tab-pane fade show active" id="graphic" role="tabpanel" aria-labelledby="suppliers-tab">
+    <div class="tab-pane fade" id="graphic" role="tabpanel" aria-labelledby="suppliers-tab">
         <div class="container-fluid">
             <div class="row m-2">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-primary float-right m-2"
+                    @can('crear_historial_cadena_suministro')
+                        <button type="button" class="btn btn-primary float-right m-2"
                         data-toggle="modal" data-target="#historial-tab"
                         data-whatever="@mdo">
                         Guardar en Historial
-                    </button>
-                    <button onclick="exportImg()" class="btn btn-primary float-right m-2">Exportar Img</button>
-                    <button class="btn btn-primary float-right m-2">Exportar PDF</button>
+                        </button>
+                    @endcan
+                    @can('exportar_grafico_cadena_suministro')
+                        <button onclick="exportImg()" class="btn btn-primary float-right m-2">Exportar Img</button>
+                        <button onclick="exportPdf()" class="btn btn-primary float-right m-2">Exportar PDF</button>
+                    @endcan
                     @include('supply_chains.historial')
                 </div>
             </div>
@@ -73,8 +81,7 @@
             <div id="myDiagramDiv"style="width:800px; height:600px; background-color: #DAE4E4;"></div>
         </div>
     </div>
-    <div class="tab-pane fade show" id="historial" role="tabpanel" aria-labelledby="suppliers-tab">
-        Historial
+    <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="suppliers-tab">
         <table class="table table-bordered table-striped table-hover ajaxTable datatable data-table3" id="historials-table">
             <thead>
                 <tr>
@@ -296,21 +303,19 @@
                     className: 'select-checkbox',
                     targets:   0,
                     data: null,
-                },
-                {targets:2, render:function(data){
-                    return moment(data).format('Do MMMM YYYY');
-                }}],
+                }],
                 select: {
                     style:    'multi',
                     selector: 'td:first-child'
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('historials.index')}}",
+                //ajax: "{{ route('historials.index')}}",
+                ajax: "{{ route('getHistorial',[$supplyChain->id])}}",
                 columns: [
                     { "data":null, render:function(){return "";}},
                     { data: 'description', name: 'description'},
-                    { data: 'created_at', name: 'created_at'},
+                    { data: 'created', name: 'created'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
@@ -326,7 +331,7 @@
             initialContentAlignment: go.Spot.Center,
             "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
             "undoManager.isEnabled": true,//enable Ctrl z
-            "isReadOnly": false,
+            "isReadOnly": true,
             "layout": new go.LayeredDigraphLayout()
         });
         myDiagram.nodeTemplate =$$(go.Node,
@@ -369,7 +374,7 @@
             { strokeWidth: 2, stroke: "#555" }),
         $$(go.Shape,  // the arrowhead
             { toArrow: "standard", stroke: "#555", scale: 1.5 })
-    );
+        );
         let nodeDataArray = [{"key": 0, 'name': 'Esta Empresa' }];
         let linkDataArray = [];
         $.get(`/generateSupplyChain/{{$supplyChain->id}}`, function(res, sta){
@@ -409,7 +414,7 @@
             initialContentAlignment: go.Spot.Center,
             "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
             "undoManager.isEnabled": true,//enable Ctrl z
-            "isReadOnly": false,
+            "isReadOnly": true,
             "layout": new go.LayeredDigraphLayout()
         });
         myDiagram.nodeTemplate =$$(go.Node,
@@ -591,14 +596,14 @@
                 makeOptions.maxSize = new go.Size(Infinity, Infinity);
                 /*doc.text(width/3+17, 45, `Empresa: {{$supplyChain->businessUnit->company->name}}`);
             doc.text(width/3+17, 60, `Unidad de negocio: {{$supplyChain->businessUnit->name}}`);*/
-                doc.text('{{$supplyChain->businessUnit->company->name}}');
+                doc.text('Empresa: {{$supplyChain->businessUnit->company->name}}');
                 doc.text('Unidad de negocio: {{$supplyChain->businessUnit->name}}');
                 var today = new Date();
                 var dd = String(today.getDate()).padStart(2, '0');
                 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
                 var yyyy = today.getFullYear();
 
-                today = mm + '/' + dd + '/' + yyyy;
+                today = dd + '-' + mm + '-' + yyyy;
                 doc.text(`Fecha de creación: ${today}`);
                 var imgdata = diagram.makeImageData(makeOptions);
                 doc.image(imgdata,{ scale: 1/(imgResolutionFactor*96/72) });
@@ -608,6 +613,5 @@
         doc.end();
         stream.on('finish', function() { action(stream.toBlob('application/pdf')); });
     }
-
 </script>
 @endpush

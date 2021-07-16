@@ -8,10 +8,12 @@
                     <h1>@lang('models/businessUnits.plural')</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('businessUnits.create',[$company_id]) }}">
-                       @lang('crud.add_new')
-                    </a>
+                    @can('crear_unidad_de_negocio')
+                        <a class="btn btn-primary float-right"
+                        href="{{ route('businessUnits.create',[$company_id]) }}">
+                        @lang('crud.add_new')
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>

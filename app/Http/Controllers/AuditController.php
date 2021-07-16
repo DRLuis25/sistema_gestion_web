@@ -26,6 +26,12 @@ class AuditController extends AppBaseController
             /** @var Audit $audits */
             $audits = Audit::all();
             return DataTables::of($audits)
+            ->addColumn('user',function($audit){
+                return $audit->user->lastNamePat.' '.$audit->user->lastNameMat.', '.$audit->user->names;
+            })
+            ->addColumn('created',function($audit){
+                return date('d-m-Y H:i:s',strtotime($audit->created_at));
+            })
             ->addColumn('action','audits.actions')
             ->rawColumns(['action'])
             ->make(true);

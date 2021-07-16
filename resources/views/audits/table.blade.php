@@ -106,13 +106,13 @@
                     { "data":null, render:function(){return "";}},
                     { data: 'description', name: 'description'},
                     { data: 'subject_type', name: 'subject_type'},
-                    { data: 'user_id', name: 'user_id'},
+                    { data: 'user', name: 'user'},
                     { data: 'host', name: 'host'},
-                    { data: 'created_at', name: 'created_at'},
+                    { data: 'created', name: 'created'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
-                order: [[ 2, 'asc' ]],
+                order: [[ 5, 'desc' ]],
                 pageLength: 10,
             });
         })

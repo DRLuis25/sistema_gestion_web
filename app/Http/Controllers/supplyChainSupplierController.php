@@ -147,6 +147,7 @@ class supplyChainSupplierController extends AppBaseController
     {
         /** @var supplyChainSupplier $supplyChainSupplier */
         $supplyChainSupplier = supplyChainSupplier::find($id);
+        $company_id = $supplyChainSupplier->supplyChain->company_id;
         $cod = $supplyChainSupplier->supply_chain_id;
         if (empty($supplyChainSupplier)) {
             Flash::error(__('messages.not_found', ['model' => __('models/supplyChainSuppliers.singular')]));
@@ -157,8 +158,8 @@ class supplyChainSupplierController extends AppBaseController
         $supplyChainSupplier->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/supplyChainSuppliers.singular')]));
-
-        return redirect()->route('supplyChains.show', $cod);
+        //return $company_id.'-'.$cod;
+        return redirect()->route('supplyChains.show',[$company_id, $cod]);
         //return redirect(route('supplyChainSuppliers.index'));
     }
 

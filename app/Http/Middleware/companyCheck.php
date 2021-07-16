@@ -18,7 +18,7 @@ class companyCheck
     {
         //dd($request->route()->parameters()['id']);
         if (Auth::guard($guard)->check()) {
-            if (Auth::user()->isSuperAdmin) {
+            if (Auth::user()->is_admin) {
                 return $next($request);
             }
             if (Auth::user()->company_id!=$request->route()->parameters()['id']) {

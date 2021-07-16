@@ -7,9 +7,9 @@ return array (
   array (
     'id' => 'Id',
     'description' => 'Descripción',
-    'subject_id' => 'Modelo id',
+    'subject_id' => 'Id Modelo',
     'subject_type' => 'Modelo',
-    'user_id' => 'Id Usuario',
+    'user_id' => 'Usuario',
     'properties' => 'Propiedades',
     'host' => 'Host',
     'created_at' => 'Creado el',
