@@ -44,7 +44,7 @@
             {{-- <a href="{{ route('suppliers.index') }}" --}}
             <a href="{{ route('company.showCompany', [$company_id]) }}"
             class="nav-link {{ Request::is('company') ? 'active' : '' }}">
-                <p>@lang('models/companies.singular')</p>
+                <p>Información</p>
             </a>
         </li>
     @canany(['crear_proveedores', 'leer_proveedores', 'modificar_proveedores','eliminar_proveedores'])

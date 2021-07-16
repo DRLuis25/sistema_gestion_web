@@ -33,10 +33,3 @@
     {!! Form::label('address', __('models/suppliers.fields.address').':') !!}
     <p>{{ $supplier->address }}</p>
 </div>
-
-<!-- Company Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('company_id', __('models/suppliers.fields.company_id').':') !!}
-    <p>{{ $supplier->company_id }}</p>
-</div>
-

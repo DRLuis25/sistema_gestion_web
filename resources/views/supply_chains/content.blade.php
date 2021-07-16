@@ -101,6 +101,7 @@
 <script src="https://gojs.net/latest/extensions/SpiralLayout.js"></script>
 <script>
     $(function () {
+        console.log('{{$supplyChain->id}}');
         let table = $('.data-table2').DataTable({
             "autoWidth": false,
             "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -186,7 +187,7 @@
             ],
             processing: true,
             serverSide: true,
-            ajax: "{{ route('getSupplyChainCusto',[$supplyChain->businessUnit->id])}}",
+            ajax: "{{ route('getSupplyChainCusto',[$supplyChain->id])}}",
             columns: [
                 { "data":null, render:function(){return "";}},
                 // { data: 'supply_chain_name', name: 'supply_chain_name'},
@@ -284,7 +285,7 @@
             ],
             processing: true,
             serverSide: true,
-            ajax: "{{ route('getSupplyChainSupp',[$supplyChain->businessUnit->id])}}",
+            ajax: "{{ route('getSupplyChainSupp',[$supplyChain->id])}}",
             columns: [
                 { "data":null, render:function(){return "";}},
                 { data: 'supplier_name', name: 'supplier_name'},

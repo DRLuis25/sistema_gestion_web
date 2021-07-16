@@ -7,9 +7,9 @@ return array (
   array (
     'id' => 'Id',
     'dni' => 'DNI',
-    'name' => 'Nombres',
-    'last_name' => 'Apellidos',
-    'contact' => 'Teléfono',
+    'name' => 'Nombre',
+    'last_name' => 'Nombre Contacto',
+    'contact' => 'Contacto',
     'email' => 'Email',
     'address' => 'Dirección',
     'company_id' => 'Empresa',

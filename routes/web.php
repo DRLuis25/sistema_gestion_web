@@ -38,20 +38,22 @@ Route::group(['middleware' => ['auth']], function()
         Route::resource('/company/{id}/businessUnits', 'businessUnitController')->names('businessUnits');
         Route::resource('/company/{id}/supplyChains', 'supplyChainController')->names('supplyChains');
 
-
-        Route::get('getSupplyChainCustomers/{id}', 'supplyChainCustomerController@getSupplyChainCustomers')->name('getSupplyChainCusto');
-        Route::get('getSupplyChainSupplier/{id}', 'supplyChainSupplierController@getSupplyChainSuppliers')->name('getSupplyChainSupp');
-
-        //Para generar la cadena de suministro
-        Route::get('getCustomers/{id}', 'CustomerController@getCustomers');
-        Route::get('getSuppliers/{id}', 'SupplierController@getSuppliers');//$id: company_id
-        Route::get('getSupplyChainCustomersParents/{id}/{id2}', 'supplyChainCustomerController@getSupplyChainCustomerParents');
-        Route::get('getSupplyChainSuppliersParents/{id}/{id2}', 'supplyChainSupplierController@getSupplyChainSupplierParents');
-        Route::get('generateSupplyChain/{id}','supplyChainController@generateSupplyChain');
-
-        Route::get('getHistorial/{id}','historialController@getHistorial')->name('getHistorial');
     });
-    Route::resource('supplyChainSuppliers', 'supplyChainSupplierController');
-    Route::resource('supplyChainCustomers', 'supplyChainCustomerController');
-    Route::resource('historials', 'historialController');
+
 });
+
+Route::get('getSupplyChainCustomers/{id}', 'supplyChainCustomerController@getSupplyChainCustomers')->name('getSupplyChainCusto');
+Route::get('getSupplyChainSupplier/{id}', 'supplyChainSupplierController@getSupplyChainSuppliers')->name('getSupplyChainSupp');
+
+//Para generar la cadena de suministro
+Route::get('getCustomers/{id}', 'CustomerController@getCustomers');
+Route::get('getSuppliers/{id}', 'SupplierController@getSuppliers');//$id: company_id
+Route::get('getSupplyChainCustomersParents/{id}/{id2}', 'supplyChainCustomerController@getSupplyChainCustomerParents');
+Route::get('getSupplyChainSuppliersParents/{id}/{id2}', 'supplyChainSupplierController@getSupplyChainSupplierParents');
+Route::get('generateSupplyChain/{id}','supplyChainController@generateSupplyChain');
+
+Route::get('getHistorial/{id}','historialController@getHistorial')->name('getHistorial');
+Route::resource('supplyChainSuppliers', 'supplyChainSupplierController');
+Route::resource('supplyChainCustomers', 'supplyChainCustomerController');
+Route::resource('historials', 'historialController');
+Route::post('guardarAudit', 'AuditController@guardar')->name('guardaraudit');

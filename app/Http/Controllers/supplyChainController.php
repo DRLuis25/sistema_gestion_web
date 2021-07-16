@@ -140,7 +140,7 @@ class supplyChainController extends AppBaseController
 
         Flash::success(__('messages.updated', ['model' => __('models/supplyChains.singular')]));
 
-        return redirect(route('supplyChains.index',[$supplyChain->company_id]));
+        return redirect(route('supplyChains.index',[$id]));
     }
 
     /**

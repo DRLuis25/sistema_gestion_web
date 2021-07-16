@@ -1,7 +1,7 @@
 <!-- Company Id Field -->
 <div class="col-sm-12">
     {!! Form::label('company_id', __('models/businessUnits.fields.company_id').':') !!}
-    <p>{{ $businessUnit->company_id }}</p>
+    <p>{{ $businessUnit->company->name }}</p>
 </div>
 
 <!-- Name Field -->

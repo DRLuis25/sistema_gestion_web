@@ -120,7 +120,7 @@ class businessUnitController extends AppBaseController
         if (empty($businessUnit)) {
             Flash::error(__('messages.not_found', ['model' => __('models/businessUnits.singular')]));
 
-            return redirect(route('companies.index'));
+            return redirect(route('companies.index',[$id]));
         }
 
         $businessUnit->fill($request->all());
@@ -128,7 +128,7 @@ class businessUnitController extends AppBaseController
 
         Flash::success(__('messages.updated', ['model' => __('models/businessUnits.singular')]));
 
-        return redirect(route('businessUnits.index',[$businessUnit->company_id]));
+        return redirect(route('businessUnits.index',[$id]));
     }
 
     /**
