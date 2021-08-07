@@ -110,7 +110,7 @@ class supplyChainController extends AppBaseController
         if (empty($supplyChain)) {
             Flash::error(__('messages.not_found', ['model' => __('models/supplyChains.singular')]));
 
-            return redirect(route('supplyChains.index'));
+            return redirect(route('companies.index'));
         }
 
         return view('supply_chains.edit')->with('supplyChain', $supplyChain)->with('company_id',$supplyChain->company_id);

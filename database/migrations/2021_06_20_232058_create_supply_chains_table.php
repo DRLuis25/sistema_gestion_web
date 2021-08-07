@@ -27,15 +27,6 @@ class CreateSupplyChainsTable extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('business_unit_id')->references('id')->on('business_units');
         });
-        Schema::create('levels', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('supply_chain_id'); //cadena suministro id
-            $table->boolean('type');// tipo (proveedor, cliente)
-            $table->unsignedInteger('number');//numero
-            $table->timestamps();
-            $table->softDeletes();
-            $table->foreign('supply_chain_id')->references('id')->on('supply_chains');
-        });
         Schema::create('supply_chain_customers', function (Blueprint $table) {
             //Clientes de la cadena de suministro
             $table->id();

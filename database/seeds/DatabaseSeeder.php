@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\businessUnit;
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\processMap;
 use App\Models\Supplier;
+use App\Models\Type;
 use App\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -157,8 +160,11 @@ class DatabaseSeeder extends Seeder
         {
             $item->assignRole('admin');
         });
-        $usuarios = factory(Company::class,10)->create();
-        $usuarios = factory(Customer::class,10)->create();
-        $usuarios = factory(Supplier::class,10)->create();
+        $companies = factory(Company::class,10)->create();
+        $customers = factory(Customer::class,10)->create();
+        $suppliers = factory(Supplier::class,10)->create();
+
+
+        $this->call(MapaProcesoSeeder::class);
     }
 }

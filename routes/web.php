@@ -37,7 +37,11 @@ Route::group(['middleware' => ['auth']], function()
         Route::resource('/company/{id}/customers', 'CustomerController')->names('customers');
         Route::resource('/company/{id}/businessUnits', 'businessUnitController')->names('businessUnits');
         Route::resource('/company/{id}/supplyChains', 'supplyChainController')->names('supplyChains');
-
+        Route::resource('/company/{id}/processMaps', 'processMapController')->names('processMaps');
+        Route::resource('/company/{id}/processMaps/{id2}/criterios', 'CriterioController')->names('criterios');
+        Route::resource('/company/{id}/processMaps/{id2}/processCriterios', 'processCriterioController')->names('processCriterios')->only('index','store');
+        Route::resource('/company/{id}/processMaps/{id2}/seguimientos', 'SeguimientoController')->names('seguimientos')->only('index','show','destroy');
+        Route::post('/company/{id}/processMaps/{id2}/seguimientos/create', 'SeguimientoController@create')->name('seguimientos.create');
     });
 
 });
@@ -57,3 +61,23 @@ Route::resource('supplyChainSuppliers', 'supplyChainSupplierController');
 Route::resource('supplyChainCustomers', 'supplyChainCustomerController');
 Route::resource('historials', 'historialController');
 Route::post('guardarAudit', 'AuditController@guardar')->name('guardaraudit');
+
+Route::get('getProcess/{id}', 'ProcessController@getProcess')->name('getProcess');
+Route::get('getProcessMap/{id}', 'ProcessController@getProcessMap')->name('getProcessMap');
+Route::get('getProcessById/{id}', 'ProcessController@getProcessById')->name('getProcessById');
+Route::delete('processMap/{id1}/process/{id2}', 'ProcessController@destroy')->name('process.destroy');
+Route::resource('process', 'ProcessController')->names('process')->only('store','edit','update');
+
+Route::resource('processTypes', 'processTypeController');
+
+Route::get('getMatrizPriorizacion/{id}', 'ProcessCriterioController@getMatrizPriorizacion')->name('getMatrizPriorizacion');
+
+Route::post('storeActivity', 'SeguimientoController@storeActivity')->name('storeActivity');
+
+Route::get('getTimes/{id}', 'SeguimientoController@getTimes')->name('getTimes');
+
+Route::get('/company/{id}/processMaps/{id2}/seguimientos/getSeguimiento/{id3}', 'SeguimientoController@getSeguimiento')->name('getSeguimiento');
+//Route::get('{id}/verSeguimiento', 'SeguimientoController@ver')->name('seguimientos.ver');
+
+
+Route::resource('processFlowDiagrams', 'processFlowDiagramController');

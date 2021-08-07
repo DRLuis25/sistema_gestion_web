@@ -43,6 +43,7 @@
     <script src="/js/pdfkit.js"></script>
     @yield('third_party_stylesheets')
     @stack('page_css')
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -52,7 +53,7 @@
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button" id="buttonPushMenu"><i class="fas fa-bars"></i></a>
             </li>
         </ul>
 
@@ -100,14 +101,17 @@
         </section>
     </div>
 
-    <!-- Main Footer -->
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.0.5
-        </div>
-        <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
-        reserved.
-    </footer>
+    <div class="fixed-bottom">
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 3.0.5
+            </div>
+            <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
+            reserved.
+        </footer>
+    </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
@@ -181,5 +185,7 @@
 @stack('scripts-supplyChains')
 @stack('scripts-supplyChains-2')
 @stack('scripts-historial')
+
+@stack('scripts-process')
 </body>
 </html>
