@@ -12,6 +12,7 @@ use App\Models\processType;
 use Exception;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Validator;
 use Response;
 use Yajra\DataTables\DataTables;
 
@@ -159,8 +160,13 @@ class ProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateProcessRequest $request)
+    public function update($id, Request $request)
     {
+        $validator = Validator::make($request->all(), Process::$updateRules);
+
+        if ($validator->fails()) {
+            return Response::json(['status'=>'500','e'=>$validator->errors()->first()], 200);
+        }
         try{
             /** @var Process $process */
             $process = Process::find($id);

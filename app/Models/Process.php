@@ -65,10 +65,20 @@ class Process extends Model
      */
     public static $rules = [
         'process_map_id' => 'required',
-        'name' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
+        'name' => 'required|string|max:255|min:3',
+        'description' => 'required|string|max:255|min:3',
         'parent_process_id' => 'nullable',
         'status' => 'required|boolean',
+        'created_at' => 'nullable',
+        'updated_at' => 'nullable',
+        'deleted_at' => 'nullable'
+    ];
+    public static $updateRules = [
+        'process_map_id' => 'nullable',
+        'name' => 'required|string|max:255|min:3',
+        'description' => 'required|string|max:255|min:3',
+        'parent_process_id' => 'nullable',
+        'status' => 'nullable',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'

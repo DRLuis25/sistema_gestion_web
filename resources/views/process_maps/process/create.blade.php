@@ -34,13 +34,6 @@
                         <input type="checkbox" name="type[]" id="type3" value="3"> <label for="type3">Proceso Apoyo</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label for="parent_process_id" class="col-form-label">@lang('models/processes.fields.parent_process_id'):</label>
-                        <select name="parent_process_id" id="parent_process_id" class="form-control">
-                        </select>
-                    </div>
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     <input type="submit" value="Guardar" class="btn btn-primary" id="checkBtn">

@@ -74,7 +74,7 @@
                     }
                     else if (data.status==500) {
                         console.log(data.e);
-                        alert("Error al registrar. Registro duplicado");
+                        alert("Error al registrar. "+data.e);
                     }
 
                 },
