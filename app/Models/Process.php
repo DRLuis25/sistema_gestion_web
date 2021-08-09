@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Process
  * @package App\Models
- * @version August 7, 2021, 10:50 pm -05
+ * @version August 9, 2021, 3:35 am -05
  *
  * @property \App\Models\ProcessMap $processMap
  * @property \Illuminate\Database\Eloquent\Collection $hojaCaracterizacionProcesos
  * @property \Illuminate\Database\Eloquent\Collection $processFlowDiagrams
  * @property \Illuminate\Database\Eloquent\Collection $processTypes
  * @property \Illuminate\Database\Eloquent\Collection $seguimientos
+ * @property \Illuminate\Database\Eloquent\Collection $seguimientoPropuestos
  * @property integer $process_map_id
  * @property string $name
  * @property string $description
@@ -26,7 +27,7 @@ class Process extends Model
     use SoftDeletes;
 
     public $table = 'process';
-
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -86,7 +87,7 @@ class Process extends Model
      **/
     public function hojaCaracterizacionProcesos()
     {
-        return $this->hasMany(\App\Models\HojaCaracterizacionProcesos::class, 'process_id');
+        return $this->hasMany(\App\Models\HojaCaracterizacionProceso::class, 'process_id');
     }
 
     /**
@@ -111,5 +112,13 @@ class Process extends Model
     public function seguimientos()
     {
         return $this->hasMany(\App\Models\Seguimiento::class, 'process_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function seguimientoPropuestos()
+    {
+        return $this->hasMany(\App\Models\SeguimientoPropuesto::class, 'process_id');
     }
 }

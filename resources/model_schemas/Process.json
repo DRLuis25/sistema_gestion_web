@@ -126,5 +126,9 @@
     {
         "type": "relation",
         "relation": "1tm,Seguimiento,process_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,SeguimientoPropuesto,process_id"
     }
 ]

@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Rol
  * @package App\Models
- * @version August 2, 2021, 8:33 pm -05
+ * @version August 9, 2021, 3:35 am -05
  *
  * @property \App\Models\ProcessMap $processMap
  * @property \Illuminate\Database\Eloquent\Collection $seguimientos
+ * @property \Illuminate\Database\Eloquent\Collection $seguimientoPropuestos
  * @property integer $process_map_id
  * @property string $name
  */
@@ -70,5 +71,13 @@ class Rol extends Model
     public function seguimientos()
     {
         return $this->hasMany(\App\Models\Seguimiento::class, 'rol_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function seguimientoPropuestos()
+    {
+        return $this->hasMany(\App\Models\SeguimientoPropuesto::class, 'rol_id');
     }
 }

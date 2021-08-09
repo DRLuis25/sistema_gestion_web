@@ -32,8 +32,12 @@ class SeguimientoController extends AppBaseController
             ->addColumn('company_id',function($seguimiento){
                 return $seguimiento->processMap->company_id;
             })
+            ->addColumn('propuestos',function($seguimiento){
+                return $seguimiento->seguimientoPropuestos->count();
+            })
             ->addColumn('action','seguimientos.actions')
-            ->rawColumns(['action'])
+            ->addColumn('actionPropuesto','seguimiento_propuestos.actions')
+            ->rawColumns(['action','actionPropuesto'])
             ->make(true);
         }
         $procesosSinSeguimiento = Process::where('process_map_id','=',$id2)->doesnthave('seguimientos')->get();

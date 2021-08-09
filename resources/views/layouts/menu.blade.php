@@ -128,3 +128,12 @@
         </li>
     </ul>
 @endif
+{{-- <li class="nav-item">
+    <a href="{{ route('seguimientoPropuestos.index') }}"
+       class="nav-link {{ Request::is('seguimientoPropuestos*') ? 'active' : '' }}">
+        <p>@lang('models/seguimientoPropuestos.plural')</p>
+    </a>
+</li>
+
+
+ --}}

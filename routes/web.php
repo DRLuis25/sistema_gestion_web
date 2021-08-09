@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function()
         Route::resource('/company/{id}/processMaps/{id2}/processCriterios', 'processCriterioController')->names('processCriterios')->only('index','store');
         Route::resource('/company/{id}/processMaps/{id2}/seguimientos', 'SeguimientoController')->names('seguimientos')->only('index','show','destroy');
         Route::post('/company/{id}/processMaps/{id2}/seguimientos/create', 'SeguimientoController@create')->name('seguimientos.create');
+        Route::resource('/company/{id}/processMaps/{id2}/seguimientoPropuestos', 'seguimientoPropuestoController')->names('seguimientoPropuestos')->only('show','destroy');
         Route::resource('/company/{id}/processMaps/{id2}/processFlowDiagrams', 'processFlowDiagramController')->names('processFlowDiagrams')->except('create');
         // Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create', 'processFlowDiagramController@create')->name('processFlowDiagrams.create');
         Route::resource('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos', 'hojaCaracterizacionProcesosController')->names('hojaCaracterizacionProcesos')->except('create');
@@ -102,7 +103,10 @@ Route::patch('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/updateRe
 //Diagrama Seguimiento
 Route::get('/company/{id}/processMaps/{id2}/seguimientos/getSeguimiento/{id3}', 'SeguimientoController@getSeguimiento')->name('getSeguimiento');
 Route::post('storeActivity', 'SeguimientoController@storeActivity')->name('storeActivity');
-
 Route::get('getTimes/{id}', 'SeguimientoController@getTimes')->name('getTimes');
-
 Route::DELETE('/company/{id}/processMaps/{id2}/seguimientos/{id3}/destroySeguimientoActividad/{id4}', 'SeguimientoController@destroySeguimientoActividad')->name('destroySeguimientoActividad');
+
+Route::get('/company/{id}/processMaps/{id2}/seguimientoPropuestos/getSeguimientoPropuesto/{id3}', 'seguimientoPropuestoController@getSeguimientoPropuesto')->name('getSeguimientoPropuesto');
+Route::post('storeActivityPropuesto', 'seguimientoPropuestoController@storeActivityPropuesto')->name('storeActivityPropuesto');
+Route::get('getTimesPropuesto/{id}', 'seguimientoPropuestoController@getTimesPropuesto')->name('getTimesPropuesto');
+Route::DELETE('/company/{id}/processMaps/{id2}/seguimientoPropuestos/{id3}/destroySeguimientoActividadPropuesto/{id4}', 'seguimientoPropuestoController@destroySeguimientoActividadPropuesto')->name('destroySeguimientoActividadPropuesto');

@@ -5,6 +5,7 @@
                 <th>@lang('models/processes.fields.name')</th>
                 <th>@lang('models/processes.fields.description')</th>
                 <th width="100px">@lang('crud.action')</th>
+                <th width="100px">Propuesto</th>
         </tr>
     </thead>
     <tbody>
@@ -104,6 +105,7 @@
                     { data: 'name', name: 'name'},
                     { data: 'description', name: 'description'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
+                    { data: 'actionPropuesto', name: 'actionPropuesto', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
                 order: [[ 2, 'asc' ]],
