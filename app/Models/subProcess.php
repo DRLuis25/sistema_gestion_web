@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class subProcess
  * @package App\Models
- * @version July 29, 2021, 2:26 pm -05
+ * @version August 9, 2021, 2:26 pm -05
  *
  * @property \App\Models\ProcessMap $processMap
+ * @property \Illuminate\Database\Eloquent\Collection $hojaCaracterizacionProcesos
+ * @property \Illuminate\Database\Eloquent\Collection $processFlowDiagrams
  * @property \Illuminate\Database\Eloquent\Collection $processTypes
+ * @property \Illuminate\Database\Eloquent\Collection $seguimientos
+ * @property \Illuminate\Database\Eloquent\Collection $seguimientoPropuestos
  * @property integer $process_map_id
  * @property string $name
  * @property string $description
@@ -23,7 +27,7 @@ class subProcess extends Model
     use SoftDeletes;
 
     public $table = 'process';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -61,10 +65,10 @@ class subProcess extends Model
      */
     public static $rules = [
         'process_map_id' => 'required',
-        'name' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
-        'parent_process_id' => 'nullable',
-        'status' => 'required|boolean',
+        'name' => 'required|string|max:255|min:3',
+        'description' => 'required|string|max:255|min:3',
+        'parent_process_id' => 'required',
+        'status' => 'boolean',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
@@ -81,8 +85,40 @@ class subProcess extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
+    public function hojaCaracterizacionProcesos()
+    {
+        return $this->hasMany(\App\Models\hojaCaracterizacionProcesos::class, 'process_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function processFlowDiagrams()
+    {
+        return $this->hasMany(\App\Models\ProcessFlowDiagram::class, 'process_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
     public function processTypes()
     {
         return $this->hasMany(\App\Models\ProcessType::class, 'process_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function seguimientos()
+    {
+        return $this->hasMany(\App\Models\Seguimiento::class, 'process_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function seguimientoPropuestos()
+    {
+        return $this->hasMany(\App\Models\SeguimientoPropuesto::class, 'process_id');
     }
 }

@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('subProcesses.index') }}">
+                       href="{{ route('subProcesses.index',[$company_id, $process_map_id, $process_id]) }}">
                         @lang('crud.back')
                     </a>
                 </div>

@@ -2,11 +2,8 @@
     <thead>
         <tr>
             <th style="color:white">x</th>
-            <th>@lang('models/subProcesses.fields.process_map_id')</th>
-        <th>@lang('models/subProcesses.fields.name')</th>
-        <th>@lang('models/subProcesses.fields.description')</th>
-        <th>@lang('models/subProcesses.fields.parent_process_id')</th>
-        <th>@lang('models/subProcesses.fields.status')</th>
+            <th>@lang('models/subProcesses.fields.name')</th>
+            <th>@lang('models/subProcesses.fields.description')</th>
             <th width="100px">@lang('crud.action')</th>
         </tr>
     </thead>
@@ -101,15 +98,11 @@
                 ],
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('subProcesses.index')}}",
+                ajax: "{{ route('subProcesses.index',[$company_id, $process_map_id, $process_id])}}",
                 columns: [
                     { "data":null, render:function(){return "";}},
-                    { data: 'dni', name: 'dni'},
-                    { data: 'lastNamePat', name: 'lastNamePat'},
-                    { data: 'lastNameMat', name: 'lastNameMat'},
-                    { data: 'names', name: 'names'},
-                    { data: 'email', name: 'email'},
-                    { data: 'rol', name: 'rol'},
+                    { data: 'name', name: 'name'},
+                    { data: 'description', name: 'description'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,

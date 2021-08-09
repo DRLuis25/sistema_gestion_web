@@ -88,7 +88,7 @@
 
 @endif
 
-@if (Request::is('*processMaps/*') and !Request::is('*processMaps/create'))
+@if ((Request::is('*processMaps/*') and !Request::is('*processMaps/create'))or Request::is('historialProcessMaps*'))
     <li class="nav-item">
         <a href="{{ route('processMaps.index', [$company_id]) }}"
         class="nav-link {{ Request::is('processMaps*') ? 'active' : '' }}">
@@ -96,6 +96,12 @@
         </a>
     </li>
     <ul class="nav-sidebar">
+        <li class="nav-item">
+            <a href="{{ route('processMaps.show', [$company_id, $process_map_id]) }}"
+            class="nav-link {{ Request::is('criterios*') ? 'active' : '' }}">
+                <p>@lang('models/processMaps.singular')</p>
+            </a>
+        </li>
         <li class="nav-item">
             <a href="{{ route('criterios.index', [$company_id, $process_map_id]) }}"
             class="nav-link {{ Request::is('criterios*') ? 'active' : '' }}">
@@ -132,6 +138,15 @@
     <a href="{{ route('seguimientoPropuestos.index') }}"
        class="nav-link {{ Request::is('seguimientoPropuestos*') ? 'active' : '' }}">
         <p>@lang('models/seguimientoPropuestos.plural')</p>
+    </a>
+</li>
+
+
+ --}}
+{{-- <li class="nav-item">
+    <a href="{{ route('subProcesses.index') }}"
+       class="nav-link {{ Request::is('subProcesses*') ? 'active' : '' }}">
+        <p>@lang('models/subProcesses.plural')</p>
     </a>
 </li>
 

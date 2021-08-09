@@ -1,9 +1,9 @@
 {!! Form::open(['route' => ['process.destroy',$processMap,$id], 'method' => 'delete']) !!}
 <div class='btn-group'>
     @can('leer_proceso')
-        {{-- <a href="{{ route('subProcesses.index', [$company_id,$process_map_id, $id]) }}" class='btn btn-default btn-xs'>
+        <a href="{{ route('subProcesses.index', [$company_id,$process_map_id, $id]) }}" class='btn btn-default btn-xs'>
             <i class="far fa-eye"></i>
-        </a> --}}
+        </a>
     @endcan
     @can('modificar_proceso')
         <button type="button" class="btn btn-default btn-xs"

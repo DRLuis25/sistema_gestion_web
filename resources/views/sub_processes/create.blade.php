@@ -17,7 +17,7 @@
 
         <div class="card">
 
-            {!! Form::open(['route' => 'subProcesses.store']) !!}
+            {!! Form::open(['route' => ['subProcesses.store',$company_id, $process_map_id, $process_id]]) !!}
 
             <div class="card-body">
 
@@ -29,7 +29,7 @@
 
             <div class="card-footer">
                 {!! Form::submit(__('crud.save'), ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('subProcesses.index') }}" class="btn btn-default">@lang('crud.cancel')</a>
+                <a href="{{ route('subProcesses.index',[$company_id, $process_map_id, $process_id]) }}" class="btn btn-default">@lang('crud.cancel')</a>
             </div>
 
             {!! Form::close() !!}

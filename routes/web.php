@@ -54,43 +54,42 @@ Route::get('getSupplyChainCustomers/{id}', 'supplyChainCustomerController@getSup
 Route::get('getSupplyChainSupplier/{id}', 'supplyChainSupplierController@getSupplyChainSuppliers')->name('getSupplyChainSupp');
 
 //Para generar la cadena de suministro
+Route::resource('supplyChainSuppliers', 'supplyChainSupplierController');
+Route::resource('supplyChainCustomers', 'supplyChainCustomerController');
 Route::get('getCustomers/{id}', 'CustomerController@getCustomers');
 Route::get('getSuppliers/{id}', 'SupplierController@getSuppliers');//$id: company_id
 Route::get('getSupplyChainCustomersParents/{id}/{id2}', 'supplyChainCustomerController@getSupplyChainCustomerParents');
 Route::get('getSupplyChainSuppliersParents/{id}/{id2}', 'supplyChainSupplierController@getSupplyChainSupplierParents');
+//
 Route::get('generateSupplyChain/{id}','supplyChainController@generateSupplyChain');
-
-Route::get('getHistorial/{id}','historialController@getHistorial')->name('getHistorial');
-Route::resource('supplyChainSuppliers', 'supplyChainSupplierController');
-Route::resource('supplyChainCustomers', 'supplyChainCustomerController');
+//Resource Historial SupplyChains
 Route::resource('historials', 'historialController');
+Route::get('getHistorial/{id}','historialController@getHistorial')->name('getHistorial');
+//Resource Auditoria bd
 Route::post('guardarAudit', 'AuditController@guardar')->name('guardaraudit');
-
+//Resource CRUD Procesos
+Route::resource('process', 'ProcessController')->names('process')->only('store','edit','update');
 Route::get('getProcess/{id}', 'ProcessController@getProcess')->name('getProcess');
+Route::resource('processTypes', 'processTypeController');
+//Resource CRUD ProcessMap
 Route::get('getProcessMap/{id}', 'ProcessController@getProcessMap')->name('getProcessMap');
 Route::get('getProcessById/{id}', 'ProcessController@getProcessById')->name('getProcessById');
 Route::delete('processMap/{id1}/process/{id2}', 'ProcessController@destroy')->name('process.destroy');
-Route::resource('process', 'ProcessController')->names('process')->only('store','edit','update');
-
-Route::resource('processTypes', 'processTypeController');
-
+//Menú historial Mapa Proceso
+Route::resource('historialProcessMaps', 'historialProcessMapController');
+Route::get('getHistorialProcessMaps/{id}','historialProcessMapController@getHistorialProcessMaps')->name('getHistorialProcessMaps');
+//Resource Subprocesos
+Route::resource('/company/{id}/processMaps/{id2}/process/{id3}/subProcesses', 'subProcessController')->names('subProcesses');
+//Menú matriz priorización
 Route::get('getMatrizPriorizacion/{id}', 'ProcessCriterioController@getMatrizPriorizacion')->name('getMatrizPriorizacion');
-
-
-
-
-//Route::get('{id}/verSeguimiento', 'SeguimientoController@ver')->name('seguimientos.ver');
+//Menú Diagrama de flujo
 Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create', 'processFlowDiagramController@create')->name('processFlowDiagrams.create');
 Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create2', 'processFlowDiagramController@createApplication')->name('processFlowDiagrams.create2');
 Route::post('getProcessFlowDiagram/{id}','processFlowDiagramController@getProcessFlowDiagram')->name('getProcessFlowDiagram');
-
+//Menú Hoja Caracterización
 Route::post('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos/create', 'hojaCaracterizacionProcesosController@create')->name('hojaCaracterizacionProcesos.create');
 Route::post('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos/create2', 'hojaCaracterizacionProcesosController@createApplication')->name('hojaCaracterizacionProcesos.create2');
 Route::post('updateHojaCaracterizacion', 'hojaCaracterizacionProcesosController@updateFile')->name('updateHojaCaracterizacion');
-
-Route::resource('historialProcessMaps', 'historialProcessMapController');
-Route::get('getHistorialProcessMaps/{id}','historialProcessMapController@getHistorialProcessMaps')->name('getHistorialProcessMaps');
-
 
 Route::post('storeProcessFlowDiagramRedesignFile', 'processFlowDiagramController@storeRedesignFile')->name('storeProcessFlowDiagramRedesignFile');
 Route::DELETE('/company/{id}/processMaps/{id2}/destroyProcessFlowDiagramRedesign/{id3}', 'processFlowDiagramController@destroyProcessFlowDiagramRedesign')->name('destroyProcessFlowDiagramRedesign');
@@ -110,3 +109,4 @@ Route::get('/company/{id}/processMaps/{id2}/seguimientoPropuestos/getSeguimiento
 Route::post('storeActivityPropuesto', 'seguimientoPropuestoController@storeActivityPropuesto')->name('storeActivityPropuesto');
 Route::get('getTimesPropuesto/{id}', 'seguimientoPropuestoController@getTimesPropuesto')->name('getTimesPropuesto');
 Route::DELETE('/company/{id}/processMaps/{id2}/seguimientoPropuestos/{id3}/destroySeguimientoActividadPropuesto/{id4}', 'seguimientoPropuestoController@destroySeguimientoActividadPropuesto')->name('destroySeguimientoActividadPropuesto');
+

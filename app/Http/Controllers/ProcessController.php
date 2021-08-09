@@ -21,8 +21,11 @@ class ProcessController extends AppBaseController
     {
         if($request->ajax()){
             /** @var Process $process */
-            $process = Process::where('process_map_id','=',$id)->get();
+            $process = Process::where('process_map_id','=',$id)->whereNull('parent_process_id')->get();
             return DataTables::of($process)
+            ->addColumn('company_id',function($process){
+                return $process->processMap->company_id;
+            })
             ->addColumn('processMap',function($process){
                 return $process->process_map_id;
             })
@@ -30,7 +33,8 @@ class ProcessController extends AppBaseController
                 return implode(', ',$process->processTypes->pluck('type')->pluck('description')->toArray());
             })
             ->addColumn('action','process_maps.process.actions')
-            ->rawColumns(['action'])
+            ->addColumn('proceso_show','process_maps.process.show_subprocess')
+            ->rawColumns(['action','proceso_show'])
             ->make(true);
         }
     }

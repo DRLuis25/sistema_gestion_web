@@ -27,7 +27,7 @@ class Process extends Model
     use SoftDeletes;
 
     public $table = 'process';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -87,7 +87,7 @@ class Process extends Model
      **/
     public function hojaCaracterizacionProcesos()
     {
-        return $this->hasMany(\App\Models\HojaCaracterizacionProceso::class, 'process_id');
+        return $this->hasMany(\App\Models\HojaCaracterizacionProcesos::class, 'process_id');
     }
 
     /**

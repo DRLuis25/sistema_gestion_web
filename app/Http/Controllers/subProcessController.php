@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatesubProcessRequest;
 use App\Http\Requests\UpdatesubProcessRequest;
 use App\Http\Controllers\AppBaseController;
-use App\Models\Process;
 use App\Models\subProcess;
 use Illuminate\Http\Request;
 use Flash;
@@ -23,16 +22,18 @@ class subProcessController extends AppBaseController
      */
     public function index($id, $id2, $id3, Request $request)
     {
-        $process = Process::find($id3);
         if($request->ajax()){
             /** @var subProcess $subProcesses */
-            $subProcesses = subProcess::where('parent_process_id','=',$id3);
+            $subProcesses = subProcess::where('parent_process_id','=',$id3)->get();
             return DataTables::of($subProcesses)
+            ->addColumn('company_id',function($process){
+                return $process->processMap->company_id;
+            })
             ->addColumn('action','sub_processes.actions')
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('sub_processes.index');
+        return view('sub_processes.index')->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
     }
 
     /**
@@ -40,9 +41,9 @@ class subProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($id, $id2, $id3)
     {
-        return view('sub_processes.create');
+        return view('sub_processes.create')->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
     }
 
     /**
@@ -52,7 +53,7 @@ class subProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreatesubProcessRequest $request)
+    public function store($id, $id2, $id3, CreatesubProcessRequest $request)
     {
         $input = $request->all();
 
@@ -61,7 +62,7 @@ class subProcessController extends AppBaseController
 
         Flash::success(__('messages.saved', ['model' => __('models/subProcesses.singular')]));
 
-        return redirect(route('subProcesses.index'));
+        return redirect(route('subProcesses.index',[$id, $id2, $id3]));
     }
 
     /**
@@ -71,18 +72,18 @@ class subProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id, $id2, $id3, $id4)
     {
         /** @var subProcess $subProcess */
-        $subProcess = subProcess::find($id);
+        $subProcess = subProcess::find($id4);
 
         if (empty($subProcess)) {
             Flash::error(__('models/subProcesses.singular').' '.__('messages.not_found'));
 
-            return redirect(route('subProcesses.index'));
+            return redirect(route('subProcesses.index',[$id, $id2, $id3]));
         }
 
-        return view('sub_processes.show')->with('subProcess', $subProcess);
+        return view('sub_processes.show')->with('subProcess', $subProcess)->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
     }
 
     /**
@@ -92,18 +93,18 @@ class subProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($id, $id2, $id3, $id4)
     {
         /** @var subProcess $subProcess */
-        $subProcess = subProcess::find($id);
+        $subProcess = subProcess::find($id4);
 
         if (empty($subProcess)) {
             Flash::error(__('messages.not_found', ['model' => __('models/subProcesses.singular')]));
 
-            return redirect(route('subProcesses.index'));
+            return redirect(route('subProcesses.index',[$id, $id2, $id3]));
         }
 
-        return view('sub_processes.edit')->with('subProcess', $subProcess);
+        return view('sub_processes.edit')->with('subProcess', $subProcess)->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
     }
 
     /**
@@ -114,15 +115,15 @@ class subProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdatesubProcessRequest $request)
+    public function update($id, $id2, $id3, $id4, UpdatesubProcessRequest $request)
     {
         /** @var subProcess $subProcess */
-        $subProcess = subProcess::find($id);
+        $subProcess = subProcess::find($id4);
 
         if (empty($subProcess)) {
             Flash::error(__('messages.not_found', ['model' => __('models/subProcesses.singular')]));
 
-            return redirect(route('subProcesses.index'));
+            return redirect(route('subProcesses.index',[$id, $id2, $id3]));
         }
 
         $subProcess->fill($request->all());
@@ -130,7 +131,7 @@ class subProcessController extends AppBaseController
 
         Flash::success(__('messages.updated', ['model' => __('models/subProcesses.singular')]));
 
-        return redirect(route('subProcesses.index'));
+        return redirect(route('subProcesses.index',[$id, $id2, $id3]));
     }
 
     /**
@@ -142,21 +143,21 @@ class subProcessController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, $id2, $id3, $id4)
     {
         /** @var subProcess $subProcess */
-        $subProcess = subProcess::find($id);
+        $subProcess = subProcess::find($id4);
 
         if (empty($subProcess)) {
             Flash::error(__('messages.not_found', ['model' => __('models/subProcesses.singular')]));
 
-            return redirect(route('subProcesses.index'));
+            return redirect(route('subProcesses.index',[$id, $id2, $id3]));
         }
 
         $subProcess->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/subProcesses.singular')]));
 
-        return redirect(route('subProcesses.index'));
+        return redirect(route('subProcesses.index',[$id, $id2, $id3]))->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
     }
 }

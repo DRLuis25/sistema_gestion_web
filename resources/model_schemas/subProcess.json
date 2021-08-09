@@ -113,6 +113,22 @@
     },
     {
         "type": "relation",
+        "relation": "1tm,HojaCaracterizacionProceso,process_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,ProcessFlowDiagram,process_id"
+    },
+    {
+        "type": "relation",
         "relation": "1tm,ProcessType,process_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,Seguimiento,process_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,SeguimientoPropuesto,process_id"
     }
 ]

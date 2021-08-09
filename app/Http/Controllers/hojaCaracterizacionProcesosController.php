@@ -27,7 +27,7 @@ class hojaCaracterizacionProcesosController extends AppBaseController
     {
         if($request->ajax()){
             /** @var hojaCaracterizacionProcesos $hojaCaracterizacionProcesos */
-            $hojaCaracterizacionProcesos = hojaCaracterizacionProcesos::all();
+            $hojaCaracterizacionProcesos = hojaCaracterizacionProcesos::where('process_map_id','=',$id2)->get();
             return DataTables::of($hojaCaracterizacionProcesos)
             ->addColumn('company_id',function($hojaCaracterizacionProcesos){
                 return $hojaCaracterizacionProcesos->processMap->company->id;

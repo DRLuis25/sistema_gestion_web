@@ -100,7 +100,7 @@ class historialProcessMapController extends AppBaseController
             return redirect(route('historialProcessMaps.index'));
         }
 
-        return view('historial_process_maps.show')->with('historialProcessMap', $historialProcessMap);
+        return view('historial_process_maps.show')->with('company_id',$historialProcessMap->processMap->company_id)->with('process_map_id',$historialProcessMap->process_map_id)->with('historialProcessMap', $historialProcessMap);
     }
 
     /**

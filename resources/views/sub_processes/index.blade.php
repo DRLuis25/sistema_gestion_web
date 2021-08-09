@@ -9,8 +9,12 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
-                       href="{{ route('subProcesses.create') }}">
+                       href="{{ route('subProcesses.create',[$company_id, $process_map_id, $process_id]) }}">
                        @lang('crud.add_new')
+                    </a>
+                    <a class="btn btn-default float-right"
+                       href="{{ route('processMaps.show',[$company_id, $process_map_id]) }}">
+                        @lang('crud.back')
                     </a>
                 </div>
             </div>
@@ -29,7 +33,7 @@
 
                 <div class="card-footer clearfix float-right">
                     <div class="float-right">
-                        
+
                     </div>
                 </div>
             </div>

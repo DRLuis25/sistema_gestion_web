@@ -17,7 +17,7 @@
 
         <div class="card">
 
-            {!! Form::model($subProcess, ['route' => ['subProcesses.update', $subProcess->id], 'method' => 'patch']) !!}
+            {!! Form::model($subProcess, ['route' => ['subProcesses.update',$company_id, $process_map_id, $process_id, $subProcess->id], 'method' => 'patch']) !!}
 
             <div class="card-body">
                 <div class="row">
@@ -27,7 +27,7 @@
 
             <div class="card-footer">
                 {!! Form::submit(__('crud.save'), ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('subProcesses.index') }}" class="btn btn-default">@lang('crud.cancel')</a>
+                <a href="{{ route('subProcesses.index',[$company_id, $process_map_id, $process_id]) }}" class="btn btn-default">@lang('crud.cancel')</a>
             </div>
 
            {!! Form::close() !!}
