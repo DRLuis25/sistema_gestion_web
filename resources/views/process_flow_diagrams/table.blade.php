@@ -2,10 +2,9 @@
     <thead>
         <tr>
             <th style="color:white">x</th>
-            <th>@lang('models/processFlowDiagrams.fields.process_map_id')</th>
-        <th>@lang('models/processFlowDiagrams.fields.process_id')</th>
-        <th>@lang('models/processFlowDiagrams.fields.data')</th>
+            <th>@lang('models/processFlowDiagrams.fields.process_id')</th>
             <th width="100px">@lang('crud.action')</th>
+            <th width="100px">Rediseño</th>
         </tr>
     </thead>
     <tbody>
@@ -99,16 +98,12 @@
                 ],
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('processFlowDiagrams.index')}}",
+                ajax: "{{ route('processFlowDiagrams.index',[$company_id, $process_map_id])}}",
                 columns: [
                     { "data":null, render:function(){return "";}},
-                    { data: 'dni', name: 'dni'},
-                    { data: 'lastNamePat', name: 'lastNamePat'},
-                    { data: 'lastNameMat', name: 'lastNameMat'},
-                    { data: 'names', name: 'names'},
-                    { data: 'email', name: 'email'},
-                    { data: 'rol', name: 'rol'},
+                    { data: 'processName', name: 'processName'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
+                    { data: 'redesing', name: 'redesing', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
                 order: [[ 2, 'asc' ]],

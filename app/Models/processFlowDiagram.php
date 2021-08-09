@@ -8,20 +8,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class processFlowDiagram
  * @package App\Models
- * @version August 7, 2021, 2:18 pm -05
+ * @version August 9, 2021, 1:34 am -05
  *
  * @property \App\Models\Process $process
  * @property \App\Models\ProcessMap $processMap
  * @property integer $process_map_id
  * @property integer $process_id
  * @property string $data
+ * @property string $file
+ * @property boolean $adjunto
+ * @property boolean $redesing_boolean
+ * @property string $redesign_data
+ * @property string $redesign_file
+ * @property boolean $redesing_adjunto
  */
 class processFlowDiagram extends Model
 {
-    use SoftDeletes;
 
     public $table = 'process_flow_diagram';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -33,7 +38,13 @@ class processFlowDiagram extends Model
     public $fillable = [
         'process_map_id',
         'process_id',
-        'data'
+        'data',
+        'file',
+        'adjunto',
+        'redesing_boolean',
+        'redesign_data',
+        'redesign_file',
+        'redesing_adjunto'
     ];
 
     /**
@@ -45,7 +56,13 @@ class processFlowDiagram extends Model
         'id' => 'integer',
         'process_map_id' => 'integer',
         'process_id' => 'integer',
-        'data' => 'string'
+        'data' => 'string',
+        'file' => 'string',
+        'adjunto' => 'boolean',
+        'redesing_boolean' => 'boolean',
+        'redesign_data' => 'string',
+        'redesign_file' => 'string',
+        'redesing_adjunto' => 'boolean'
     ];
 
     /**
@@ -58,7 +75,13 @@ class processFlowDiagram extends Model
         'process_id' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
-        'data' => 'required|string'
+        'data' => 'nullable|string',
+        'file' => 'nullable|string',
+        'adjunto' => 'required|boolean',
+        'redesing_boolean' => 'nullable|boolean',
+        'redesign_data' => 'nullable|string',
+        'redesign_file' => 'nullable|string',
+        'redesing_adjunto' => 'nullable|boolean'
     ];
 
     /**

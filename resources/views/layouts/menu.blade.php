@@ -109,19 +109,22 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('hojaCaracterizacionProcesos.index',[$company_id, $process_map_id]) }}"
+            class="nav-link {{ Request::is('hojaCaracterizacionProcesos*') ? 'active' : '' }}">
+                <p>@lang('models/hojaCaracterizacionProcesos.plural')</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('processFlowDiagrams.index',[$company_id, $process_map_id]) }}"
+               class="nav-link {{ Request::is('processFlowDiagrams*') ? 'active' : '' }}">
+                <p>@lang('models/processFlowDiagrams.plural')</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('seguimientos.index',[$company_id, $process_map_id]) }}"
                class="nav-link {{ Request::is('seguimientos*') ? 'active' : '' }}">
-                <p>@lang('models/seguimientos.plural')</p>
+                <p>@lang('models/seguimientos.singular')</p>
             </a>
         </li>
     </ul>
-
 @endif
-<li class="nav-item">
-    <a href="{{ route('processFlowDiagrams.index') }}"
-       class="nav-link {{ Request::is('processFlowDiagrams*') ? 'active' : '' }}">
-        <p>@lang('models/processFlowDiagrams.plural')</p>
-    </a>
-</li>
-
-

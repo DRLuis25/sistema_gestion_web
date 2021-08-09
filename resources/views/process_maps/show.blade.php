@@ -34,10 +34,16 @@
                             <a class="nav-link " id="mapaProceso-tab" data-toggle="tab" href="#mapaProceso" role="tab" aria-controls="mapaProceso" aria-selected="true">Mapa Proceso</a>
                         </li>
                     @endcan
+                    @canany('leer_historial_mapa_proceso','eliminar_historial_mapa_proceso')
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link " id="profile-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial</a>
+                        </li>
+                    @endcan
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     @include('process_maps.process.content')
                     @include('process_maps.process_map.content')
+                    @include('process_maps.historial.content')
                 </div>
             </div>
 

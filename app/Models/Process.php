@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Process
  * @package App\Models
- * @version August 4, 2021, 2:51 pm -05
+ * @version August 7, 2021, 10:50 pm -05
  *
  * @property \App\Models\ProcessMap $processMap
+ * @property \Illuminate\Database\Eloquent\Collection $hojaCaracterizacionProcesos
+ * @property \Illuminate\Database\Eloquent\Collection $processFlowDiagrams
  * @property \Illuminate\Database\Eloquent\Collection $processTypes
  * @property \Illuminate\Database\Eloquent\Collection $seguimientos
  * @property integer $process_map_id
@@ -77,6 +79,22 @@ class Process extends Model
     public function processMap()
     {
         return $this->belongsTo(\App\Models\ProcessMap::class, 'process_map_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function hojaCaracterizacionProcesos()
+    {
+        return $this->hasMany(\App\Models\HojaCaracterizacionProcesos::class, 'process_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function processFlowDiagrams()
+    {
+        return $this->hasMany(\App\Models\ProcessFlowDiagram::class, 'process_id');
     }
 
     /**

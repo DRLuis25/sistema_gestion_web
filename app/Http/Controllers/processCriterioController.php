@@ -57,7 +57,7 @@ class processCriterioController extends AppBaseController
     {
         $input = $request->except('_token');
         $data = json_encode($input);
-        $processCriterio = processCriterio::firstOrCreate(['process_map_id' => '1'], ['data' => $data]);
+        $processCriterio = processCriterio::firstOrCreate(['process_map_id' => $id2], ['data' => $data]);
         $processCriterio->data = $data;
         $processCriterio->save();
         $processMap = processMap::where('id','=','1')->first();

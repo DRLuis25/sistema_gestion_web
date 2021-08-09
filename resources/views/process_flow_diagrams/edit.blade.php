@@ -17,21 +17,22 @@
 
         <div class="card">
 
-            {!! Form::model($processFlowDiagram, ['route' => ['processFlowDiagrams.update', $processFlowDiagram->id], 'method' => 'patch']) !!}
-
+            <form action="{{route('processFlowDiagrams.update',[$company_id, $process_map_id, $processFlowDiagram->id])}}" id="updateFlowDiagram-form" method="POST">
+                @csrf
+                {{ method_field('PATCH') }}
             <div class="card-body">
                 <div class="row">
-                    @include('process_flow_diagrams.fields')
+                    @include('process_flow_diagrams.edit_fields')
                 </div>
+                <div id="canvas" class="canvas" style="height: 35rem;"></div>
             </div>
 
             <div class="card-footer">
                 {!! Form::submit(__('crud.save'), ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('processFlowDiagrams.index') }}" class="btn btn-default">@lang('crud.cancel')</a>
+                <a href="{{ route('processFlowDiagrams.index',[$company_id, $process_map_id]) }}" class="btn btn-default">@lang('crud.cancel')</a>
             </div>
 
-           {!! Form::close() !!}
-
+            </form>
         </div>
     </div>
 @endsection

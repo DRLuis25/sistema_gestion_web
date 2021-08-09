@@ -69,7 +69,7 @@
         });
         $('#createActivity-form').on('submit', function(e){
             e.preventDefault();
-            console.log($('#createActivity-form').serialize()+'&process_map_id=1&process_id=1');
+            console.log($('#createActivity-form').serialize()+'&process_map_id={{$process_map_id}}&process_id={{$process_id}}');
             //let process_id = '1';//$('#select_proceso_id').val();
             $.ajax({
                 url: '{{route('storeActivity')}}', //this is the submit URL
@@ -77,7 +77,7 @@
                 headers: {
                     'X-CSRF-Token': '{{ csrf_token() }}',
                 },
-                data: $('#createActivity-form').serialize()+'&process_map_id=1&process_id=1',
+                data: $('#createActivity-form').serialize()+'&process_map_id={{$process_map_id}}&process_id={{$process_id}}',
                 success: function(data){
                     if(data.status==200){
                         console.log(data);
@@ -100,7 +100,7 @@
         function calcularTotales() {
             $("#rolTimesTable > tbody").empty();
             $("#flowTimesTable > tbody").empty();
-            $.get(`/getTimes/{{$process_map_id}}`, function(res, sta){
+            $.get(`/getTimes/{{$process_id}}`, function(res, sta){
             const rolTimes = res.rolTimes;
             const flowTimes = res.flowTimes;
             console.log(rolTimes)

@@ -42,6 +42,9 @@ Route::group(['middleware' => ['auth']], function()
         Route::resource('/company/{id}/processMaps/{id2}/processCriterios', 'processCriterioController')->names('processCriterios')->only('index','store');
         Route::resource('/company/{id}/processMaps/{id2}/seguimientos', 'SeguimientoController')->names('seguimientos')->only('index','show','destroy');
         Route::post('/company/{id}/processMaps/{id2}/seguimientos/create', 'SeguimientoController@create')->name('seguimientos.create');
+        Route::resource('/company/{id}/processMaps/{id2}/processFlowDiagrams', 'processFlowDiagramController')->names('processFlowDiagrams')->except('create');
+        // Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create', 'processFlowDiagramController@create')->name('processFlowDiagrams.create');
+        Route::resource('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos', 'hojaCaracterizacionProcesosController')->names('hojaCaracterizacionProcesos')->except('create');
     });
 
 });
@@ -72,12 +75,34 @@ Route::resource('processTypes', 'processTypeController');
 
 Route::get('getMatrizPriorizacion/{id}', 'ProcessCriterioController@getMatrizPriorizacion')->name('getMatrizPriorizacion');
 
+
+
+
+//Route::get('{id}/verSeguimiento', 'SeguimientoController@ver')->name('seguimientos.ver');
+Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create', 'processFlowDiagramController@create')->name('processFlowDiagrams.create');
+Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create2', 'processFlowDiagramController@createApplication')->name('processFlowDiagrams.create2');
+Route::post('getProcessFlowDiagram/{id}','processFlowDiagramController@getProcessFlowDiagram')->name('getProcessFlowDiagram');
+
+Route::post('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos/create', 'hojaCaracterizacionProcesosController@create')->name('hojaCaracterizacionProcesos.create');
+Route::post('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos/create2', 'hojaCaracterizacionProcesosController@createApplication')->name('hojaCaracterizacionProcesos.create2');
+Route::post('updateHojaCaracterizacion', 'hojaCaracterizacionProcesosController@updateFile')->name('updateHojaCaracterizacion');
+
+Route::resource('historialProcessMaps', 'historialProcessMapController');
+Route::get('getHistorialProcessMaps/{id}','historialProcessMapController@getHistorialProcessMaps')->name('getHistorialProcessMaps');
+
+
+Route::post('storeProcessFlowDiagramRedesignFile', 'processFlowDiagramController@storeRedesignFile')->name('storeProcessFlowDiagramRedesignFile');
+Route::DELETE('/company/{id}/processMaps/{id2}/destroyProcessFlowDiagramRedesign/{id3}', 'processFlowDiagramController@destroyProcessFlowDiagramRedesign')->name('destroyProcessFlowDiagramRedesign');
+Route::get('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/createRedesign','processFlowDiagramController@createRedesignApplication')->name('createRedesign');
+Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/storeProcessFlowDiagramRedesignApplication', 'processFlowDiagramController@storeRedesignApplication')->name('storeProcessFlowDiagramRedesignApplication');
+Route::get('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/showRedesign','processFlowDiagramController@showRedesignApplication')->name('showRedesign');
+Route::get('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/editRedesign','processFlowDiagramController@editRedesignApplication')->name('editRedesign');
+Route::patch('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/updateRedesign','processFlowDiagramController@updateRedesignApplication')->name('updateRedesign');
+
+//Diagrama Seguimiento
+Route::get('/company/{id}/processMaps/{id2}/seguimientos/getSeguimiento/{id3}', 'SeguimientoController@getSeguimiento')->name('getSeguimiento');
 Route::post('storeActivity', 'SeguimientoController@storeActivity')->name('storeActivity');
 
 Route::get('getTimes/{id}', 'SeguimientoController@getTimes')->name('getTimes');
 
-Route::get('/company/{id}/processMaps/{id2}/seguimientos/getSeguimiento/{id3}', 'SeguimientoController@getSeguimiento')->name('getSeguimiento');
-//Route::get('{id}/verSeguimiento', 'SeguimientoController@ver')->name('seguimientos.ver');
-
-
-Route::resource('processFlowDiagrams', 'processFlowDiagramController');
+Route::DELETE('/company/{id}/processMaps/{id2}/seguimientos/{id3}/destroySeguimientoActividad/{id4}', 'SeguimientoController@destroySeguimientoActividad')->name('destroySeguimientoActividad');

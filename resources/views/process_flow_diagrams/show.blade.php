@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('processFlowDiagrams.index') }}">
+                       href="{{ route('processFlowDiagrams.index',[$company_id,$process_map_id]) }}">
                         @lang('crud.back')
                     </a>
                 </div>
@@ -24,6 +24,7 @@
                 <div class="row">
                     @include('process_flow_diagrams.show_fields')
                 </div>
+                <div id="canvas" class="canvas" style="height: 35rem;"></div>
             </div>
 
         </div>

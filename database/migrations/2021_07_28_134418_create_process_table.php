@@ -37,6 +37,15 @@ class CreateProcessTable extends Migration
             $table->softDeletes();
             $table->foreign('process_map_id')->references('id')->on('process_maps');
         });
+        Schema::create('historial_process_map', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('process_map_id'); //process_map_id
+            $table->string('description',80)->nullable();//comentario nullable
+            $table->longText('data');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('process_map_id')->references('id')->on('process_maps');
+        });
         Schema::create('types', function (Blueprint $table) {
             $table->id();
             $table->string('description');
@@ -63,7 +72,7 @@ class CreateProcessTable extends Migration
         Schema::create('process_criterio', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('process_map_id'); //mapa proceso id
-            $table->longText('data');
+            $table->longText('data'); //todas las relaciones alv
             //$table->unsignedBigInteger('process_id');
             //$table->unsignedBigInteger('criterio_id');
             $table->timestamps();

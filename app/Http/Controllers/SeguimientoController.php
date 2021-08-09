@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSeguimientoRequest;
 use App\Http\Requests\UpdateSeguimientoRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Criterio;
 use App\Models\Process;
+use App\Models\processCriterio;
 use App\Models\Rol;
 use App\Models\Seguimiento;
 use Illuminate\Http\Request;
@@ -35,6 +37,14 @@ class SeguimientoController extends AppBaseController
             ->make(true);
         }
         $procesosSinSeguimiento = Process::where('process_map_id','=',$id2)->doesnthave('seguimientos')->get();
+        $criterios = Criterio::where('process_map_id','=',$id2)->get()->count();
+        $procesos = Process::where('process_map_id','=',$id2)->whereNull('parent_process_id')->get()->count();
+        $matrizPriorizacionCriterios = processCriterio::where('process_map_id','=',$id2)->first();
+        $total = (isset($matrizPriorizacionCriterios->data))?count(json_decode($matrizPriorizacionCriterios->data, true)):0;
+        if ($criterios*$procesos != $total) {
+            Flash::error("Completar la Matriz de Priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
         return view('seguimientos.index',compact('procesosSinSeguimiento'))->with('company_id',$id)->with('process_map_id',$id2);
     }
     public function create($id, $id2, Request $request)
@@ -48,6 +58,15 @@ class SeguimientoController extends AppBaseController
             /** @var Seguimiento $seguimientos */
             $seguimientos = Seguimiento::where('process_id','=',$id3)->get();
             return DataTables::of($seguimientos)
+            ->addColumn('company_id',function($seguimiento){
+                return $seguimiento->process->processMap->company_id;
+            })
+            ->addColumn('process_map_id',function($seguimiento){
+                return $seguimiento->process->processMap->id;
+            })
+            ->addColumn('process_id',function($seguimiento){
+                return $seguimiento->process->id;
+            })
             ->addColumn('rolname',function($seguimiento){
                 return $seguimiento->rol->name;
             })
@@ -70,7 +89,7 @@ class SeguimientoController extends AppBaseController
                         break;
                 }
             })
-            ->addColumn('action','seguimientos_show.actions')
+            ->addColumn('action','seguimientos.activity.actions')
             ->rawColumns(['action'])
             ->make(true);
         }
@@ -173,21 +192,38 @@ class SeguimientoController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, $id2, $id3, Request $request)
     {
         /** @var Seguimiento $seguimiento */
-        $seguimiento = Seguimiento::find($id);
+        //Eliminar todos los seguimientos del proceso
+        //return $id3;
+        $proceso = Process::where('id','=',$id3)->get();
+        //return $proceso;
+        $seguimiento = Seguimiento::where('process_id','=',$id3)->delete();
 
         if (empty($seguimiento)) {
             Flash::error(__('messages.not_found', ['model' => __('models/seguimientos.singular')]));
 
-            return redirect(route('seguimientos.index'));
+            return redirect(route('seguimientos.index',[$id, $id2]));
         }
-
-        $seguimiento->delete();
-
         Flash::success(__('messages.deleted', ['model' => __('models/seguimientos.singular')]));
 
-        return redirect(route('seguimientos.index'));
+        return redirect(route('seguimientos.index',[$id, $id2]));
+    }
+    public function destroySeguimientoActividad($id, $id2, $id3, $id4, Request $request)
+    {
+        /** @var Seguimiento $seguimiento */
+        //Eliminar solo un seguimiento del proceso
+        $seguimiento = Seguimiento::find($id4);
+
+        if (empty($seguimiento)) {
+            Flash::error(__('messages.not_found', ['model' => __('models/seguimientos.singular')]));
+
+            return redirect(route('seguimientos.index',[$id, $id2]));
+        }
+        $seguimiento->delete();
+        //Flash::success(__('messages.deleted', ['model' => __('models/seguimientos.singular')]));
+
+        return redirect(route('seguimientos.show',[$id, $id2, $id3]));
     }
 }

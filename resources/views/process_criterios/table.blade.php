@@ -50,7 +50,7 @@
                     <th scope="row" class="bg-dark text-light text-center" style="width: 5%"><input type="text" disabled id="proces{{$item->id}}" style="width:50px"></th>
                     </tr>
                     <tr>
-                    @endforeach
+                @endforeach
                 </tr>
           </tbody>
     </table>
@@ -87,23 +87,10 @@
                 //console.log(v.cells);
                 var subtotal = 0;
                 for (let index = 0; index < $numcriterios; index++) {
-
                     subtotal = subtotal + $cel.eq(1 + index).find('option:selected').data('id')*$cel.eq(1 + index).find('option:selected').data('peso');
-                    //console.log($cel.eq(1 + index).find('option:selected').data('id'));
                 }
                 let procesoselect = $cel.eq(1).find('option:selected').data('proceso_id');
-                //console.log('subtotal '+procesoselect+': ');
                 $(`#proces${procesoselect}`).val(subtotal);
-                //console.log("fin");
-                //console.log($cel.eq(1).find('option:selected').data('id'));
-                /*var $risk = $cel.eq(1).find('option:selected').val();
-                var $numb = $cel.eq(2).find('input').val();
-                var $weeks = $cel.eq(3).find('input').val();
-                var $avg = ($numb * $weeks) / 52;
-                var $avgRounded = Math.round( $avg * 10 ) / 10;
-
-                $cel.eq(4).find('input').val($avgRounded);*/
-
             });
         }
     </script>

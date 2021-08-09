@@ -11,5 +11,11 @@ return array (
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
     'data' => 'Data',
+    'file' => 'File',
+    'adjunto' => 'Adjunto',
+    'redesing_boolean' => 'Redesing Boolean',
+    'redesign_data' => 'Redesign Data',
+    'redesign_file' => 'Redesign File',
+    'redesing_adjunto' => 'Redesing Adjunto',
   ),
 );

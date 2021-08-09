@@ -31,6 +31,17 @@ class CreateSeguimientoTable extends Migration
             $table->foreign('process_id')->references('id')->on('process');
             $table->foreign('rol_id')->references('id')->on('rol');
         });
+        Schema::create('seguimiento_propuesto', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('process_id'); //mapa proceso id
+            $table->unsignedBigInteger('rol_id'); //rol id
+            $table->string('activity');
+            $table->integer('flow_id');
+            $table->decimal('time', 12, 2);
+            $table->timestamps();
+            $table->foreign('process_id')->references('id')->on('process');
+            $table->foreign('rol_id')->references('id')->on('rol');
+        });
     }
 
     /**
