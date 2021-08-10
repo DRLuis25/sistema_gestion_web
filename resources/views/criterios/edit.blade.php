@@ -17,7 +17,7 @@
 
         <div class="card">
 
-            {!! Form::model($criterio, ['route' => ['criterios.update', $criterio->id], 'method' => 'patch']) !!}
+            {!! Form::model($criterio, ['route' => ['criterios.update',$company_id,$process_map_id ,$criterio->id], 'method' => 'patch']) !!}
 
             <div class="card-body">
                 <div class="row">
@@ -27,7 +27,7 @@
 
             <div class="card-footer">
                 {!! Form::submit(__('crud.save'), ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('criterios.index') }}" class="btn btn-default">@lang('crud.cancel')</a>
+                <a href="{{ route('criterios.index',[$company_id, $process_map_id]) }}" class="btn btn-default">@lang('crud.cancel')</a>
             </div>
 
            {!! Form::close() !!}

@@ -36,7 +36,7 @@ class processCriterioController extends AppBaseController
     {
         //if($request->ajax()){
             /** @var processCriterio $processCriterios */
-            $procesos = Process::where('process_map_id','=','1')->get();
+            $procesos = Process::where('process_map_id','=','1')->whereNull('parent_process_id')->get();
             $criterios = Criterio::where('process_map_id','=','1')->get();
             /*return response()->json([
                 'procesos'=>$procesos,

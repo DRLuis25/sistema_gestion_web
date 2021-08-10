@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Criterio extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     public $table = 'criterios';
 

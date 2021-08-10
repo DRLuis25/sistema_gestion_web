@@ -126,7 +126,7 @@ class CriterioController extends AppBaseController
         if (empty($criterio)) {
             Flash::error(__('messages.not_found', ['model' => __('models/criterios.singular')]));
 
-            return redirect(route('criterios.index'));
+            return redirect(route('criterios.index',[$id, $id2]));
         }
 
         $criterio->fill($request->all());
@@ -154,7 +154,7 @@ class CriterioController extends AppBaseController
         if (empty($criterio)) {
             Flash::error(__('messages.not_found', ['model' => __('models/criterios.singular')]));
 
-            return redirect(route('criterios.index'));
+            return redirect(route('criterios.index',[$id, $id2]));
         }
 
         $criterio->delete();
