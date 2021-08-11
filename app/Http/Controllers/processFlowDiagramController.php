@@ -6,6 +6,7 @@ use App\Http\Requests\CreateprocessFlowDiagramRequest;
 use App\Http\Requests\UpdateprocessFlowDiagramRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Criterio;
+use App\Models\matrizPriorizado;
 use App\Models\Process;
 use App\Models\processCriterio;
 use App\Models\processFlowDiagram;
@@ -40,7 +41,13 @@ class processFlowDiagramController extends AppBaseController
             ->rawColumns(['action','redesing'])
             ->make(true);
         }
-        $procesosSinFlowDiagram = Process::where('process_map_id','=',$id2)->doesnthave('processFlowDiagrams')->get();
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        $ids = json_decode($procesosPriorizados->process_id_data);
+        //$procesosSinHojaCaracterizacion = Process::find($ids);
+        $procesosSinFlowDiagram = Process::whereIn('id', $ids)->doesnthave('processFlowDiagrams')->whereNull('parent_process_id')->get();
+
+        /*$procesosSinFlowDiagram = Process::where('process_map_id','=',$id2)->doesnthave('processFlowDiagrams')
+        ->whereNull('parent_process_id')->get();*/
         $criterios = Criterio::where('process_map_id','=',$id2)->get()->count();
         $procesos = Process::where('process_map_id','=',$id2)->whereNull('parent_process_id')->get()->count();
         $matrizPriorizacionCriterios = processCriterio::where('process_map_id','=',$id2)->first();

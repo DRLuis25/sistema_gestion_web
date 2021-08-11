@@ -30,7 +30,9 @@ class processCriterio extends Model
 
     public $fillable = [
         'process_map_id',
-        'data'
+        'data',
+        'process_id_data',
+        'process_values_data'
     ];
 
     /**
@@ -41,7 +43,9 @@ class processCriterio extends Model
     protected $casts = [
         'id' => 'integer',
         'process_map_id' => 'integer',
-        'data' => 'string'
+        'data' => 'string',
+        'process_id_data' => 'string',
+        'process_values_data' => 'string'
     ];
 
     /**
@@ -52,6 +56,8 @@ class processCriterio extends Model
     public static $rules = [
         'process_id' => 'required',
         'data' => 'required',
+        'process_id_data' => 'required',
+        'process_values_data' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];

@@ -98,37 +98,43 @@
     <ul class="nav-sidebar">
         <li class="nav-item">
             <a href="{{ route('processMaps.show', [$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('criterios*') ? 'active' : '' }}">
+            class="nav-link {{ Request::is('processMaps*') ? 'active' : '' }}">
                 <p>@lang('models/processMaps.singular')</p>
             </a>
         </li>
         <li class="nav-item">
             <a href="{{ route('criterios.index', [$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('criterios*') ? 'active' : '' }}">
+            class="nav-link {{ Request::is('*criterios*') ? 'active' : '' }}">
                 <p>@lang('models/criterios.plural')</p>
             </a>
         </li>
         <li class="nav-item">
             <a href="{{ route('processCriterios.index', [$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('processCriterios*') ? 'active' : '' }}">
+            class="nav-link {{ Request::is('*processCriterios*') ? 'active' : '' }}">
                 <p>Matriz Priorización</p>
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('matrizPriorizados.index',[$company_id, $process_map_id]) }}"
+            class="nav-link {{ Request::is('*matrizPriorizados*') ? 'active' : '' }}">
+                <p>@lang('models/matrizPriorizados.plural')</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('hojaCaracterizacionProcesos.index',[$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('hojaCaracterizacionProcesos*') ? 'active' : '' }}">
+            class="nav-link {{ Request::is('*hojaCaracterizacionProcesos*') ? 'active' : '' }}">
                 <p>@lang('models/hojaCaracterizacionProcesos.plural')</p>
             </a>
         </li>
         <li class="nav-item">
             <a href="{{ route('processFlowDiagrams.index',[$company_id, $process_map_id]) }}"
-               class="nav-link {{ Request::is('processFlowDiagrams*') ? 'active' : '' }}">
+               class="nav-link {{ Request::is('*processFlowDiagrams*') ? 'active' : '' }}">
                 <p>@lang('models/processFlowDiagrams.plural')</p>
             </a>
         </li>
         <li class="nav-item">
             <a href="{{ route('seguimientos.index',[$company_id, $process_map_id]) }}"
-               class="nav-link {{ Request::is('seguimientos*') ? 'active' : '' }}">
+               class="nav-link {{ Request::is('*seguimientos*') ? 'active' : '' }}">
                 <p>@lang('models/seguimientos.singular')</p>
             </a>
         </li>

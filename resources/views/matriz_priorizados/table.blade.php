@@ -1,10 +1,10 @@
-<table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="companies-table">
+<table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="matrizPriorizados-table">
     <thead>
         <tr>
             <th style="color:white">x</th>
-                <th>@lang('models/processes.fields.name')</th>
-                <th width="100px">@lang('crud.action')</th>
-                <th width="100px">Propuesto</th>
+            <th>@lang('models/matrizPriorizados.fields.description')</th>
+            <th>Nro procesos priorizados</th>
+            <th width="100px">@lang('crud.action')</th>
         </tr>
     </thead>
     <tbody>
@@ -98,15 +98,14 @@
                 ],
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('seguimientos.index',[$company_id,$process_map_id])}}",
+                ajax: "{{ route('matrizPriorizados.index',[$company_id, $process_map_id])}}",
                 columns: [
                     { "data":null, render:function(){return "";}},
-                    { data: 'name', name: 'name'},
+                    { data: 'description', name: 'description'},
+                    { data: 'num_priorizados', name: 'num_priorizados'},
                     { data: 'action', name: 'Action', orderable: false, searchable: false},
-                    { data: 'actionPropuesto', name: 'actionPropuesto', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
-                order: [[ 2, 'asc' ]],
                 pageLength: 10,
             });
         })

@@ -6,6 +6,7 @@ use App\Http\Requests\CreateSeguimientoRequest;
 use App\Http\Requests\UpdateSeguimientoRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Criterio;
+use App\Models\matrizPriorizado;
 use App\Models\Process;
 use App\Models\processCriterio;
 use App\Models\Rol;
@@ -40,7 +41,11 @@ class SeguimientoController extends AppBaseController
             ->rawColumns(['action','actionPropuesto'])
             ->make(true);
         }
-        $procesosSinSeguimiento = Process::where('process_map_id','=',$id2)->doesnthave('seguimientos')->get();
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        $ids = json_decode($procesosPriorizados->process_id_data);
+        //$procesosSinHojaCaracterizacion = Process::find($ids);
+        $procesosSinSeguimiento = Process::whereIn('id', $ids)->doesnthave('seguimientos')->whereNull('parent_process_id')->get();
+        /*$procesosSinSeguimiento = Process::where('process_map_id','=',$id2)->doesnthave('seguimientos')->get();*/
         $criterios = Criterio::where('process_map_id','=',$id2)->get()->count();
         $procesos = Process::where('process_map_id','=',$id2)->whereNull('parent_process_id')->get()->count();
         $matrizPriorizacionCriterios = processCriterio::where('process_map_id','=',$id2)->first();

@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>@lang('models/seguimientoPropuestos.singular') Company_id: {{$company_id}} - processMap_id: {{$process_map_id}} - process_id: {{$process_id}}</h1>
+                    <h1>@lang('models/seguimientoPropuestos.singular') </h1>
                 </div>
                 <div class="col-sm">
                     @include('seguimiento_propuestos.activity.create') &nbsp;

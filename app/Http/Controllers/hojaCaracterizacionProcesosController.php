@@ -7,12 +7,15 @@ use App\Http\Requests\UpdatehojaCaracterizacionProcesosRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Criterio;
 use App\Models\hojaCaracterizacionProcesos;
+use App\Models\matrizPriorizado;
 use App\Models\Process;
 use App\Models\processCriterio;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
 use Yajra\DataTables\DataTables;
+
+use function GuzzleHttp\json_decode;
 
 class hojaCaracterizacionProcesosController extends AppBaseController
 {
@@ -39,7 +42,13 @@ class hojaCaracterizacionProcesosController extends AppBaseController
             ->rawColumns(['action'])
             ->make(true);
         }
-        $procesosSinHojaCaracterizacion = Process::where('process_map_id','=',$id2)->doesnthave('hojaCaracterizacionProcesos')->get();
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        $ids = json_decode($procesosPriorizados->process_id_data);
+        //$procesosSinHojaCaracterizacion = Process::find($ids);
+        $procesosSinHojaCaracterizacion = Process::whereIn('id', $ids)->doesnthave('hojaCaracterizacionProcesos')->whereNull('parent_process_id')->get();
+        //return $procesosSinHojaCaracterizacion;
+        /*$procesosSinHojaCaracterizacion = Process::where('process_map_id','=',$id2)->doesnthave('hojaCaracterizacionProcesos')
+        ->whereNull('parent_process_id')->get();*/
         $criterios = Criterio::where('process_map_id','=',$id2)->get()->count();
         $procesos = Process::where('process_map_id','=',$id2)->whereNull('parent_process_id')->get()->count();
         $matrizPriorizacionCriterios = processCriterio::where('process_map_id','=',$id2)->first();

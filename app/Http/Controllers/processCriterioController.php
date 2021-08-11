@@ -6,6 +6,7 @@ use App\Http\Requests\CreateprocessCriterioRequest;
 use App\Http\Requests\UpdateprocessCriterioRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Criterio;
+use App\Models\matrizPriorizado;
 use App\Models\Process;
 use App\Models\processCriterio;
 use App\Models\processMap;
@@ -34,18 +35,52 @@ class processCriterioController extends AppBaseController
     }
     public function index($id, $id2, Request $request)
     {
-        //if($request->ajax()){
-            /** @var processCriterio $processCriterios */
-            $procesos = Process::where('process_map_id','=','1')->whereNull('parent_process_id')->get();
-            $criterios = Criterio::where('process_map_id','=','1')->get();
-            /*return response()->json([
-                'procesos'=>$procesos,
-                'criterios'=>$criterios
-            ]);
-        }*/
+        /** @var processCriterio $processCriterios */
+        $procesos = Process::where('process_map_id','=','1')->whereNull('parent_process_id')->get();
+        $criterios = Criterio::where('process_map_id','=','1')->get();
         return view('process_criterios.index',compact('procesos','criterios'))->with('company_id',$id)->with('process_map_id',$id2);
     }
-
+    public function selectPriorizar($id, $id2)
+    {
+        $processCriterio = processCriterio::find($id2);
+        $ids = json_decode($processCriterio->process_id_data);
+        $values = json_decode($processCriterio->process_values_data);
+        $procesosPriorizados = array();
+        foreach ($ids as $key => $value) {
+            $temp = Process::find($value);
+            $temp->value = $values[$key];
+            $procesosPriorizados[] = $temp;
+        }
+        //array_slice(json_decode($processCriterio->process_id_data),0,3);
+        return view('process_criterios.priorizar',compact('procesosPriorizados'))->with('processCriterio',$processCriterio)->with('company_id',$id)->with('process_map_id',$id2);
+    }
+    public function storePriorizar($id, $id2, Request $request)
+    {
+        //return $request;
+        $processCriterio = processCriterio::find($id2);
+        $ids = json_decode($processCriterio->process_id_data);
+        $priorizados = array_slice(json_decode($processCriterio->process_id_data),0,$request->nro_priorizar);
+        $values = array_slice(json_decode($processCriterio->process_values_data),0,$request->nro_priorizar);
+        //return $priorizados; //Array procesos priorizados
+        /*$procesosPriorizados = array();
+        foreach ($priorizados as $key => $value) {
+            $temp = Process::find($value);
+            $temp->value = $priorizados[$key];
+            $procesosPriorizados[] = $temp;
+        }
+        return $procesosPriorizados;*/
+        $eliminar = matrizPriorizado::where('process_map_id','=',$processCriterio->id)->delete();
+        //return $eliminar;
+        $matrizPriorizado = matrizPriorizado::create([
+            'process_map_id' => $id2,
+            'process_criterio_id' => $processCriterio->id,
+            'description' => $request->description,
+            'process_id_data' => json_encode($priorizados),
+            'process_values_data' => json_encode($values),
+        ]);
+        Flash::success(__('messages.saved', ['model' => __('models/matrizPriorizados.singular')]));
+        return redirect(route('matrizPriorizados.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+    }
     /**
      * Store a newly created processCriterio in storage.
      *
@@ -55,15 +90,44 @@ class processCriterioController extends AppBaseController
      */
     public function store($id, $id2, Request $request)
     {
-        $input = $request->except('_token');
+        //return $request;
+        $input = $request->except('_token','subtotal','id');
+        //return $request;
+        $ordenado = $this->orderArrays($request->id,$request->subtotal);
         $data = json_encode($input);
-        $processCriterio = processCriterio::firstOrCreate(['process_map_id' => $id2], ['data' => $data]);
+        $process_id_data = json_encode($ordenado[0]);
+        $process_values_data = json_encode($ordenado[1]);
+        $processCriterio = processCriterio::firstOrCreate(['process_map_id' => $id2], [
+            'data' => $data,
+            'process_id_data' => $process_id_data,
+            'process_values_data' => $process_values_data,
+        ]);
         $processCriterio->data = $data;
+        $processCriterio->process_id_data = $process_id_data;
+        $processCriterio->process_values_data = $process_values_data;
         $processCriterio->save();
         $processMap = processMap::where('id','=','1')->first();
         $processMap->status = true;
         Flash::success(__('messages.saved', ['model' => __('models/processCriterios.singular')]));
         return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
     }
-
+    public function orderArrays($array, $array2)
+    {
+        //return $array;
+        $n = count($array);
+        for ($i=0; $i < $n; $i++) {
+            for ($j=$i+1; $j < $n ; $j++) {
+                if ($array2[$j]>$array2[$i]) {
+                    $temp = $array[$i];
+                    $array[$i] = $array[$j];
+                    $array[$j] = $temp;
+                    $temp = $array2[$i];
+                    $array2[$i] = $array2[$j];
+                    $array2[$j] = $temp;
+                }
+            }
+        }
+        return array($array,$array2);
+    }
 }
+

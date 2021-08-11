@@ -29,7 +29,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="input-group col-2">
+                    <div class="input-group col-2 col-md-4 col-sm-6">
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" id="inputGroupFile01" name="file" required aria-describedby="inputGroupFileAddon01">
                           <label class="custom-file-label" for="inputGroupFile01">Buscar archivo</label>

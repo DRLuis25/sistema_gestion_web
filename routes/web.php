@@ -82,6 +82,8 @@ Route::get('getHistorialProcessMaps/{id}','historialProcessMapController@getHist
 Route::resource('/company/{id}/processMaps/{id2}/process/{id3}/subProcesses', 'subProcessController')->names('subProcesses');
 //Menú matriz priorización
 Route::get('getMatrizPriorizacion/{id}', 'ProcessCriterioController@getMatrizPriorizacion')->name('getMatrizPriorizacion');
+Route::get('/company/{id}/processMaps/{id2}/selectPriorizar', 'processCriterioController@selectPriorizar')->name('selectPriorizar');
+Route::post('/company/{id}/processMaps/{id2}/storePriorizar', 'processCriterioController@storePriorizar')->name('storePriorizar');
 //Menú Diagrama de flujo
 Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create', 'processFlowDiagramController@create')->name('processFlowDiagrams.create');
 Route::post('/company/{id}/processMaps/{id2}/processFlowDiagrams/create2', 'processFlowDiagramController@createApplication')->name('processFlowDiagrams.create2');
@@ -110,3 +112,6 @@ Route::post('storeActivityPropuesto', 'seguimientoPropuestoController@storeActiv
 Route::get('getTimesPropuesto/{id}', 'seguimientoPropuestoController@getTimesPropuesto')->name('getTimesPropuesto');
 Route::DELETE('/company/{id}/processMaps/{id2}/seguimientoPropuestos/{id3}/destroySeguimientoActividadPropuesto/{id4}', 'seguimientoPropuestoController@destroySeguimientoActividadPropuesto')->name('destroySeguimientoActividadPropuesto');
 
+
+
+Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados', 'matrizPriorizadoController')->names('matrizPriorizados');

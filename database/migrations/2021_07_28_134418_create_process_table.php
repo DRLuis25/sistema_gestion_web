@@ -73,13 +73,24 @@ class CreateProcessTable extends Migration
             $table->id();
             $table->unsignedBigInteger('process_map_id'); //mapa proceso id
             $table->longText('data'); //todas las relaciones alv
-            //$table->unsignedBigInteger('process_id');
-            //$table->unsignedBigInteger('criterio_id');
+            $table->longText('process_id_data');//id procesos ordenados por values
+            $table->longText('process_values_data'); //valores procesos ordenados
             $table->timestamps();
-            //$table->foreign('process_id')->references('id')->on('process');
-            //$table->foreign('criterio_id')->references('id')->on('criterios');
             $table->foreign('process_map_id')->references('id')->on('process_maps');
         });
+        Schema::create('matriz_priorizado', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('process_map_id'); //mapa proceso id
+            $table->unsignedBigInteger('process_criterio_id'); //matriz procesos priorizados
+            $table->string('description')->nullable();//id procesos priorizados
+            $table->longText('process_id_data');//id procesos priorizados
+            $table->longText('process_values_data'); //valores procesos priorizados
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('process_map_id')->references('id')->on('process_maps');
+            $table->foreign('process_criterio_id')->references('id')->on('process_criterio');
+        });
+
     }
 
     /**

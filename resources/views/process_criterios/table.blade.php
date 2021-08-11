@@ -47,7 +47,10 @@
                             </select>
                         </td>
                     @endforeach
-                    <th scope="row" class="bg-dark text-light text-center" style="width: 5%"><input type="text" disabled id="proces{{$item->id}}" style="width:50px"></th>
+                    <th scope="row" class="bg-dark text-light text-center" style="width: 5%">
+                        <input type="text" disabled id="proces{{$item->id}}" style="width:50px"></th>
+                        <input type="hidden" id="proceso{{$item->id}}" name="subtotal[]"></th>
+                        <input type="hidden" id="proceso-{{$item->id}}" name="id[]"></th>
                     </tr>
                     <tr>
                 @endforeach
@@ -62,6 +65,7 @@
         $(function () {
             $.get(`/getMatrizPriorizacion/{{$process_map_id}}`, function(res, sta){
                 if (res.matriz) {
+                    $("#asdasd").prop("hidden", false);
                     const matriz = JSON.parse(res.matriz.data);
                     console.log(matriz);
                     jQuery.each(matriz, function(i, val) {
@@ -91,6 +95,8 @@
                 }
                 let procesoselect = $cel.eq(1).find('option:selected').data('proceso_id');
                 $(`#proces${procesoselect}`).val(subtotal);
+                $(`#proceso${procesoselect}`).val(subtotal);
+                $(`#proceso-${procesoselect}`).val(procesoselect);
             });
         }
     </script>
