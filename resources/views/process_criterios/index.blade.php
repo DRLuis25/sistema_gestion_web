@@ -10,6 +10,7 @@
                 </div>
                 <div class="col-sm-4">
                     <a hidden href="{{route('selectPriorizar',[$company_id, $process_map_id])}}" id="asdasd" class="btn btn-secondary float-right">Priorizar</a>
+
                     {!! Form::submit(__('crud.save'), ['class' => 'btn btn-primary float-right']) !!}
                 </div>
             </div>

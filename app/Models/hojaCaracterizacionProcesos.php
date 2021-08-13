@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class hojaCaracterizacionProcesos
  * @package App\Models
- * @version August 8, 2021, 12:12 pm -05
+ * @version August 11, 2021, 2:46 pm -05
  *
+ * @property \App\Models\MatrizPriorizado $matrizPriorizado
  * @property \App\Models\Process $process
  * @property \App\Models\ProcessMap $processMap
  * @property integer $process_map_id
  * @property integer $process_id
+ * @property integer $matriz_priorizado_id
  * @property string $propietario
  * @property string $mision
  * @property string $empieza
@@ -32,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class hojaCaracterizacionProcesos extends Model
 {
-
+    use Auditable;
     public $table = 'hoja_caracterizacion_procesos';
 
     const CREATED_AT = 'created_at';
@@ -46,6 +49,7 @@ class hojaCaracterizacionProcesos extends Model
     public $fillable = [
         'process_map_id',
         'process_id',
+        'matriz_priorizado_id',
         'propietario',
         'mision',
         'empieza',
@@ -72,6 +76,7 @@ class hojaCaracterizacionProcesos extends Model
         'id' => 'integer',
         'process_map_id' => 'integer',
         'process_id' => 'integer',
+        'matriz_priorizado_id' => 'integer',
         'propietario' => 'string',
         'mision' => 'string',
         'empieza' => 'string',
@@ -97,6 +102,7 @@ class hojaCaracterizacionProcesos extends Model
     public static $rules = [
         'process_map_id' => 'required',
         'process_id' => 'required',
+        'matriz_priorizado_id' => 'required',
         'propietario' => 'nullable|string|max:255',
         'mision' => 'nullable|string|max:255',
         'empieza' => 'nullable|string|max:255',
@@ -115,6 +121,14 @@ class hojaCaracterizacionProcesos extends Model
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function matrizPriorizado()
+    {
+        return $this->belongsTo(\App\Models\MatrizPriorizado::class, 'matriz_priorizado_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

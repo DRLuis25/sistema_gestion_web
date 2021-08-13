@@ -13,8 +13,5 @@
 <!-- Launch Field -->
 <div class="col-sm-2">
     {!! Form::label('launch', __('models/processMaps.fields.launch').':') !!}
-    <p>{{ $processMap->launch }}</p>
+    <p>{{ $processMap->launch->format('d-m-Y') }}</p>
 </div>
-
-<p>{{ $process_map_id }}</p>
-<p>{{ $company_id }}</p>

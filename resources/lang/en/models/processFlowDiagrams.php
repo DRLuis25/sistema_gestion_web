@@ -8,6 +8,7 @@ return array (
     'id' => 'Id',
     'process_map_id' => 'Process Map Id',
     'process_id' => 'Process Id',
+    'matriz_priorizado_id' => 'Matriz Priorizado Id',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
     'data' => 'Data',

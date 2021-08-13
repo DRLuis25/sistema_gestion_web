@@ -27,7 +27,7 @@ class matrizPriorizadoController extends AppBaseController
             $matrizPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->withTrashed()->get();
             return DataTables::of($matrizPriorizados)
             ->addColumn('num_priorizados',function($matrizPriorizados){
-                return count(json_decode($matrizPriorizados->process_id_data));
+                return count(json_decode($matrizPriorizados->process_id_data_all));
             })
             ->addColumn('company_id',function($matrizPriorizados){
                 return $matrizPriorizados->processMap->company_id;
@@ -65,7 +65,7 @@ class matrizPriorizadoController extends AppBaseController
 
         Flash::success(__('messages.saved', ['model' => __('models/matrizPriorizados.singular')]));
 
-        return redirect(route('matrizPriorizados.index',[$id. $id2]));
+        return redirect(route('matrizPriorizados.index',[$id, $id2]));
     }
 
     /**
@@ -83,7 +83,7 @@ class matrizPriorizadoController extends AppBaseController
         if (empty($matrizPriorizado)) {
             Flash::error(__('models/matrizPriorizados.singular').' '.__('messages.not_found'));
 
-            return redirect(route('matrizPriorizados.index',[$id. $id2]));
+            return redirect(route('matrizPriorizados.index',[$id, $id2]));
         }
 
         return view('matriz_priorizados.show')->with('matrizPriorizado', $matrizPriorizado)->with('company_id', $id)->with('process_map_id', $id2);
@@ -104,7 +104,7 @@ class matrizPriorizadoController extends AppBaseController
         if (empty($matrizPriorizado)) {
             Flash::error(__('messages.not_found', ['model' => __('models/matrizPriorizados.singular')]));
 
-            return redirect(route('matrizPriorizados.index',[$id. $id2]));
+            return redirect(route('matrizPriorizados.index',[$id, $id2]));
         }
 
         return view('matriz_priorizados.edit')->with('matrizPriorizado', $matrizPriorizado)->with('company_id', $id)->with('process_map_id', $id2);
@@ -126,7 +126,7 @@ class matrizPriorizadoController extends AppBaseController
         if (empty($matrizPriorizado)) {
             Flash::error(__('messages.not_found', ['model' => __('models/matrizPriorizados.singular')]));
 
-            return redirect(route('matrizPriorizados.index',[$id. $id2]));
+            return redirect(route('matrizPriorizados.index',[$id, $id2]));
         }
 
         $matrizPriorizado->fill($request->all());
@@ -134,7 +134,7 @@ class matrizPriorizadoController extends AppBaseController
 
         Flash::success(__('messages.updated', ['model' => __('models/matrizPriorizados.singular')]));
 
-        return redirect(route('matrizPriorizados.index',[$id. $id2]));
+        return redirect(route('matrizPriorizados.index',[$id, $id2]));
     }
 
     /**
@@ -154,13 +154,31 @@ class matrizPriorizadoController extends AppBaseController
         if (empty($matrizPriorizado)) {
             Flash::error(__('messages.not_found', ['model' => __('models/matrizPriorizados.singular')]));
 
-            return redirect(route('matrizPriorizados.index',[$id. $id2]));
+            return redirect(route('matrizPriorizados.index',[$id, $id2]));
         }
 
         $matrizPriorizado->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/matrizPriorizados.singular')]));
 
-        return redirect(route('matrizPriorizados.index',[$id. $id2]));
+        return redirect(route('matrizPriorizados.index',[$id, $id2]));
+    }
+    public function activate($id, $id2, $id3)
+    {
+
+        /** @var matrizPriorizado $matrizPriorizado */
+        $eliminar = matrizPriorizado::where('process_map_id','=',$id2)->delete();
+        $matrizPriorizado = matrizPriorizado::withTrashed()->where("id",$id3)->first();
+
+        if (empty($matrizPriorizado)) {
+            Flash::error(__('messages.not_found', ['model' => __('models/matrizPriorizados.singular')]));
+
+            return redirect(route('matrizPriorizados.index',[$id, $id2]));
+        }
+        $matrizPriorizado->restore();
+
+        Flash::success(__('messages.deleted', ['model' => __('models/matrizPriorizados.singular')]));
+
+        return redirect(route('matrizPriorizados.index',[$id, $id2]));
     }
 }

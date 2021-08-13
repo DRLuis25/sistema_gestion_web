@@ -24,7 +24,7 @@
      <thead>
        <tr>
          <th scope="col">Rol</th>
-         <th scope="col">Tiempo (minutos)</th>
+         <th scope="col">Tiempo ({{$process->unidad}})</th>
        </tr>
      </thead>
      <tbody>
@@ -37,13 +37,13 @@
 
    <table class="table col-4" id="flowTimesTable">
      <thead>
-       <tr>
+       <tr class='text-center'>
          <th scope="col">Actividad</th>
-         <th scope="col">Tiempo (minutos)</th>
+         <th scope="col">Tiempo ({{$process->unidad}})</th>
        </tr>
      </thead>
      <tbody>
-        <tr >
+        <tr class='text-center'>
          <td>Rol #1</td>
          <td>## min</td>
        </tr>

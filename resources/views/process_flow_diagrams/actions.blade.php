@@ -1,6 +1,6 @@
 {!! Form::open(['route' => ['processFlowDiagrams.destroy', $company_id, $process_map_id, $id], 'method' => 'delete']) !!}
     <div class='btn-group'>
-        @can('ver_diagrama_flujo')
+        @can('leer_diagrama_flujo')
             @if ($adjunto==true)
                 <a href="/storage/{{$data}}" target="_blank" class='btn btn-default btn-xs'>
                     <i class="fa fa-download" aria-hidden="true"></i>

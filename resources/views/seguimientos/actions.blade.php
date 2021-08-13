@@ -1,11 +1,11 @@
 {!! Form::open(['route' => ['seguimientos.destroy', $company_id, $process_map_id, $id], 'method' => 'delete']) !!}
     <div class='btn-group'>
-        @can('ver_diagrama_seguimiento')
+        @can('leer_diagrama_seguimiento')
             <a href="{{ route('getSeguimiento', [$company_id, $process_map_id, $id]) }}" class='btn btn-default btn-xs'>
                 <i class="far fa-eye"></i>
             </a>
         @endcan
-        @can('ver_seguimiento')
+        @can('leer_seguimiento')
             <a href="{{ route('seguimientos.show', [$company_id, $process_map_id, $id]) }}" class='btn btn-default btn-xs'>
                 <i class="far fa-edit"></i>
             </a>

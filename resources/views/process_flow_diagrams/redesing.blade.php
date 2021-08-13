@@ -1,7 +1,7 @@
 {!! Form::open(['route' => ['destroyProcessFlowDiagramRedesign', $company_id, $process_map_id, $id], 'method' => 'delete']) !!}
     <div class='btn-group'>
 
-        @can('ver_diagrama_flujo')
+        @can('leer_diagrama_flujo')
             @if ($redesing_boolean==false)
                 <button type="button" class="btn btn-default btn-xs"
                     data-toggle="modal" data-target="#uploadModal"

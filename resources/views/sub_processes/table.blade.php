@@ -1,3 +1,13 @@
+<div class="row">
+    <div class="col-sm-2">
+        {!! Form::label('name', __('models/processes.fields.name').':') !!}
+        <p>{{ $process->name }}</p>
+    </div>
+    <div class="col-sm-2">
+        {!! Form::label('description', __('models/processes.fields.description').':') !!}
+        <p>{{ $process->description }}</p>
+    </div>
+</div>
 <table class="table table-bordered table-striped table-hover ajaxTable datatable data-table" id="subProcesses-table">
     <thead>
         <tr>

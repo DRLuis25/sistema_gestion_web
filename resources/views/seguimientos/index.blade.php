@@ -52,9 +52,11 @@
             $("#btnNuevo").on('click',function(){
                 if($("#select_proceso_id").find('option:selected').val()=="No")
                     {alert('a');
-                    //$("#btnNuevo").attr('disabled',true)}
-                else
-                    $("#btnNuevo").attr('disabled',false)
+                }
+                else{
+                    $("#btnNuevo").attr('disabled',false);
+                }
+
             });
         })
     </script>

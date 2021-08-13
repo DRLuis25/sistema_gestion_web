@@ -17,6 +17,7 @@ class CreateProcessFlowDiagramTable extends Migration
             $table->id();
             $table->unsignedBigInteger('process_map_id'); //mapa proceso id
             $table->unsignedBigInteger('process_id'); //proceso id
+            $table->unsignedBigInteger('matriz_priorizado_id'); //matriz_priorizado id
             $table->timestamps();
             $table->longText('data')->nullable(); //Si se hace por aplicación
             $table->longText('file')->nullable(); //Si se sube archivo adjunto
@@ -28,6 +29,7 @@ class CreateProcessFlowDiagramTable extends Migration
             //$table->softDeletes();
             $table->foreign('process_map_id')->references('id')->on('process_maps');
             $table->foreign('process_id')->references('id')->on('process');
+            $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
         });
     }
 

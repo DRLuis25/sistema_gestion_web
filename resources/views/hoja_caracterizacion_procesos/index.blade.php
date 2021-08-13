@@ -19,6 +19,7 @@
 
         <div class="card">
             <div class="card-body">
+                @can('crear_hoja_caracterizacion')
                 <div class="row">
                     <div class="col-2 ">
                         {!! Form::open(['route' => ['hojaCaracterizacionProcesos.create',$company_id, $process_map_id],'enctype'=>'multipart/form-data']) !!}
@@ -43,6 +44,7 @@
                         <input type="submit" class="btn btn-secondary" id="btn-añadir" value="Añadir Nuevo" disabled>
                     {!! Form::close() !!}
                 </div><br>
+                @endcan
                 @include('hoja_caracterizacion_procesos.table')
                 @include('hoja_caracterizacion_procesos.upload')
 

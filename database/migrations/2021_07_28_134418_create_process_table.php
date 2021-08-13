@@ -31,6 +31,7 @@ class CreateProcessTable extends Migration
             $table->unsignedBigInteger('process_map_id'); //Unidad negocio_id
             $table->string('name');
             $table->string('description');
+            $table->string('unidad');
             $table->unsignedBigInteger('parent_process_id')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
@@ -84,6 +85,9 @@ class CreateProcessTable extends Migration
             $table->unsignedBigInteger('process_criterio_id'); //matriz procesos priorizados
             $table->string('description')->nullable();//id procesos priorizados
             $table->longText('process_id_data');//id procesos priorizados
+            $table->longText('process_id_data_flow_diagram');//id procesos priorizados
+            $table->longText('process_id_data_seguimiento');//id procesos priorizados
+            $table->longText('process_id_data_all');//id procesos priorizados
             $table->longText('process_values_data'); //valores procesos priorizados
             $table->timestamps();
             $table->softDeletes();

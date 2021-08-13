@@ -19,6 +19,183 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        //NUEVOS
+        $proceso_role = Role::create(['name' => 'gestionar_proceso']);
+        $subproceso_role = Role::create(['name' => 'gestionar_subproceso']);
+        $mapa_proceso_role = Role::create(['name' => 'gestionar_mapa_proceso']);
+        $historial_mapa_proceso_role = Role::create(['name' => 'gestionar_historial_mapa_proceso']);
+        $criterio_role = Role::create(['name' => 'gestionar_criterios']);
+        $rol_role = Role::create(['name' => 'gestionar_roles_empresa']);
+        $matriz_priorizacion_role = Role::create(['name' => 'gestionar_matriz_priorizacion']);
+        $proceso_priorizado_role = Role::create(['name' => 'gestionar_procesos_priorizados']);
+        $hoja_caracterizacion_role = Role::create(['name' => 'gestionar_hoja_caracterizacion']);
+        $diagrama_flujo_role = Role::create(['name' => 'gestionar_diagrama_flujo']);
+        $seguimiento_role = Role::create(['name' => 'gestionar_seguimiento']);
+
+        //PERMISOS
+
+        $proceso_create = Permission::create(['name' => 'crear_proceso']);
+        $proceso_read = Permission::create(['name' => 'leer_proceso']);
+        $proceso_update = Permission::create(['name' => 'modificar_proceso']);
+        $proceso_delete = Permission::create(['name' => 'eliminar_proceso']);
+
+        $subproceso_create = Permission::create(['name' => 'crear_subproceso']);
+        $subproceso_read = Permission::create(['name' => 'leer_subproceso']);
+        $subproceso_update = Permission::create(['name' => 'modificar_subproceso']);
+        $subproceso_delete = Permission::create(['name' => 'eliminar_subproceso']);
+
+        $mapa_proceso_create = Permission::create(['name' => 'crear_mapa_proceso']);
+        $mapa_proceso_read = Permission::create(['name' => 'leer_mapa_proceso']);
+        $mapa_proceso_update = Permission::create(['name' => 'modificar_mapa_proceso']);
+        $mapa_proceso_delete = Permission::create(['name' => 'eliminar_mapa_proceso']);
+        $mapa_proceso_export = Permission::create(['name' => 'exportar_grafico_mapa_proceso']);
+
+        $historial_mapa_proceso_create = Permission::create(['name' => 'crear_historial_mapa_proceso']);
+        $historial_mapa_proceso_read = Permission::create(['name' => 'leer_historial_mapa_proceso']);
+        $historial_mapa_proceso_update = Permission::create(['name' => 'modificar_historial_mapa_proceso']);
+        $historial_mapa_proceso_delete = Permission::create(['name' => 'eliminar_historial_mapa_proceso']);
+
+        $criterio_create = Permission::create(['name' => 'crear_criterio']);
+        $criterio_read = Permission::create(['name' => 'leer_criterio']);
+        $criterio_update = Permission::create(['name' => 'modificar_criterio']);
+        $criterio_delete = Permission::create(['name' => 'eliminar_criterio']);
+
+        $rol_create = Permission::create(['name' => 'crear_rol']);
+        $rol_read = Permission::create(['name' => 'leer_rol']);
+        $rol_update = Permission::create(['name' => 'modificar_rol']);
+        $rol_delete = Permission::create(['name' => 'eliminar_rol']);
+
+        $matriz_priorizacion_create = Permission::create(['name' => 'crear_matriz_priorizacion']);
+        $matriz_priorizacion_read = Permission::create(['name' => 'leer_matriz_priorizacion']);
+        $matriz_priorizacion_update = Permission::create(['name' => 'modificar_matriz_priorizacion']);
+        $matriz_priorizacion_delete = Permission::create(['name' => 'eliminar_matriz_priorizacion']);
+        $priorizar_procesos_matriz_priorizacion = Permission::create(['name' => 'priorizar_procesos_matriz_priorizacion']);
+
+        $proceso_priorizado_create = Permission::create(['name' => 'crear_proceso_priorizado']);
+        $proceso_priorizado_read = Permission::create(['name' => 'leer_proceso_priorizado']);
+        $proceso_priorizado_update = Permission::create(['name' => 'modificar_proceso_priorizado']);
+        $proceso_priorizado_delete = Permission::create(['name' => 'eliminar_proceso_priorizado']);
+
+        $hoja_caracterizacion_create = Permission::create(['name' => 'crear_hoja_caracterizacion']);
+        $hoja_caracterizacion_read = Permission::create(['name' => 'leer_hoja_caracterizacion']);
+        $hoja_caracterizacion_update = Permission::create(['name' => 'modificar_hoja_caracterizacion']);
+        $hoja_caracterizacion_delete = Permission::create(['name' => 'eliminar_hoja_caracterizacion']);
+
+        $diagrama_flujo_create = Permission::create(['name' => 'crear_diagrama_flujo']);
+        $diagrama_flujo_read = Permission::create(['name' => 'leer_diagrama_flujo']);
+        $diagrama_flujo_update = Permission::create(['name' => 'modificar_diagrama_flujo']);
+        $diagrama_flujo_delete = Permission::create(['name' => 'eliminar_diagrama_flujo']);
+
+        $seguimiento_create = Permission::create(['name' => 'crear_seguimiento']);
+        $seguimiento_read = Permission::create(['name' => 'leer_seguimiento']);
+        $diagrama_seguimiento_read = Permission::create(['name' => 'leer_diagrama_seguimiento']);
+        $seguimiento_update = Permission::create(['name' => 'modificar_seguimiento']);
+        $seguimiento_delete = Permission::create(['name' => 'eliminar_seguimiento']);
+        //CREAR ARRAY CON PERMISOS
+        $proceso_role_permissions = array(
+            $proceso_create,
+            $proceso_read,
+            $proceso_update,
+            $proceso_delete,
+        );
+        $subproceso_role_permissions = array(
+            $subproceso_create,
+            $subproceso_read,
+            $subproceso_update,
+            $subproceso_delete,
+        );
+        $mapa_proceso_role_permissions = array(
+            $mapa_proceso_create,
+            $mapa_proceso_read,
+            $mapa_proceso_update,
+            $mapa_proceso_delete,
+            $mapa_proceso_export
+        );
+        $historial_mapa_proceso_role_permissions = array(
+            $historial_mapa_proceso_create,
+            $historial_mapa_proceso_read,
+            $historial_mapa_proceso_update,
+            $historial_mapa_proceso_delete,
+        );
+        $criterio_role_permissions = array(
+            $criterio_create,
+            $criterio_read,
+            $criterio_update,
+            $criterio_delete,
+        );
+        $rol_role_permissions = array(
+            $rol_create,
+            $rol_read,
+            $rol_update,
+            $rol_delete,
+        );
+        $matriz_priorizacion_role_permissions = array(
+            $matriz_priorizacion_create,
+            $matriz_priorizacion_read,
+            $matriz_priorizacion_update,
+            $matriz_priorizacion_delete,
+            $priorizar_procesos_matriz_priorizacion,
+        );
+        $proceso_priorizado_role_permissions = array(
+            $proceso_priorizado_create,
+            $proceso_priorizado_read,
+            $proceso_priorizado_update,
+            $proceso_priorizado_delete,
+        );
+        $hoja_caracterizacion_role_permissions = array(
+            $hoja_caracterizacion_create,
+            $hoja_caracterizacion_read,
+            $hoja_caracterizacion_update,
+            $hoja_caracterizacion_delete,
+        );
+        $diagrama_flujo_role_permissions = array(
+            $diagrama_flujo_create,
+            $diagrama_flujo_read,
+            $diagrama_flujo_update,
+            $diagrama_flujo_delete,
+        );
+        $seguimiento_role_permissions = array(
+            $seguimiento_create,
+            $seguimiento_read,
+            $diagrama_seguimiento_read,
+            $seguimiento_update,
+            $seguimiento_delete,
+        );
+        //ASIGNAR PERMISOS A ROL
+        $proceso_role->syncPermissions($proceso_role_permissions);
+        $subproceso_role->syncPermissions($subproceso_role_permissions);
+        $mapa_proceso_role->syncPermissions($mapa_proceso_role_permissions);
+        $historial_mapa_proceso_role->syncPermissions($historial_mapa_proceso_role_permissions);
+        $criterio_role->syncPermissions($criterio_role_permissions);
+        $rol_role->syncPermissions($rol_role_permissions);
+        $matriz_priorizacion_role->syncPermissions($matriz_priorizacion_role_permissions);
+        $proceso_priorizado_role->syncPermissions($proceso_priorizado_role_permissions);
+        $hoja_caracterizacion_role->syncPermissions($hoja_caracterizacion_role_permissions);
+        $diagrama_flujo_role->syncPermissions($diagrama_flujo_role_permissions);
+        $seguimiento_role->syncPermissions($seguimiento_role_permissions);
+
+
+
+
+
+
+
+
+
+
+        //OLD
+
+
+
+
+
+
+
+
+
+
+
+
         $admin_role = Role::create(['name' => 'admin']);
         $supplier_role = Role::create(['name' => 'gestionar proveedores']);
         $customer_role = Role::create(['name' => 'gestionar clientes']);
@@ -96,7 +273,63 @@ class DatabaseSeeder extends Seeder
         $cadena_suministro_export_graphic,
         $cadena_suministro_create_historial,
         $cadena_suministro_read_historial,
-        $cadena_suministro_delete_historial
+        $cadena_suministro_delete_historial,//NUEVOS
+        $proceso_create,
+        $proceso_read,
+        $proceso_update,
+        $proceso_delete,
+
+        $subproceso_create,
+        $subproceso_read,
+        $subproceso_update,
+        $subproceso_delete,
+
+        $mapa_proceso_create,
+        $mapa_proceso_read,
+        $mapa_proceso_update,
+        $mapa_proceso_delete,
+        $mapa_proceso_export,
+
+        $historial_mapa_proceso_create,
+        $historial_mapa_proceso_read,
+        $historial_mapa_proceso_update,
+        $historial_mapa_proceso_delete,
+
+        $criterio_create,
+        $criterio_read,
+        $criterio_update,
+        $criterio_delete,
+
+        $rol_create,
+        $rol_read,
+        $rol_update,
+        $rol_delete,
+
+        $matriz_priorizacion_create,
+        $matriz_priorizacion_read,
+        $matriz_priorizacion_update,
+        $matriz_priorizacion_delete,
+        $priorizar_procesos_matriz_priorizacion,
+
+        $proceso_priorizado_create,
+        $proceso_priorizado_read,
+        $proceso_priorizado_update,
+        $proceso_priorizado_delete,
+
+        $hoja_caracterizacion_create,
+        $hoja_caracterizacion_read,
+        $hoja_caracterizacion_update,
+        $hoja_caracterizacion_delete,
+
+        $diagrama_flujo_create,
+        $diagrama_flujo_read,
+        $diagrama_flujo_update,
+        $diagrama_flujo_delete,
+
+        $seguimiento_create,
+        $seguimiento_read,
+        $seguimiento_update,
+        $seguimiento_delete,
         );
         $supplier_role_permissions = array(
             $proveedor_create,
@@ -164,6 +397,7 @@ class DatabaseSeeder extends Seeder
         $customers = factory(Customer::class,10)->create();
         $suppliers = factory(Supplier::class,10)->create();
 
+        $this->call(RolesSeeder::class);
 
         $this->call(MapaProcesoSeeder::class);
     }

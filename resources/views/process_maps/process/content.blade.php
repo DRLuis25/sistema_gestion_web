@@ -19,7 +19,6 @@
             <tr>
                 <th style="color:white">x</th>
                 <th>@lang('models/processes.fields.name')</th>
-                <th>@lang('models/processes.fields.description')</th>
                 <th>@lang('models/processes.fields.type')</th>
                 <th width="100px">@lang('crud.action')</th>
             </tr>
@@ -119,7 +118,6 @@ $(function () {
         columns: [
             { "data":null, render:function(){return "";}},
             { data: 'name', name: 'name'},
-            { data: 'description', name: 'description'},
             { data: 'type', name: 'type'},
             { data: 'action', name: 'Action', orderable: false, searchable: false},
         ],

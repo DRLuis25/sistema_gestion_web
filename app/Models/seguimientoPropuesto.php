@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class seguimientoPropuesto extends Model
 {
-
+    use Auditable;
     public $table = 'seguimiento_propuesto';
 
     const CREATED_AT = 'created_at';
@@ -34,6 +35,7 @@ class seguimientoPropuesto extends Model
     public $fillable = [
         'process_id',
         'rol_id',
+        'matriz_priorizado_id',
         'activity',
         'flow_id',
         'time'
@@ -48,6 +50,7 @@ class seguimientoPropuesto extends Model
         'id' => 'integer',
         'process_id' => 'integer',
         'rol_id' => 'integer',
+        'matriz_priorizado_id' => 'integer',
         'activity' => 'string',
         'flow_id' => 'integer',
         'time' => 'decimal:2'
@@ -61,12 +64,20 @@ class seguimientoPropuesto extends Model
     public static $rules = [
         'process_id' => 'required',
         'rol_id' => 'required',
+        'matriz_priorizado_id' => 'required',
         'activity' => 'required|string|max:255',
         'flow_id' => 'required|integer',
         'time' => 'required|numeric',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function matrizPriorizado()
+    {
+        return $this->belongsTo(\App\Models\MatrizPriorizado::class, 'matriz_priorizado_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

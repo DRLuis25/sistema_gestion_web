@@ -8,6 +8,7 @@ return array (
     'id' => 'Id',
     'process_id' => 'Process Id',
     'rol_id' => 'Rol Id',
+    'matriz_priorizado_id' => 'Matriz Priorizado Id',
     'activity' => 'Activity',
     'flow_id' => 'Flow Id',
     'time' => 'Time',

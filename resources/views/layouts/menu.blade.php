@@ -79,12 +79,14 @@
             </a>
         </li>
     @endcan --}}
-    <li class="nav-item">
-        <a href="{{ route('processMaps.index', [$company_id]) }}"
-           class="nav-link {{ Request::is('processMaps*') ? 'active' : '' }}">
-            <p>@lang('models/processMaps.plural')</p>
-        </a>
-    </li>
+    @canany(['crear_mapa_proceso', 'leer_mapa_proceso', 'modificar_mapa_proceso','eliminar_mapa_proceso'])
+        <li class="nav-item">
+            <a href="{{ route('processMaps.index', [$company_id]) }}"
+            class="nav-link {{ Request::is('processMaps*') ? 'active' : '' }}">
+                <p>@lang('models/processMaps.plural')</p>
+            </a>
+        </li>
+    @endcan
 
 @endif
 
@@ -96,48 +98,69 @@
         </a>
     </li>
     <ul class="nav-sidebar">
+
         <li class="nav-item">
             <a href="{{ route('processMaps.show', [$company_id, $process_map_id]) }}"
             class="nav-link {{ Request::is('processMaps*') ? 'active' : '' }}">
                 <p>@lang('models/processMaps.singular')</p>
             </a>
         </li>
+        @canany(['crear_criterio', 'leer_criterio', 'modificar_criterio','eliminar_criterio'])
+            <li class="nav-item">
+                <a href="{{ route('criterios.index', [$company_id, $process_map_id]) }}"
+                class="nav-link {{ Request::is('*criterios*') ? 'active' : '' }}">
+                    <p>@lang('models/criterios.plural')</p>
+                </a>
+            </li>
+        @endcan
+        @canany(['crear_rol', 'leer_rol', 'modificar_rol','eliminar_rol'])
         <li class="nav-item">
-            <a href="{{ route('criterios.index', [$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('*criterios*') ? 'active' : '' }}">
-                <p>@lang('models/criterios.plural')</p>
+            <a href="{{ route('rols.index', [$company_id, $process_map_id]) }}"
+            class="nav-link {{ Request::is('rols*') ? 'active' : '' }}">
+                <p>@lang('models/rols.plural')</p>
             </a>
         </li>
+        @endcan
+        @canany(['crear_matriz_priorizacion', 'leer_matriz_priorizacion', 'modificar_matriz_priorizacion','eliminar_matriz_priorizacion'])
         <li class="nav-item">
             <a href="{{ route('processCriterios.index', [$company_id, $process_map_id]) }}"
             class="nav-link {{ Request::is('*processCriterios*') ? 'active' : '' }}">
                 <p>Matriz Priorización</p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="{{ route('matrizPriorizados.index',[$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('*matrizPriorizados*') ? 'active' : '' }}">
-                <p>@lang('models/matrizPriorizados.plural')</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('hojaCaracterizacionProcesos.index',[$company_id, $process_map_id]) }}"
-            class="nav-link {{ Request::is('*hojaCaracterizacionProcesos*') ? 'active' : '' }}">
-                <p>@lang('models/hojaCaracterizacionProcesos.plural')</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('processFlowDiagrams.index',[$company_id, $process_map_id]) }}"
-               class="nav-link {{ Request::is('*processFlowDiagrams*') ? 'active' : '' }}">
-                <p>@lang('models/processFlowDiagrams.plural')</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('seguimientos.index',[$company_id, $process_map_id]) }}"
-               class="nav-link {{ Request::is('*seguimientos*') ? 'active' : '' }}">
-                <p>@lang('models/seguimientos.singular')</p>
-            </a>
-        </li>
+        @endcan
+        @canany(['crear_proceso_priorizado', 'leer_proceso_priorizado', 'modificar_proceso_priorizado','eliminar_proceso_priorizado'])
+            <li class="nav-item">
+                <a href="{{ route('matrizPriorizados.index',[$company_id, $process_map_id]) }}"
+                class="nav-link {{ Request::is('*matrizPriorizados*') ? 'active' : '' }}">
+                    <p>@lang('models/matrizPriorizados.plural')</p>
+                </a>
+            </li>
+        @endcan
+        @canany(['crear_hoja_caracterizacion', 'leer_hoja_caracterizacion', 'modificar_hoja_caracterizacion','eliminar_hoja_caracterizacion'])
+            <li class="nav-item">
+                <a href="{{ route('hojaCaracterizacionProcesos.index',[$company_id, $process_map_id]) }}"
+                class="nav-link {{ Request::is('*hojaCaracterizacionProcesos*') ? 'active' : '' }}">
+                    <p>@lang('models/hojaCaracterizacionProcesos.plural')</p>
+                </a>
+            </li>
+        @endcan
+        @canany(['crear_diagrama_flujo', 'leer_diagrama_flujo', 'modificar_diagrama_flujo','eliminar_diagrama_flujo'])
+            <li class="nav-item">
+                <a href="{{ route('processFlowDiagrams.index',[$company_id, $process_map_id]) }}"
+                class="nav-link {{ Request::is('*processFlowDiagrams*') ? 'active' : '' }}">
+                    <p>@lang('models/processFlowDiagrams.plural')</p>
+                </a>
+            </li>
+        @endcan
+        @canany(['crear_seguimiento', 'leer_seguimiento', 'modificar_seguimiento','eliminar_seguimiento'])
+            <li class="nav-item">
+                <a href="{{ route('seguimientos.index',[$company_id, $process_map_id]) }}"
+                class="nav-link {{ Request::is('*seguimientos*') ? 'active' : '' }}">
+                    <p>@lang('models/seguimientos.singular')</p>
+                </a>
+            </li>
+        @endcan
     </ul>
 @endif
 {{-- <li class="nav-item">
@@ -158,3 +181,4 @@
 
 
  --}}
+

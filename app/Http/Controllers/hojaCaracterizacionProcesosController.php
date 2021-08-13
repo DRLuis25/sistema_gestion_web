@@ -28,9 +28,18 @@ class hojaCaracterizacionProcesosController extends AppBaseController
      */
     public function index($id, $id2, Request $request)
     {
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)
+        ->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))
+            ->with('company_id',$id)->with('process_map_id',$id2);
+        }
         if($request->ajax()){
             /** @var hojaCaracterizacionProcesos $hojaCaracterizacionProcesos */
-            $hojaCaracterizacionProcesos = hojaCaracterizacionProcesos::where('process_map_id','=',$id2)->get();
+            $hojaCaracterizacionProcesos = hojaCaracterizacionProcesos::where('process_map_id','=',$id2)
+            ->where('matriz_priorizado_id','=',$procesosPriorizados->id)
+            ->get();
             return DataTables::of($hojaCaracterizacionProcesos)
             ->addColumn('company_id',function($hojaCaracterizacionProcesos){
                 return $hojaCaracterizacionProcesos->processMap->company->id;
@@ -42,10 +51,13 @@ class hojaCaracterizacionProcesosController extends AppBaseController
             ->rawColumns(['action'])
             ->make(true);
         }
-        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        //return $procesosPriorizados;
         $ids = json_decode($procesosPriorizados->process_id_data);
+
         //$procesosSinHojaCaracterizacion = Process::find($ids);
-        $procesosSinHojaCaracterizacion = Process::whereIn('id', $ids)->doesnthave('hojaCaracterizacionProcesos')->whereNull('parent_process_id')->get();
+        $procesosSinHojaCaracterizacion = Process::whereIn('id', $ids)
+        //Los que quedan, al guardar una hoja se quita el id de esta lista
+        ->whereNull('parent_process_id')->get();
         //return $procesosSinHojaCaracterizacion;
         /*$procesosSinHojaCaracterizacion = Process::where('process_map_id','=',$id2)->doesnthave('hojaCaracterizacionProcesos')
         ->whereNull('parent_process_id')->get();*/
@@ -77,8 +89,27 @@ class hojaCaracterizacionProcesosController extends AppBaseController
         $input['process_id'] = $input['proceso_id'];
         unset($input['proceso_id']);
         //return $input;
+        //Obtener id de la lista de procesos priorizados actual
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data); //Ids actual
+        //Guardar id procesos priorizados
+        //return $input['process_id'];
+        //return $ids;
+        $process_id = $input['process_id'];
+        $input['matriz_priorizado_id'] = $procesosPriorizados->id;
         //Guardar archivo
+        //return $ids;
         $hojaCaracterizacionProcesos = hojaCaracterizacionProcesos::create($input);
+        //Remover proceso de la lista actual
+        if (($key = array_search($process_id, $ids)) !== false) {
+            unset($ids[$key]);
+        }
+        $procesosPriorizados->process_id_data = json_encode(array_values($ids));
+        $procesosPriorizados->save();
         Flash::success(__('messages.saved', ['model' => __('models/hojaCaracterizacionProcesos.singular')]));
         return redirect(route('hojaCaracterizacionProcesos.index',[$id,$id2]));
     }
@@ -100,13 +131,25 @@ class hojaCaracterizacionProcesosController extends AppBaseController
     {
         $input = $request->except('_token');
         $input['adjunto'] = false;
-        //$input['inspecciones_data'] = json_encode($input['inspecciones_data']);
-        //return $input;
-        //$input['registros_data'] = json_encode($input['registros_data']);
-        //return $input;
+        $process_id = $input['process_id'];
+        //Obtener id de la lista de procesos priorizados actual
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data); //Ids actual
+
+        $input['matriz_priorizado_id'] = $procesosPriorizados->id;
+
         /** @var hojaCaracterizacionProcesos $hojaCaracterizacionProcesos */
         $hojaCaracterizacionProcesos = hojaCaracterizacionProcesos::create($input);
-        //return $hojaCaracterizacionProcesos;
+        //Remover proceso de la lista actual
+        if (($key = array_search($process_id, $ids)) !== false) {
+            unset($ids[$key]);
+        }
+        $procesosPriorizados->process_id_data = json_encode(array_values($ids));
+        $procesosPriorizados->save();
         Flash::success(__('messages.saved', ['model' => __('models/hojaCaracterizacionProcesos.singular')]));
         return redirect(route('hojaCaracterizacionProcesos.index',[$id,$id2]));
     }
@@ -223,7 +266,17 @@ class hojaCaracterizacionProcesosController extends AppBaseController
 
             return redirect(route('hojaCaracterizacionProcesos.index',[$id,$id2]));
         }
-
+        //Volver a añadir el proceso a la lista
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data); //Ids actual
+        array_unshift($ids,strval($hojaCaracterizacionProcesos->process_id));
+        //return json_encode(array_values($ids));
+        $procesosPriorizados->process_id_data = json_encode(array_values($ids));
+        $procesosPriorizados->save();
         $hojaCaracterizacionProcesos->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/hojaCaracterizacionProcesos.singular')]));

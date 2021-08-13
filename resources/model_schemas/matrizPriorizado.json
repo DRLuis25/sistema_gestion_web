@@ -37,9 +37,9 @@
     },
     {
         "name": "description",
-        "dbType": "string,255",
+        "dbType": "string,255:nullable",
         "htmlType": "text",
-        "validations": "required|string|max:255|string|max:255",
+        "validations": "nullable|string|max:255",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -51,7 +51,43 @@
         "name": "process_id_data",
         "dbType": "text",
         "htmlType": "textarea",
-        "validations": "required|string|string",
+        "validations": "required|string",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "process_id_data_flow_diagram",
+        "dbType": "text",
+        "htmlType": "textarea",
+        "validations": "required|string",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "process_id_data_seguimiento",
+        "dbType": "text",
+        "htmlType": "textarea",
+        "validations": "required|string",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "process_id_data_all",
+        "dbType": "text",
+        "htmlType": "textarea",
+        "validations": "required|string",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -63,7 +99,7 @@
         "name": "process_values_data",
         "dbType": "text",
         "htmlType": "textarea",
-        "validations": "required|string|string",
+        "validations": "required|string",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -75,7 +111,7 @@
         "name": "created_at",
         "dbType": "datetime:nullable",
         "htmlType": "date",
-        "validations": "nullable|nullable",
+        "validations": "nullable",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -87,7 +123,7 @@
         "name": "updated_at",
         "dbType": "datetime:nullable",
         "htmlType": "date",
-        "validations": "nullable|nullable",
+        "validations": "nullable",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -99,7 +135,7 @@
         "name": "deleted_at",
         "dbType": "datetime:nullable",
         "htmlType": "date",
-        "validations": "nullable|nullable",
+        "validations": "nullable",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -114,5 +150,21 @@
     {
         "type": "relation",
         "relation": "mt1,ProcessMap,process_map_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,HojaCaracterizacionProceso,matriz_priorizado_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,ProcessFlowDiagram,matriz_priorizado_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,Seguimiento,matriz_priorizado_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,SeguimientoPropuesto,matriz_priorizado_id"
     }
 ]

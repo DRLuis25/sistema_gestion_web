@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Rol
  * @package App\Models
- * @version August 9, 2021, 3:35 am -05
+ * @version August 11, 2021, 5:30 pm -05
  *
  * @property \App\Models\ProcessMap $processMap
  * @property \Illuminate\Database\Eloquent\Collection $seguimientos
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Rol extends Model
 {
-
+    use Auditable;
     public $table = 'rol';
 
     const CREATED_AT = 'created_at';

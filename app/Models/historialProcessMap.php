@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,9 +19,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class historialProcessMap extends Model
 {
     use SoftDeletes;
+    use Auditable;
 
     public $table = 'historial_process_map';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 

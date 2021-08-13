@@ -16,7 +16,7 @@
                         <input type="text" id="activity" name="activity" required class="form-control">
                     </div>
                     <div class="form-group col-4">
-                        <label for="time" class="col-form-label">@lang('models/seguimientos.fields.time') (minutos):</label>
+                        <label for="time" class="col-form-label">@lang('models/seguimientos.fields.time') ({{$process->unidad}}):</label>
                         <input type="number" class="form-control" name="time" id="time" step='1' min="00:00:00" max="20:00:00" required>
                     </div>
                     <div class="form-group col-6">

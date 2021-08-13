@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class subProcess extends Model
 {
+    use Auditable;
     use SoftDeletes;
 
     public $table = 'process';

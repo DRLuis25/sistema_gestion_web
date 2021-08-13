@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateseguimientoPropuestoRequest;
 use App\Http\Requests\UpdateseguimientoPropuestoRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\matrizPriorizado;
+use App\Models\Process;
 use App\Models\Rol;
 use App\Models\seguimientoPropuesto;
 use Illuminate\Http\Request;
@@ -72,9 +74,19 @@ class seguimientoPropuestoController extends AppBaseController
      */
     public function show($id, $id2, $id3, Request $request)
     {
+        $process = Process::find($id3);
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)
+        ->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))
+            ->with('company_id',$id)->with('process_map_id',$id2);
+        }
         if($request->ajax()){
             /** @var Seguimiento $seguimientos */
-            $seguimientos = seguimientoPropuesto::where('process_id','=',$id3)->get();
+            $seguimientos = seguimientoPropuesto::where('process_id','=',$id3)
+            ->where('matriz_priorizado_id','=',$procesosPriorizados->id)
+            ->get();
             return DataTables::of($seguimientos)
             ->addColumn('company_id',function($seguimiento){
                 return $seguimiento->process->processMap->company_id;
@@ -113,14 +125,16 @@ class seguimientoPropuestoController extends AppBaseController
         }
         $roles = Rol::where('process_map_id','=',$id2)->get();
         //return $procesosSinSeguimiento;
-        return view('seguimiento_propuestos.show',compact('roles'))->with('company_id',$id)
+        return view('seguimiento_propuestos.show',compact('roles','process'))->with('company_id',$id)
         ->with('process_map_id',$id2)
         ->with('process_id',$id3);
 
     }
     public function getSeguimientoPropuesto($id, $id2, $id3)
     {
-        $actividades = seguimientoPropuesto::where('process_id','=',$id3)->get();
+        $process = Process::find($id);
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$process->process_map_id)->first();
+        $actividades = seguimientoPropuesto::where('process_id','=',$id3)->where('matriz_priorizado_id',$procesosPriorizados->id)->get();
         //return $actividades;
         return view('seguimiento_propuestos.view_seguimiento.seguimiento_table',compact('actividades'))->with('company_id',$id)->with('process_map_id',$id2)->with('seguimiento_id',$id3);
     }
@@ -128,6 +142,9 @@ class seguimientoPropuestoController extends AppBaseController
     {
         try{
             $input = $request->all();
+            $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$request->process_map_id)
+            ->first();
+            $input['matriz_priorizado_id'] = $procesosPriorizados->id;
             $seguimiento = seguimientoPropuesto::create($input);
             return Response::json(['status'=>'200'], 200);
         }
@@ -137,14 +154,17 @@ class seguimientoPropuestoController extends AppBaseController
     }
     public function getTimesPropuesto($id)
     {
+        $process = Process::find($id);
+
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$process->process_map_id)->first();
         try{
-            $rolTimes = seguimientoPropuesto::where('process_id','=',$id)
+            $rolTimes = seguimientoPropuesto::where('process_id','=',$id)->where('matriz_priorizado_id',$procesosPriorizados->id)
             ->selectRaw('rol.name as name, sum(time) as total')
             ->join('process','process.id','=','seguimiento_propuesto.process_id')
             ->join('rol','rol.id','=','seguimiento_propuesto.rol_id')
             ->groupBy('rol.name')
             ->get();
-            $flowTimes = seguimientoPropuesto::where('process_id','=',$id)
+            $flowTimes = seguimientoPropuesto::where('process_id','=',$id)->where('matriz_priorizado_id',$procesosPriorizados->id)
             ->selectRaw('seguimiento_propuesto.flow_id, sum(time) as total')
             ->join('process','process.id','=','seguimiento_propuesto.process_id')
             ->join('rol','rol.id','=','seguimiento_propuesto.rol_id')

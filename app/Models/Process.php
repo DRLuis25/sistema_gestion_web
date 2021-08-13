@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Process extends Model
 {
     use SoftDeletes;
+    use Auditable;
 
     public $table = 'process';
 
@@ -40,6 +42,7 @@ class Process extends Model
         'process_map_id',
         'name',
         'description',
+        'unidad',
         'parent_process_id',
         'status'
     ];
@@ -54,6 +57,7 @@ class Process extends Model
         'process_map_id' => 'integer',
         'name' => 'string',
         'description' => 'string',
+        'unidad' => 'string',
         'parent_process_id' => 'integer',
         'status' => 'boolean'
     ];
@@ -67,6 +71,7 @@ class Process extends Model
         'process_map_id' => 'required',
         'name' => 'required|string|max:255|min:3',
         'description' => 'required|string|max:255|min:3',
+        'unidad' => 'required|string|max:255',
         'parent_process_id' => 'nullable',
         'status' => 'required|boolean',
         'created_at' => 'nullable',

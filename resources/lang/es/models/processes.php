@@ -9,6 +9,7 @@ return array (
     'process_map_id' => 'Id Mapa Proceso',
     'name' => 'Nombre',
     'description' => 'Descripción',
+    'unidad' => 'Unidad',
     'parent_process_id' => 'Proceso Padre',
     'status' => 'Estado',
     'created_at' => 'Creado el',

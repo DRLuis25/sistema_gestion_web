@@ -24,7 +24,7 @@
      <thead>
        <tr>
          <th scope="col">Rol</th>
-         <th scope="col">Tiempo (minutos)</th>
+         <th scope="col">Tiempo ({{$process->unidad}})</th>
        </tr>
      </thead>
      <tbody>
@@ -39,7 +39,7 @@
      <thead>
        <tr>
          <th scope="col">Actividad</th>
-         <th scope="col">Tiempo (minutos)</th>
+         <th scope="col">Tiempo ({{$process->unidad}})</th>
        </tr>
      </thead>
      <tbody>

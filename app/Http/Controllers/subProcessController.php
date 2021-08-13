@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatesubProcessRequest;
 use App\Http\Requests\UpdatesubProcessRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Process;
 use App\Models\subProcess;
 use Illuminate\Http\Request;
 use Flash;
@@ -33,7 +34,8 @@ class subProcessController extends AppBaseController
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('sub_processes.index')->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
+        $process = Process::find($id3);
+        return view('sub_processes.index',compact('process'))->with('company_id',$id)->with('process_map_id',$id2)->with('process_id',$id3);
     }
 
     /**

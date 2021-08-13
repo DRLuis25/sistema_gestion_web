@@ -93,6 +93,8 @@ Route::post('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos/create'
 Route::post('/company/{id}/processMaps/{id2}/hojaCaracterizacionProcesos/create2', 'hojaCaracterizacionProcesosController@createApplication')->name('hojaCaracterizacionProcesos.create2');
 Route::post('updateHojaCaracterizacion', 'hojaCaracterizacionProcesosController@updateFile')->name('updateHojaCaracterizacion');
 
+//Diagrama flujo
+
 Route::post('storeProcessFlowDiagramRedesignFile', 'processFlowDiagramController@storeRedesignFile')->name('storeProcessFlowDiagramRedesignFile');
 Route::DELETE('/company/{id}/processMaps/{id2}/destroyProcessFlowDiagramRedesign/{id3}', 'processFlowDiagramController@destroyProcessFlowDiagramRedesign')->name('destroyProcessFlowDiagramRedesign');
 Route::get('/company/{id}/processMaps/{id2}/processFlowDiagrams/{id3}/createRedesign','processFlowDiagramController@createRedesignApplication')->name('createRedesign');
@@ -115,3 +117,7 @@ Route::DELETE('/company/{id}/processMaps/{id2}/seguimientoPropuestos/{id3}/destr
 
 
 Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados', 'matrizPriorizadoController')->names('matrizPriorizados');
+Route::post('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/activate', 'matrizPriorizadoController@activate')->name('matrizPriorizados.activate');
+
+
+Route::resource('/company/{id}/processMaps/{id2}/rols', 'RolController')->names('rols');

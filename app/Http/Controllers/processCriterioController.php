@@ -76,6 +76,9 @@ class processCriterioController extends AppBaseController
             'process_criterio_id' => $processCriterio->id,
             'description' => $request->description,
             'process_id_data' => json_encode($priorizados),
+            'process_id_data_all' => json_encode($priorizados),
+            'process_id_data_flow_diagram' => json_encode($priorizados),
+            'process_id_data_seguimiento' => json_encode($priorizados),
             'process_values_data' => json_encode($values),
         ]);
         Flash::success(__('messages.saved', ['model' => __('models/matrizPriorizados.singular')]));

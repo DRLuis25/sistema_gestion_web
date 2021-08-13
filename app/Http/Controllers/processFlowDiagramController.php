@@ -26,9 +26,18 @@ class processFlowDiagramController extends AppBaseController
      */
     public function index($id, $id2, Request $request)
     {
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)
+        ->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))
+            ->with('company_id',$id)->with('process_map_id',$id2);
+        }
         if($request->ajax()){
             /** @var processFlowDiagram $processFlowDiagrams */
-            $processFlowDiagrams = processFlowDiagram::where('process_map_id','=',$id2)->get();
+            $processFlowDiagrams = processFlowDiagram::where('process_map_id','=',$id2)
+            ->where('matriz_priorizado_id','=',$procesosPriorizados->id)
+            ->get();
             return DataTables::of($processFlowDiagrams)
             ->addColumn('company_id',function($processFlowDiagram){
                 return $processFlowDiagram->processMap->company_id;
@@ -41,10 +50,11 @@ class processFlowDiagramController extends AppBaseController
             ->rawColumns(['action','redesing'])
             ->make(true);
         }
-        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
-        $ids = json_decode($procesosPriorizados->process_id_data);
+        $ids = json_decode($procesosPriorizados->process_id_data_flow_diagram);
+
         //$procesosSinHojaCaracterizacion = Process::find($ids);
-        $procesosSinFlowDiagram = Process::whereIn('id', $ids)->doesnthave('processFlowDiagrams')->whereNull('parent_process_id')->get();
+        $procesosSinFlowDiagram = Process::whereIn('id', $ids)
+        ->whereNull('parent_process_id')->get();
 
         /*$procesosSinFlowDiagram = Process::where('process_map_id','=',$id2)->doesnthave('processFlowDiagrams')
         ->whereNull('parent_process_id')->get();*/
@@ -77,8 +87,27 @@ class processFlowDiagramController extends AppBaseController
         unset($input['proceso_id']);
         //return $input;
         //Guardar archivo y directo al index
-        /** @var processFlowDiagram $processFlowDiagram */
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data_flow_diagram); //Ids actual
+        //Guardar id procesos priorizados
+        //return $input['process_id'];
+        //return $ids;
+        $process_id = $input['process_id'];
+        $input['matriz_priorizado_id'] = $procesosPriorizados->id;
+
+        //Guardar archivo
+        //return $ids;
         $processFlowDiagram = processFlowDiagram::create($input);
+        //Remover proceso de la lista actual
+        if (($key = array_search($process_id, $ids)) !== false) {
+            unset($ids[$key]);
+        }
+        $procesosPriorizados->process_id_data_flow_diagram = json_encode(array_values($ids));
+        $procesosPriorizados->save();
 
         Flash::success(__('messages.saved', ['model' => __('models/processFlowDiagrams.singular')]));
 
@@ -112,9 +141,25 @@ class processFlowDiagramController extends AppBaseController
         $input = $request->except('_token');
         $input['adjunto'] = false;
         //return $input;
+        $process_id = $input['process_id'];
+        //Obtener id de la lista de procesos priorizados actual
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data_flow_diagram); //Ids actual
+
+        $input['matriz_priorizado_id'] = $procesosPriorizados->id;
+
         /** @var processFlowDiagram $processFlowDiagram */
         $processFlowDiagram = processFlowDiagram::create($input);
-
+        //Remover proceso de la lista actual
+        if (($key = array_search($process_id, $ids)) !== false) {
+            unset($ids[$key]);
+        }
+        $procesosPriorizados->process_id_data_flow_diagram = json_encode(array_values($ids));
+        $procesosPriorizados->save();
         Flash::success(__('messages.saved', ['model' => __('models/processFlowDiagrams.singular')]));
 
         return redirect(route('processFlowDiagrams.index',[$id, $id2]));
@@ -290,6 +335,18 @@ class processFlowDiagramController extends AppBaseController
 
             return redirect(route('processFlowDiagrams.index',[$id, $id2]));
         }
+
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)->first();
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data_flow_diagram); //Ids actual
+        array_unshift($ids,strval($processFlowDiagram->process_id));
+        //return json_encode(array_values($ids));
+        $procesosPriorizados->process_id_data_flow_diagram = json_encode(array_values($ids));
+        $procesosPriorizados->save();
+
 
         $processFlowDiagram->delete();
 

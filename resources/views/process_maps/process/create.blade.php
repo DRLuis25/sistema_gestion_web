@@ -21,6 +21,18 @@
                         <label for="name" class="col-form-label">@lang('models/processes.fields.name'):</label>
                         <input type="text" id="name" name="name" required class="form-control">
                     </div>
+                    <div class="form-group col-6">
+                        <label for="unidad" class="col-form-label">@lang('models/processes.fields.unidad'):</label>
+                        <select name="unidad" id="unidad" class="form-control" required>
+                            <option value="">-</option>
+                            <option value="segundos">Segundos</option>
+                            <option value="minutos">Minutos</option>
+                            <option value="horas">Horas</option>
+                            <option value="días">Días</option>
+                            <option value="meses">Meses</option>
+                            <option value="años">Años</option>
+                        </select>
+                    </div>
                     <div class="form-group col-12">
                         <label for="description" class="col-form-label">@lang('models/processes.fields.description'):</label>
                         <input type="text" class="form-control" name="description" id="description" required>

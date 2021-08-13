@@ -17,6 +17,7 @@ class CreateCharacterizeProcessesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('process_map_id'); //mapa proceso id
             $table->unsignedBigInteger('process_id'); //proceso id
+            $table->unsignedBigInteger('matriz_priorizado_id'); //matriz_priorizado id
             $table->string('propietario')->nullable();
             $table->string('mision')->nullable();
             $table->string('empieza')->nullable();
@@ -35,6 +36,7 @@ class CreateCharacterizeProcessesTable extends Migration
             $table->timestamps();
             $table->foreign('process_map_id')->references('id')->on('process_maps');
             $table->foreign('process_id')->references('id')->on('process');
+            $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
         });
     }
 

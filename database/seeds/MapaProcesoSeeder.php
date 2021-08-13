@@ -3,6 +3,7 @@
 use App\Models\businessUnit;
 use App\Models\Criterio;
 use App\Models\Process;
+use App\Models\processCriterio;
 use App\Models\processMap;
 use App\Models\processType;
 use App\Models\Rol;
@@ -29,8 +30,8 @@ class MapaProcesoSeeder extends Seeder
         ]);
         $bUnit1 = businessUnit::create([
             'company_id' => '1',
-            'name' => 'Unidad de Negocio 1',
-            'description' => 'Descripción UN1'
+            'name' => 'Unidad de Negocio Principal',
+            'description' => 'Unidad de negocio primaria'
         ]);
         $processMap1 = processMap::create([
             'company_id' => '1',
@@ -45,6 +46,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión Dirección',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -56,6 +58,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión Financiera',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -67,6 +70,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión Legal',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -78,6 +82,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión Compras',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -89,6 +94,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión Ventas',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -100,6 +106,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión Marketing',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -111,6 +118,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Gestión de Personal',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -120,8 +128,9 @@ class MapaProcesoSeeder extends Seeder
         ]);
         $process8 = Process::create([
             'process_map_id' => $processMap1->id,
-            'name' => 'Soporte Tecnológicos',
+            'name' => 'Soporte Tecnológico',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -133,6 +142,7 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Atención de Reclamos',
             'description' => ' ',
+            'unidad' => 'minutos',
             'parent_process_id' => null,
             'status' => false,
         ]);
@@ -176,5 +186,13 @@ class MapaProcesoSeeder extends Seeder
             'process_map_id' => $processMap1->id,
             'name' => 'Personal de Piso'
         ]);
+        //LLENAR MATRIZ PRIORIZACIÓN
+        $matriz = processCriterio::create([
+            'process_map_id' => $processMap1->id,
+            'data' => '{"proceso_id-1-criterio_id-1":"2","proceso_id-1-criterio_id-2":"3","proceso_id-1-criterio_id-3":"4","proceso_id-1-criterio_id-4":"2","proceso_id-2-criterio_id-1":"5","proceso_id-2-criterio_id-2":"1","proceso_id-2-criterio_id-3":"3","proceso_id-2-criterio_id-4":"4","proceso_id-3-criterio_id-1":"2","proceso_id-3-criterio_id-2":"4","proceso_id-3-criterio_id-3":"4","proceso_id-3-criterio_id-4":"1","proceso_id-4-criterio_id-1":"1","proceso_id-4-criterio_id-2":"4","proceso_id-4-criterio_id-3":"4","proceso_id-4-criterio_id-4":"3","proceso_id-5-criterio_id-1":"3","proceso_id-5-criterio_id-2":"5","proceso_id-5-criterio_id-3":"1","proceso_id-5-criterio_id-4":"2","proceso_id-6-criterio_id-1":"4","proceso_id-6-criterio_id-2":"5","proceso_id-6-criterio_id-3":"3","proceso_id-6-criterio_id-4":"5","proceso_id-7-criterio_id-1":"1","proceso_id-7-criterio_id-2":"1","proceso_id-7-criterio_id-3":"5","proceso_id-7-criterio_id-4":"3","proceso_id-8-criterio_id-1":"2","proceso_id-8-criterio_id-2":"1","proceso_id-8-criterio_id-3":"5","proceso_id-8-criterio_id-4":"2","proceso_id-9-criterio_id-1":"1","proceso_id-9-criterio_id-2":"4","proceso_id-9-criterio_id-3":"5","proceso_id-9-criterio_id-4":"2"}',
+            'process_id_data' => '["6","2","3","9","5","4","1","8","7"]',
+            'process_values_data' => '["57","45","43","43","41","40","40","36","32"]'
+        ]);
+
     }
 }

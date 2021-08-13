@@ -1,6 +1,6 @@
 {!! Form::open(['route' => ['hojaCaracterizacionProcesos.destroy', $company_id, $process_map_id, $id], 'method' => 'delete']) !!}
     <div class='btn-group'>
-        @can('ver_hojaCaracterizacionProcesos')
+        @can('leer_hoja_caracterizacion')
             @if ($adjunto==true)
                 <button type="button" class="btn btn-default btn-xs"
                     data-toggle="modal" data-target="#uploadModal"
@@ -19,7 +19,7 @@
                 </a>
             @endif
         @endcan
-        @can('eliminar_hojaCaracterizacionProcesos')
+        @can('eliminar_hoja_caracterizacion')
             {!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => 'return confirm("'.__('crud.are_you_sure').'")']) !!}
         @endcan
 

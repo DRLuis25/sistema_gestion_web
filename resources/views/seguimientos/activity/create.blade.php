@@ -16,7 +16,7 @@
                         <input type="text" id="activity" name="activity" required class="form-control">
                     </div>
                     <div class="form-group col-4">
-                        <label for="time" class="col-form-label">@lang('models/seguimientos.fields.time') (minutos):</label>
+                        <label for="time" class="col-form-label">@lang('models/seguimientos.fields.time') ({{$process->unidad}}):</label>
                         <input type="number" class="form-control" name="time" id="time" step='1' min="00:00:00" max="20:00:00" required>
                     </div>
                     <div class="form-group col-6">
@@ -105,7 +105,7 @@
             const flowTimes = res.flowTimes;
             console.log(rolTimes)
             rolTimes.forEach(c => {
-                let markup = "<tr><td>"+c.name+"</td><td>"
+                let markup = "<tr class='text-center'><td>"+c.name+"</td><td>"
                 + c.total + "</td>";
                 $("#rolTimesTable > tbody").append(markup);
             });
@@ -128,7 +128,7 @@
                         op = "Almacenaje";
                         break;
                 }
-                let markup = "<tr><td>"+op+"</td><td>"
+                let markup = "<tr class='text-center'><td><img src='/img/"+c.flow_id+".png' alt='"+op+"'>"+op+"</td><td>"
                 + c.total + "</td>";
                 $("#flowTimesTable > tbody").append(markup);
             });

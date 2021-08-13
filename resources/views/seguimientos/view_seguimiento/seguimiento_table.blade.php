@@ -29,23 +29,23 @@
                 <div class="table-responsive">
                     <table class="table table-bordered " id="showSeguimiento-table">
                         <thead class="thead-dark">
-                            <tr>
+                            <tr class="text-center">
                                 <th scope="col" class=" bg-light text-dark">Actividad</th>
                                 <!--TipoActividad-->
                                 <td >
-                                    Operación
+                                    <img src="/img/1.png" alt="Operación">Operación
                                 </td>
                                 <td >
-                                    Transporte
+                                    <img src="/img/2.png" alt="Transporte">Transporte
                                 </td>
                                 <td >
-                                    Inspección
+                                    <img src="/img/3.png" alt="Inspección">Inspección
                                 </td>
                                 <td >
-                                    Demora
+                                    <img src="/img/4.png" alt="Demora">Demora
                                 </td>
                                 <td >
-                                    Almacenaje
+                                    <img src="/img/5.png" alt="Almacenaje">Almacenaje
                                 </td>
                             </tr>
                         </thead>

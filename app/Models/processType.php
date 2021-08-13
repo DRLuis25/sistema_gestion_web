@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class processType extends Model
 {
-
+    use Auditable;
     public $table = 'process_type';
 
     const CREATED_AT = 'created_at';

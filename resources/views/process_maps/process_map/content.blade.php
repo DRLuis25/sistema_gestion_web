@@ -6,14 +6,14 @@
                     <h1>Mapa de procesos</h1>
                 </div>
                 <div class="col-sm-12">
-                    @can('crear_historial_cadena_suministro')
+                    @can('exportar_grafico_mapa_proceso')
                         <button type="button" class="btn btn-primary float-right m-2"
                         data-toggle="modal" data-target="#historial-tab"
                         data-whatever="@mdo">
                         Guardar en Historial
                         </button>
                     @endcan
-                    @can('exportar_grafico_cadena_suministro')
+                    @can('exportar_grafico_mapa_proceso')
                         <button onclick="exportImg()" class="btn btn-primary float-right m-2">Exportar Img</button>
                         <button onclick="exportPdf()" class="btn btn-primary float-right m-2">Exportar PDF</button>
                     @endcan
