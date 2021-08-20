@@ -192,13 +192,21 @@ class ProcessController extends AppBaseController
     public function destroy($id, $id2)
     {
         $processMap = processMap::find($id);
-        /** @var Process $process */
-        $process = Process::find($id2);
+        if (empty($processMap)) {
+            Flash::error(__('messages.not_found', ['model' => __('models/processMaps.singular')]));
 
+            return redirect(route('companies.index',[$processMap->company_id]));
+        }
+                /** @var Process $process */
+        $process = Process::find($id2);
+        if ($process->status==true) {
+            Flash::error("No se puede eliminar el proceso debido a que está siendo utilizado en la matriz priorización");
+            return redirect(route('processMaps.show',[$processMap->company_id,$processMap->id]));
+        }
         if (empty($process)) {
             Flash::error(__('messages.not_found', ['model' => __('models/processes.singular')]));
 
-            return redirect(route('companies.index'));
+            return redirect(route('companies.index',[$processMap->company_id]));
         }
 
         $process->delete();

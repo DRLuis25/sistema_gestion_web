@@ -18,6 +18,7 @@
     </section>
 
     <div class="content px-3">
+        @include('flash::message')
         <div class="card">
             <div class="card-body">
                 <div class="row">

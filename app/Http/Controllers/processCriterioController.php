@@ -95,10 +95,13 @@ class processCriterioController extends AppBaseController
     {
         //return $request;
         $input = $request->except('_token','subtotal','id');
-        //return $request;
+
         $ordenado = $this->orderArrays($request->id,$request->subtotal);
         $data = json_encode($input);
         $process_id_data = json_encode($ordenado[0]);
+        //return $ordenado[0];
+        $procesosCambioEstado = Process::whereIn('id', $ordenado[0])->update(array('status'=>true));
+        //return $procesosCambioEstado;
         $process_values_data = json_encode($ordenado[1]);
         $processCriterio = processCriterio::firstOrCreate(['process_map_id' => $id2], [
             'data' => $data,

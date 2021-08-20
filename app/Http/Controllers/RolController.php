@@ -146,10 +146,10 @@ class RolController extends AppBaseController
     public function destroy($id, $id2, $id3)
     {
         /** @var Rol $rol */
-        $rol = Rol::find($id3);
-
+        $rol = Rol::where('id',$id3)->doesnthave('seguimientos')->first();
+        //return $rol;
         if (empty($rol)) {
-            Flash::error(__('messages.not_found', ['model' => __('models/rols.singular')]));
+            Flash::error("Error al eliminar. No se encuentra el registro o está siendo utilizado en el diagrama de Seguimiento");
 
             return redirect(route('rols.index',[$id, $id2]));
         }

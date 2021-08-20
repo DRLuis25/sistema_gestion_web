@@ -6,6 +6,8 @@ use App\Http\Requests\CreateCriterioRequest;
 use App\Http\Requests\UpdateCriterioRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Criterio;
+use App\Models\Process;
+use App\Models\processCriterio;
 use App\Models\processMap;
 use Illuminate\Http\Request;
 use Flash;
@@ -155,6 +157,15 @@ class CriterioController extends AppBaseController
             Flash::error(__('messages.not_found', ['model' => __('models/criterios.singular')]));
 
             return redirect(route('criterios.index',[$id, $id2]));
+        }
+
+        $criterios = Criterio::where('process_map_id','=',$id2)->get()->count();
+        $procesos = Process::where('process_map_id','=',$id2)->whereNull('parent_process_id')->get()->count();
+        $matrizPriorizacionCriterios = processCriterio::where('process_map_id','=',$id2)->first();
+        $total = (isset($matrizPriorizacionCriterios->data))?count(json_decode($matrizPriorizacionCriterios->data, true)):0;
+        if ($total!=0) {
+            Flash::error("No se puede eliminar. Ya se ha registrado la matriz de priorización de procesos");
+            return redirect(route('criterios.index', [$id, $id2]));
         }
 
         $criterio->delete();

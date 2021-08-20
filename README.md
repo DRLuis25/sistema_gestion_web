@@ -15,7 +15,7 @@ Comandos:
 - git clone https://github.com/DRLuis25/sistema_gestion_web
 - cd sistema_gestion_web
 - composer install
-- renombrar .env.example a .env y configurar la base de datos
+- cp .env.example .env
 - php artisan key:generate
-- php artisan migrate:fresh
+- php artisan migrate:fresh --seed
 - php artisan serve
