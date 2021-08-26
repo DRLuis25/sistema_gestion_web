@@ -182,3 +182,27 @@
 
  --}}
 
+<li class="nav-item">
+    <a href="{{ route('indicators.index') }}"
+       class="nav-link {{ Request::is('indicators*') ? 'active' : '' }}">
+        <p>@lang('models/indicators.plural')</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('perspectives.index') }}"
+       class="nav-link {{ Request::is('perspectives*') ? 'active' : '' }}">
+        <p>@lang('models/perspectives.plural')</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('objectives.index') }}"
+       class="nav-link {{ Request::is('objectives*') ? 'active' : '' }}">
+        <p>@lang('models/objectives.plural')</p>
+    </a>
+</li>
+
+

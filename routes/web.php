@@ -121,3 +121,10 @@ Route::post('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/activate', 
 
 
 Route::resource('/company/{id}/processMaps/{id2}/rols', 'RolController')->names('rols');
+
+
+Route::resource('indicators', 'IndicatorController');
+
+Route::resource('perspectives', 'PerspectiveController');
+
+Route::resource('objectives', 'ObjectiveController');
