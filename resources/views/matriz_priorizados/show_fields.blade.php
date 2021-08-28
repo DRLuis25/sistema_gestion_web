@@ -16,11 +16,6 @@
     <p>{{ $matrizPriorizado->description }}</p>
 </div>
 
-<!-- Process Id Data Field -->
-<div class="col-sm-12">
-    {!! Form::label('process_id_data', __('models/matrizPriorizados.fields.process_id_data').':') !!}
-    <p>{{ $matrizPriorizado->process_id_data }}</p>
-</div>
 
 <!-- Process Values Data Field -->
 <div class="col-sm-12">
