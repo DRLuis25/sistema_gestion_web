@@ -13,43 +13,27 @@ class CreateMapaEstrategicoTables extends Migration
      */
     public function up()
     {
-        //Indicadores
+        //Frecuencia: Diaria, Semanal, Mensual, Anual
         Schema::create('frequencies', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('indicators', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('process_id');
-            $table->unsignedBigInteger('frecuency_id');
-            $table->string('descripcion');
-            $table->string('objetivo');
-            $table->string('responsable');
-            $table->text('iniciativas');
-            $table->text('linea_base');
-            $table->string('meta');
-            $table->text('formula');
-            $table->integer('verde');
-            $table->integer('rojo');
-            $table->timestamps();
-            $table->softDeletes();
-            $table->foreign('process_id')->references('id')->on('process');
-            $table->foreign('frecuency_id')->references('id')->on('frequencies');
-        });
+        //Perspectivas: Financiera, Clientes, Procesos internos, Aprendizaje y crecimiento
         Schema::create('perspectives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('process_id');
             $table->string('descripcion');
+            $table->integer('orden');
             $table->foreign('process_id')->references('id')->on('process');
         });
+        //Objetivos
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('process_id');
             $table->unsignedBigInteger('perspective_id');
-            $table->string('descripcion');
-            $table->integer('level');
+            $table->string('descripcion');//$table->string('relaciona')[1,2]
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('process_id')->references('id')->on('process');
@@ -63,12 +47,30 @@ class CreateMapaEstrategicoTables extends Migration
             $table->foreign('objective_id')->references('id')->on('objectives');
             $table->foreign('objective_id2')->references('id')->on('objectives');
         });
+        Schema::create('indicators', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('process_id');
+            $table->unsignedBigInteger('frecuency_id');
+            $table->string('descripcion');
+            $table->text('formula');
+            $table->text('linea_base');
+            $table->string('objetivo');
+            $table->string('responsable');
+            $table->string('meta');
+            $table->text('iniciativas'); //[]
+            $table->integer('rojo');
+            $table->integer('verde');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('process_id')->references('id')->on('process');
+            $table->foreign('frecuency_id')->references('id')->on('frequencies');
+        });
         Schema::create('data_fuente', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('indicator_id');
             $table->timestamp('fecha');
             $table->integer('valor');
-            //$table->text('data');
+            $table->string('estado')->nullable();
             $table->timestamps();
             $table->foreign('indicator_id')->references('id')->on('indicators');
         });

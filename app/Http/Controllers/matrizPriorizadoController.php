@@ -77,9 +77,11 @@ class matrizPriorizadoController extends AppBaseController
      */
     public function show($id, $id2, $id3)
     {
+        //return $id3;
         /** @var matrizPriorizado $matrizPriorizado */
-        $matrizPriorizado = matrizPriorizado::find($id3);
-
+        //$matrizPriorizado = matrizPriorizado::find($id3);
+        $matrizPriorizado = matrizPriorizado::where('process_map_id','=',$id2)->get();
+        //return $matrizPriorizado;
         if (empty($matrizPriorizado)) {
             Flash::error(__('models/matrizPriorizados.singular').' '.__('messages.not_found'));
 

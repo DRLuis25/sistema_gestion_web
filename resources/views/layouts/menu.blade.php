@@ -1,5 +1,5 @@
 @if (Request::is('companies*','home','users*','roles*','audits*'))
-    <li class="nav-item has-treeview {{ Request::is('companies*','users*','roles*','audits*') ? 'menu-open' : '' }}">
+   {{--  <li class="nav-item has-treeview {{ Request::is('companies*','users*','roles*','audits*') ? 'menu-open' : '' }}">
         <a href="" class="nav-link inactive">
             <i class="nav-icon fas fa-code"></i>
             <p>
@@ -8,7 +8,7 @@
             </p>
         </a>
         <ul class="nav nav-treeview" style="display: {{ Request::is('companies*','users*','roles*','audits*') ? 'block' : 'none' }}">
-
+ --}}
                 <li class="nav-item">
                     <a href="{{ route('companies.index') }}"
                     class="nav-link {{ Request::is('companies*') ? 'active' : '' }}">
@@ -35,8 +35,8 @@
                     <p>@lang('models/audits.plural')</p>
                 </a>
             </li>
-        </ul>
-    </li>
+{{--         </ul>
+    </li> --}}
 @endif
 @if ((Request::is('company*','suppliers*','customers*','businessUnits*','supplyChains*') and !Request::is('*processMaps/*')) or Request::is('*processMaps/create'))
 
@@ -113,14 +113,14 @@
                 </a>
             </li>
         @endcan
-        @canany(['crear_rol', 'leer_rol', 'modificar_rol','eliminar_rol'])
+        {{-- @canany(['crear_rol', 'leer_rol', 'modificar_rol','eliminar_rol'])
         <li class="nav-item">
             <a href="{{ route('rols.index', [$company_id, $process_map_id]) }}"
             class="nav-link {{ Request::is('rols*') ? 'active' : '' }}">
                 <p>@lang('models/rols.plural')</p>
             </a>
         </li>
-        @endcan
+        @endcan --}}
         @canany(['crear_matriz_priorizacion', 'leer_matriz_priorizacion', 'modificar_matriz_priorizacion','eliminar_matriz_priorizacion'])
         <li class="nav-item">
             <a href="{{ route('processCriterios.index', [$company_id, $process_map_id]) }}"
@@ -137,7 +137,7 @@
                 </a>
             </li>
         @endcan
-        @canany(['crear_hoja_caracterizacion', 'leer_hoja_caracterizacion', 'modificar_hoja_caracterizacion','eliminar_hoja_caracterizacion'])
+        {{-- @canany(['crear_hoja_caracterizacion', 'leer_hoja_caracterizacion', 'modificar_hoja_caracterizacion','eliminar_hoja_caracterizacion'])
             <li class="nav-item">
                 <a href="{{ route('hojaCaracterizacionProcesos.index',[$company_id, $process_map_id]) }}"
                 class="nav-link {{ Request::is('*hojaCaracterizacionProcesos*') ? 'active' : '' }}">
@@ -160,7 +160,7 @@
                     <p>@lang('models/seguimientos.singular')</p>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
     </ul>
 @endif
 {{-- <li class="nav-item">

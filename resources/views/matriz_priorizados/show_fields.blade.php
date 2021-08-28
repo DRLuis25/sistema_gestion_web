@@ -1,4 +1,4 @@
-<!-- Process Map Id Field -->
+{{-- <!-- Process Map Id Field -->
 <div class="col-sm-12">
     {!! Form::label('process_map_id', __('models/matrizPriorizados.fields.process_map_id').':') !!}
     <p>{{ $matrizPriorizado->process_map_id }}</p>
@@ -28,3 +28,4 @@
     <p>{{ $matrizPriorizado->process_values_data }}</p>
 </div>
 
+ --}}

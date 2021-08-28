@@ -5,11 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>@lang('models/matrizPriorizados.singular')</h1>
+                    <h1>@lang('models/processes.plural') priorizados</h1>
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('matrizPriorizados.index') }}">
+                       href="{{ route('matrizPriorizados.index',[$company_id,$process_map_id]) }}">
                         @lang('crud.back')
                     </a>
                 </div>

@@ -1,9 +1,9 @@
 <div class='btn-group'>
-{{--     @can('leer_matriz_priorizados')
+    @can('leer_matriz_priorizados')
         <a href="{{ route('matrizPriorizados.show', [$company_id, $process_map_id, $id]) }}" class='btn btn-default btn-xs'>
             <i class="far fa-eye"></i>
         </a>
-    @endcan --}}
+    @endcan
     @if ($deleted_at==null)
         {!! Form::open(['route' => ['matrizPriorizados.destroy', $company_id, $process_map_id, $id], 'method' => 'delete']) !!}
             @can('eliminar_matriz_priorizacion')
