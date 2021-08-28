@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatematrizPriorizadoRequest;
 use App\Http\Requests\UpdatematrizPriorizadoRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Criterio;
 use App\Models\matrizPriorizado;
+use App\Models\Process;
+use App\Models\processCriterio;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -75,20 +78,44 @@ class matrizPriorizadoController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id, $id2, $id3)
+    public function show($id, $id2, $id3, Request $request)
     {
-        //return $id3;
-        /** @var matrizPriorizado $matrizPriorizado */
-        //$matrizPriorizado = matrizPriorizado::find($id3);
-        $matrizPriorizado = matrizPriorizado::where('process_map_id','=',$id2)->get();
-        //return $matrizPriorizado;
-        if (empty($matrizPriorizado)) {
-            Flash::error(__('models/matrizPriorizados.singular').' '.__('messages.not_found'));
-
-            return redirect(route('matrizPriorizados.index',[$id, $id2]));
+        //Obtener los procesos priorizados
+        $procesosPriorizados = matrizPriorizado::where('process_map_id','=',$id2)
+        ->first();
+        //Validación
+        if (empty($procesosPriorizados)) {
+            Flash::error("Completar la priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))
+            ->with('company_id',$id)->with('process_map_id',$id2);
+        }
+        $ids = json_decode($procesosPriorizados->process_id_data_flow_diagram);
+        //Ajax para datatable
+        if($request->ajax()){
+            $processPriorizados = Process::whereIn('id', $ids)
+            ->whereNull('parent_process_id')->get();
+            return DataTables::of($processPriorizados)
+            ->addColumn('company_id',function($process){
+                return $process->processMap->company_id;
+            })
+            ->addColumn('matriz_priorizado',function($process) use ($procesosPriorizados) {
+                return $procesosPriorizados->id;
+            })
+            ->addColumn('action','matriz_priorizados.process_priorizados.actions')
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        //Check si se ha completado la matriz de priorización
+        $criterios = Criterio::where('process_map_id','=',$id2)->get()->count();
+        $procesos = Process::where('process_map_id','=',$id2)->whereNull('parent_process_id')->get()->count();
+        $matrizPriorizacionCriterios = processCriterio::where('process_map_id','=',$id2)->first();
+        $total = (isset($matrizPriorizacionCriterios->data))?count(json_decode($matrizPriorizacionCriterios->data, true)):0;
+        if ($criterios*$procesos != $total) {
+            Flash::error("Completar la Matriz de Priorización de procesos críticos");
+            return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
         }
 
-        return view('matriz_priorizados.show')->with('matrizPriorizado', $matrizPriorizado)->with('company_id', $id)->with('process_map_id', $id2);
+        return view('matriz_priorizados.show')->with('company_id', $id)->with('process_map_id', $id2)->with('matrizPriorizados',$id3);
     }
 
     /**

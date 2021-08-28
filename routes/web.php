@@ -122,6 +122,15 @@ Route::post('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/activate', 
 
 Route::resource('/company/{id}/processMaps/{id2}/rols', 'RolController')->names('rols');
 
+//Tercera Unidad
+//id3: id priorización | id4: proceso priorizado
+Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}', 'mapaEstrategicoController')->names('mapaEstrategico');
+
+
+
+
+
+//Otros
 
 Route::resource('indicators', 'IndicatorController');
 
