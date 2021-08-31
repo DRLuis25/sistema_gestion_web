@@ -8,19 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Perspective
  * @package App\Models
- * @version August 26, 2021, 1:01 pm -05
+ * @version August 30, 2021, 2:14 pm -05
  *
  * @property \App\Models\Process $process
  * @property \Illuminate\Database\Eloquent\Collection $objectives
  * @property integer $process_id
  * @property string $descripcion
+ * @property integer $orden
  */
 class Perspective extends Model
 {
-    use SoftDeletes;
 
     public $table = 'perspectives';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -31,7 +31,8 @@ class Perspective extends Model
 
     public $fillable = [
         'process_id',
-        'descripcion'
+        'descripcion',
+        'orden'
     ];
 
     /**
@@ -42,7 +43,8 @@ class Perspective extends Model
     protected $casts = [
         'id' => 'integer',
         'process_id' => 'integer',
-        'descripcion' => 'string'
+        'descripcion' => 'string',
+        'orden' => 'integer'
     ];
 
     /**
@@ -52,7 +54,10 @@ class Perspective extends Model
      */
     public static $rules = [
         'process_id' => 'required',
-        'descripcion' => 'required|string|max:255'
+        'descripcion' => 'required|string|max:255',
+        'orden' => 'required|integer',
+        'created_at' => 'nullable',
+        'updated_at' => 'nullable'
     ];
 
     /**

@@ -196,13 +196,3 @@
         <p>@lang('models/perspectives.plural')</p>
     </a>
 </li>
-
-
-<li class="nav-item">
-    <a href="{{ route('objectives.index') }}"
-       class="nav-link {{ Request::is('objectives*') ? 'active' : '' }}">
-        <p>@lang('models/objectives.plural')</p>
-    </a>
-</li>
-
-

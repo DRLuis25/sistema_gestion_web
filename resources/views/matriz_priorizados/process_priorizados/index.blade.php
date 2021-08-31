@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('matrizPriorizados.show',[$company_id,$process_map_id,$matriz_priorizados]) }}">
+                       href="{{ route('matrizPriorizados.show',[$company_id,$process_map_id,$matriz_priorizado_id]) }}">
                         @lang('crud.back')
                     </a>
                 </div>
@@ -31,7 +31,7 @@
                 </div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="perspectivas-tab" data-toggle="tab" href="#perspectivas" role="tab" aria-controls="perspectivas" aria-selected="true">Perspectivas</a>
+                        <a class="nav-link" id="perspectivas-tab" data-toggle="tab" href="#perspectivas" role="tab" aria-controls="perspectivas" aria-selected="true">Perspectivas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="objetivos-tab" data-toggle="tab" href="#objetivos" role="tab" aria-controls="objetivos" aria-selected="false">Objetivos</a>
@@ -44,14 +44,14 @@
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="perspectivas" role="tabpanel" aria-labelledby="perspectivas-tab">
+                    <div class="tab-pane fade" id="perspectivas" role="tabpanel" aria-labelledby="perspectivas-tab">
                         @include('matriz_priorizados.process_priorizados.perspectivas.content')
                     </div>
                     <div class="tab-pane fade" id="objetivos" role="tabpanel" aria-labelledby="objetivos-tab">
                         @include('matriz_priorizados.process_priorizados.objetivos.content')
                     </div>
-                    <div class="tab-pane fade" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
-                        @include('matriz_priorizados.process_priorizados.graficos.content')
+                    <div class="tab-pane active show" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
+                        @include('matriz_priorizados.process_priorizados.grafico.content')
                     </div>
                     <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
                         @include('matriz_priorizados.process_priorizados.historial.content')

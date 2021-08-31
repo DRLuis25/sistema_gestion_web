@@ -27,25 +27,21 @@ class CreateMapaEstrategicoTables extends Migration
             $table->string('descripcion');
             $table->integer('orden');
             $table->foreign('process_id')->references('id')->on('process');
+            $table->timestamps();
         });
         //Objetivos
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('matriz_priorizado_id');
             $table->unsignedBigInteger('process_id');
             $table->unsignedBigInteger('perspective_id');
             $table->string('descripcion');//$table->string('relaciona')[1,2]
+            $table->text('efecto')->nullable();//$table->string('relaciona')[1,2]
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
             $table->foreign('process_id')->references('id')->on('process');
             $table->foreign('perspective_id')->references('id')->on('perspectives');
-        });
-        Schema::create('objective_objectives', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('objective_id');
-            $table->unsignedBigInteger('objective_id2');
-            $table->timestamps();
-            $table->foreign('objective_id')->references('id')->on('objectives');
-            $table->foreign('objective_id2')->references('id')->on('objectives');
         });
         Schema::create('indicators', function (Blueprint $table) {
             $table->id();

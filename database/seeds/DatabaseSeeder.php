@@ -400,5 +400,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesSeeder::class);
 
         $this->call(MapaProcesoSeeder::class);
+
+        $this->call(MapaEstrategicoSeeder::class);
     }
 }

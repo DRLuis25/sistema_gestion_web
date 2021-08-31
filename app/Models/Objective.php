@@ -8,23 +8,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Objective
  * @package App\Models
- * @version August 26, 2021, 1:01 pm -05
+ * @version August 30, 2021, 5:53 pm -05
  *
+ * @property \App\Models\MatrizPriorizado $matrizPriorizado
  * @property \App\Models\Perspective $perspective
  * @property \App\Models\Process $process
- * @property \Illuminate\Database\Eloquent\Collection $objectiveObjectives
- * @property \Illuminate\Database\Eloquent\Collection $objectiveObjective1s
+ * @property integer $matriz_priorizado_id
  * @property integer $process_id
  * @property integer $perspective_id
  * @property string $descripcion
- * @property integer $level
+ * @property string $efecto
  */
 class Objective extends Model
 {
     use SoftDeletes;
 
     public $table = 'objectives';
-
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -34,10 +34,11 @@ class Objective extends Model
 
 
     public $fillable = [
+        'matriz_priorizado_id',
         'process_id',
         'perspective_id',
         'descripcion',
-        'level'
+        'efecto'
     ];
 
     /**
@@ -47,10 +48,11 @@ class Objective extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'matriz_priorizado_id' => 'integer',
         'process_id' => 'integer',
         'perspective_id' => 'integer',
         'descripcion' => 'string',
-        'level' => 'integer'
+        'efecto' => 'string'
     ];
 
     /**
@@ -59,14 +61,23 @@ class Objective extends Model
      * @var array
      */
     public static $rules = [
+        'matriz_priorizado_id' => 'required',
         'process_id' => 'required',
         'perspective_id' => 'required',
         'descripcion' => 'required|string|max:255',
-        'level' => 'required|integer|min:0',
+        'efecto' => 'nullable|string',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function matrizPriorizado()
+    {
+        return $this->belongsTo(\App\Models\MatrizPriorizado::class, 'matriz_priorizado_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -82,21 +93,5 @@ class Objective extends Model
     public function process()
     {
         return $this->belongsTo(\App\Models\Process::class, 'process_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function objectiveObjectives()
-    {
-        return $this->hasMany(\App\Models\ObjectiveObjective::class, 'objective_id2');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function objectiveObjective1s()
-    {
-        return $this->hasMany(\App\Models\ObjectiveObjective::class, 'objective_id');
     }
 }

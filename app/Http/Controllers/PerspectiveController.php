@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 
 class PerspectiveController extends AppBaseController
 {
+
     /**
      * Display a listing of the Perspective.
      *
@@ -157,4 +158,5 @@ class PerspectiveController extends AppBaseController
 
         return redirect(route('perspectives.index'));
     }
+
 }

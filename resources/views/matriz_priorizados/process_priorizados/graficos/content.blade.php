@@ -1,1 +1,0 @@
-Gráfico view

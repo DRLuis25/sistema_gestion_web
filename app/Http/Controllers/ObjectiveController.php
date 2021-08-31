@@ -13,124 +13,24 @@ use Yajra\DataTables\DataTables;
 
 class ObjectiveController extends AppBaseController
 {
-    /**
-     * Display a listing of the Objective.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function index(Request $request)
+    public function index($id, $id2,$id3,$id4, Request $request)
     {
+        //id: matriz_priorizado_id
+        //id2: process_id
+        //id3: perspective_id
+        $objetivos = Objective::where('matriz_priorizado_id',$id3)
+        ->where('process_id',$id4)
+        ->get();
         if($request->ajax()){
-            /** @var Objective $objectives */
-            $objectives = Objective::all();
-            return DataTables::of($objectives)
-            ->addColumn('action','objectives.actions')
+            return DataTables::of($objetivos)
+            ->addColumn('perpectiva',function($objetivo){
+                return $objetivo->perspective->descripcion;
+            })
+            ->addColumn('action','matriz_priorizados.process_priorizados.objetivos.actions')
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('objectives.index');
     }
-
-    /**
-     * Show the form for creating a new Objective.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('objectives.create');
-    }
-
-    /**
-     * Store a newly created Objective in storage.
-     *
-     * @param CreateObjectiveRequest $request
-     *
-     * @return Response
-     */
-    public function store(CreateObjectiveRequest $request)
-    {
-        $input = $request->all();
-
-        /** @var Objective $objective */
-        $objective = Objective::create($input);
-
-        Flash::success(__('messages.saved', ['model' => __('models/objectives.singular')]));
-
-        return redirect(route('objectives.index'));
-    }
-
-    /**
-     * Display the specified Objective.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        /** @var Objective $objective */
-        $objective = Objective::find($id);
-
-        if (empty($objective)) {
-            Flash::error(__('models/objectives.singular').' '.__('messages.not_found'));
-
-            return redirect(route('objectives.index'));
-        }
-
-        return view('objectives.show')->with('objective', $objective);
-    }
-
-    /**
-     * Show the form for editing the specified Objective.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        /** @var Objective $objective */
-        $objective = Objective::find($id);
-
-        if (empty($objective)) {
-            Flash::error(__('messages.not_found', ['model' => __('models/objectives.singular')]));
-
-            return redirect(route('objectives.index'));
-        }
-
-        return view('objectives.edit')->with('objective', $objective);
-    }
-
-    /**
-     * Update the specified Objective in storage.
-     *
-     * @param int $id
-     * @param UpdateObjectiveRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, UpdateObjectiveRequest $request)
-    {
-        /** @var Objective $objective */
-        $objective = Objective::find($id);
-
-        if (empty($objective)) {
-            Flash::error(__('messages.not_found', ['model' => __('models/objectives.singular')]));
-
-            return redirect(route('objectives.index'));
-        }
-
-        $objective->fill($request->all());
-        $objective->save();
-
-        Flash::success(__('messages.updated', ['model' => __('models/objectives.singular')]));
-
-        return redirect(route('objectives.index'));
-    }
-
     /**
      * Remove the specified Objective from storage.
      *
@@ -140,21 +40,24 @@ class ObjectiveController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        /** @var Objective $objective */
+        //Para el destroy validar que no esté siendo usado en otras relaciones
         $objective = Objective::find($id);
-
+        $company_id = $objective->process->processMap->company_id;
+        $process_map_id = $objective->process->processMap->id;
+        $matriz_priorizado_id = $objective->matriz_priorizado_id;
+        $process_id = $objective->process_id;
         if (empty($objective)) {
             Flash::error(__('messages.not_found', ['model' => __('models/objectives.singular')]));
 
-            return redirect(route('objectives.index'));
+            return redirect(route('matrizPriorizados.show',[$company_id,$process_map_id,$matriz_priorizado_id]));
         }
 
         $objective->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/objectives.singular')]));
 
-        return redirect(route('objectives.index'));
+        return redirect(route('mapaEstrategico.show',[$company_id,$process_map_id,$matriz_priorizado_id,$process_id]));
     }
 }
