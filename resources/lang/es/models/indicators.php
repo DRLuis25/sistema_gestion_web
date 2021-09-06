@@ -8,6 +8,7 @@ return array (
     'id' => 'Id',
     'process_id' => 'Id proceso',
     'frecuency_id' => 'Frecuency Id',
+    'name' => 'Nombre',
     'descripcion' => 'Descripcion',
     'objetivo' => 'Objetivo',
     'responsable' => 'Responsable',

@@ -259,6 +259,7 @@
             {"from":"fourD","to":"fourA"},
             {"from":"fourD","to":"twoE"},
             {"from":"twoC","to":"oneC"},
+            {"from":"fourC","to":"Lane3"},
         ]
         myDiagram.model = new go.GraphLinksModel(nodeDataArray,linkDataArray);
         //myDiagram.model = go.Model.fromJson(document.getElementById("dataDiagram").value);

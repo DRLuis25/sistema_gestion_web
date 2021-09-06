@@ -42,6 +42,12 @@
                     <li class="nav-item">
                         <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="indicadores-tab" data-toggle="tab" href="#indicadores" role="tab" aria-controls="indicadores" aria-selected="false">Indicadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tablero_comando-tab" data-toggle="tab" href="#tablero_comando" role="tab" aria-controls="tablero_comando" aria-selected="false">Tablero de comando</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade" id="perspectivas" role="tabpanel" aria-labelledby="perspectivas-tab">
@@ -50,11 +56,17 @@
                     <div class="tab-pane fade" id="objetivos" role="tabpanel" aria-labelledby="objetivos-tab">
                         @include('matriz_priorizados.process_priorizados.objetivos.content')
                     </div>
-                    <div class="tab-pane active show" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
+                    <div class="tab-pane fade" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
                         @include('matriz_priorizados.process_priorizados.grafico.content')
                     </div>
                     <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
                         @include('matriz_priorizados.process_priorizados.historial.content')
+                    </div>
+                    <div class="tab-pane fade" id="indicadores" role="tabpanel" aria-labelledby="indicadores-tab">
+                        @include('matriz_priorizados.process_priorizados.indicadores.content')
+                    </div>
+                    <div class="tab-pane active show" id="tablero_comando" role="tabpanel" aria-labelledby="tablero_comando-tab">
+                        @include('matriz_priorizados.process_priorizados.tablero_comando.content')
                     </div>
                 </div>
             </div>
