@@ -21,38 +21,37 @@ class PerspectiveController extends AppBaseController
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index($id, $id2,$id3,$id4,Request $request)
     {
         if($request->ajax()){
             /** @var Perspective $perspectives */
-            $perspectives = Perspective::all();
+            $perspectives = Perspective::where('process_id',$id4)
+            ->get();
             return DataTables::of($perspectives)
-            ->addColumn('action','perspectives.actions')
+            ->addColumn('action','matriz_priorizados.process_priorizados.perspectivas.actions')
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('perspectives.index');
     }
 
-    /**
-     * Show the form for creating a new Perspective.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('perspectives.create');
-    }
-
-    /**
-     * Store a newly created Perspective in storage.
-     *
-     * @param CreatePerspectiveRequest $request
-     *
-     * @return Response
-     */
     public function store(CreatePerspectiveRequest $request)
     {
+        $perspective = Perspective::all();
+        $max = 0;
+
+        foreach($perspective as $item)
+        {
+            if($max < $item->orden)
+                $max = $item->orden;
+        }
+
+        $perspective = new Perspective();
+        $perspective->process_id = $request->process_id;
+        $perspective->descripcion = $request->descripcion;
+        $perspective->orden = $max + 1;
+        $perspective->save();
+
+        //--------------------------------------------------------------
         $input = $request->all();
 
         /** @var Perspective $perspective */
@@ -63,13 +62,6 @@ class PerspectiveController extends AppBaseController
         return redirect(route('perspectives.index'));
     }
 
-    /**
-     * Display the specified Perspective.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
     public function show($id)
     {
         /** @var Perspective $perspective */
@@ -84,13 +76,6 @@ class PerspectiveController extends AppBaseController
         return view('perspectives.show')->with('perspective', $perspective);
     }
 
-    /**
-     * Show the form for editing the specified Perspective.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
     public function edit($id)
     {
         /** @var Perspective $perspective */
@@ -105,14 +90,7 @@ class PerspectiveController extends AppBaseController
         return view('perspectives.edit')->with('perspective', $perspective);
     }
 
-    /**
-     * Update the specified Perspective in storage.
-     *
-     * @param int $id
-     * @param UpdatePerspectiveRequest $request
-     *
-     * @return Response
-     */
+
     public function update($id, UpdatePerspectiveRequest $request)
     {
         /** @var Perspective $perspective */
@@ -132,19 +110,14 @@ class PerspectiveController extends AppBaseController
         return redirect(route('perspectives.index'));
     }
 
-    /**
-     * Remove the specified Perspective from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
     public function destroy($id)
     {
-        /** @var Perspective $perspective */
+        //Para el destroy validar que no esté siendo usado en otras relaciones
         $perspective = Perspective::find($id);
+        $company_id = $perspective->process->processMap->company_id;
+        $process_map_id = $perspective->process->processMap->id;
+        $matriz_priorizado_id = $perspective->process->processMap->matrizPriorizado->id;
+        $process_id = $perspective->process_id;
 
         if (empty($perspective)) {
             Flash::error(__('messages.not_found', ['model' => __('models/perspectives.singular')]));
@@ -156,7 +129,8 @@ class PerspectiveController extends AppBaseController
 
         Flash::success(__('messages.deleted', ['model' => __('models/perspectives.singular')]));
 
-        return redirect(route('perspectives.index'));
+        return redirect(route('mapaEstrategico.show',[$company_id,$process_map_id,$matriz_priorizado_id,$process_id]));
+
     }
 
 }

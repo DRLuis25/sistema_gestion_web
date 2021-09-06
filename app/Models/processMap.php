@@ -97,6 +97,11 @@ class processMap extends Model
         return $this->belongsTo(\App\Models\Company::class, 'company_id');
     }
 
+    public function matrizPriorizado()
+    {
+        return $this->hasMany(\App\Models\matrizPriorizado::class, 'process_map_id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/

@@ -126,8 +126,10 @@ Route::resource('/company/{id}/processMaps/{id2}/rols', 'RolController')->names(
 //id3: id priorización | id4: proceso priorizado
 Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico', 'mapaEstrategicoController')->names('mapaEstrategico');
 Route::get('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/objective','ObjectiveController@index')->name('objective.index');
+Route::get('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/perspective','PerspectiveController@index')->name('perspective.index');
 //Falta validar el delete y hacer el edit
 Route::delete('objective/{id}','ObjectiveController@destroy')->name('objectives.destroy');
+Route::delete('perspective/{id}','PerspectiveController@destroy')->name('perspectives.destroy');
 
 
 
