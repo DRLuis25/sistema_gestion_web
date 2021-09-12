@@ -29,6 +29,8 @@
                     </div>
                     <div class="form-group col-12">
                         <label for="description" class="col-form-label">@lang('models/objectives.fields.effect_id'):</label>
+                        <input type="checkbox" value="">
+                        <label for="">Perspectiva</label>
                         <select name="effect_id[]" id="effect_id" class="form-control" multiple>
                             {{-- Dinámico --}}
                         </select>

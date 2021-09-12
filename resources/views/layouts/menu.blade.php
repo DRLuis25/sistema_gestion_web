@@ -89,7 +89,19 @@
     @endcan
 
 @endif
+<li class="nav-item">
+    <a href="{{ route('perspectiveCompanies.index',[$company_id]) }}"
+       class="nav-link {{ Request::is('perspectiveCompanies*') ? 'active' : '' }}">
+        <p>@lang('models/perspectiveCompanies.plural')</p>
+    </a>
+</li>
 
+<li class="nav-item">
+    <a href="{{ route('objectiveCompanies.index',[$company_id]) }}"
+       class="nav-link {{ Request::is('objectiveCompanies*') ? 'active' : '' }}">
+        <p>@lang('models/objectiveCompanies.plural')</p>
+    </a>
+</li>
 @if ((Request::is('*processMaps/*') and !Request::is('*processMaps/create'))or Request::is('historialProcessMaps*'))
     <li class="nav-item">
         <a href="{{ route('processMaps.index', [$company_id]) }}"
@@ -182,7 +194,7 @@
 
  --}}
 
-<li class="nav-item">
+{{-- <li class="nav-item">
     <a href="{{ route('indicators.index') }}"
        class="nav-link {{ Request::is('indicators*') ? 'active' : '' }}">
         <p>@lang('models/indicators.plural')</p>
@@ -195,4 +207,9 @@
        class="nav-link {{ Request::is('perspectives*') ? 'active' : '' }}">
         <p>@lang('models/perspectives.plural')</p>
     </a>
-</li>
+</li> --}}
+
+
+
+
+

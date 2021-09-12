@@ -141,3 +141,9 @@ Route::resource('indicators', 'IndicatorController');
 
 Route::resource('perspectives', 'PerspectiveController');
 
+
+
+Route::resource('/company/{id}/perspectiveCompanies', 'perspectiveCompanyController')->names('perspectiveCompanies');
+
+
+Route::resource('/company/{id}/objectiveCompanies', 'objectiveCompanyController')->names('objectiveCompanies');

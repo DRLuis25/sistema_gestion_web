@@ -20,13 +20,29 @@ class CreateMapaEstrategicoTables extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        Schema::create('perspectives_companies', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('company_id');
+            $table->string('descripcion');
+            $table->foreign('company_id')->references('id')->on('companies');
+            $table->timestamps();
+        });
         //Perspectivas: Financiera, Clientes, Procesos internos, Aprendizaje y crecimiento
         Schema::create('perspectives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('process_id');
-            $table->string('descripcion');
+            $table->unsignedBigInteger('perspective_company_id');
             $table->integer('orden');
             $table->foreign('process_id')->references('id')->on('process');
+            $table->foreign('perspective_company_id')->references('id')->on('perspectives_companies');
+            $table->timestamps();
+        });
+
+        Schema::create('objectives_companies', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('company_id');
+            $table->string('descripcion');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
         //Objetivos
@@ -35,13 +51,16 @@ class CreateMapaEstrategicoTables extends Migration
             $table->unsignedBigInteger('matriz_priorizado_id');
             $table->unsignedBigInteger('process_id');
             $table->unsignedBigInteger('perspective_id');
-            $table->string('descripcion');//$table->string('relaciona')[1,2]
-            $table->text('efecto')->nullable();//$table->string('relaciona')[1,2]
+            $table->unsignedBigInteger('objectives_company_id')->nullable();
+            $table->string('descripcion')->nullable();
+            $table->boolean('nuevo');
+            $table->text('efecto')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
             $table->foreign('process_id')->references('id')->on('process');
             $table->foreign('perspective_id')->references('id')->on('perspectives');
+            $table->foreign('objectives_company_id')->references('id')->on('objectives_companies');
         });
         Schema::create('indicators', function (Blueprint $table) {
             $table->id();

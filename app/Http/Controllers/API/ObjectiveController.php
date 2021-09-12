@@ -41,7 +41,7 @@ class ObjectiveController extends AppBaseController
                 'process_id' => $request->process_id,
                 'perspective_id' => $request->perspective_id,
                 'descripcion' => $request->descripcion,
-                'effect' => json_encode($request->effect_id)
+                'efecto' => json_encode($request->effect_id)
             ]);
             return Response::json([
                 'status'=>'200',
