@@ -87,21 +87,21 @@
             </a>
         </li>
     @endcan
+    <li class="nav-item">
+        <a href="{{ route('perspectiveCompanies.index',[$company_id]) }}"
+        class="nav-link {{ Request::is('perspectiveCompanies*') ? 'active' : '' }}">
+            <p>@lang('models/perspectiveCompanies.plural')</p>
+        </a>
+    </li>
 
+    <li class="nav-item">
+        <a href="{{ route('objectiveCompanies.index',[$company_id]) }}"
+        class="nav-link {{ Request::is('objectiveCompanies*') ? 'active' : '' }}">
+            <p>@lang('models/objectiveCompanies.plural')</p>
+        </a>
+    </li>
 @endif
-<li class="nav-item">
-    <a href="{{ route('perspectiveCompanies.index',[$company_id]) }}"
-       class="nav-link {{ Request::is('perspectiveCompanies*') ? 'active' : '' }}">
-        <p>@lang('models/perspectiveCompanies.plural')</p>
-    </a>
-</li>
 
-<li class="nav-item">
-    <a href="{{ route('objectiveCompanies.index',[$company_id]) }}"
-       class="nav-link {{ Request::is('objectiveCompanies*') ? 'active' : '' }}">
-        <p>@lang('models/objectiveCompanies.plural')</p>
-    </a>
-</li>
 @if ((Request::is('*processMaps/*') and !Request::is('*processMaps/create'))or Request::is('historialProcessMaps*'))
     <li class="nav-item">
         <a href="{{ route('processMaps.index', [$company_id]) }}"

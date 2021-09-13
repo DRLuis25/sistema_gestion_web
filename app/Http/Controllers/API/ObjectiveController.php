@@ -25,7 +25,8 @@ class ObjectiveController extends AppBaseController
             objectives.process_id,
             objectives.perspective_id,
             objectives.descripcion,
-            perspectives.orden
+            perspectives.orden,
+            objectives.efecto
             ')
             ->join('perspectives','perspectives.id','=','objectives.perspective_id')
             ->get();
@@ -35,13 +36,21 @@ class ObjectiveController extends AppBaseController
     public function storeObjective(Request $request)
     {
         try{
-            $input = $request->all();
+            $efecto = null;
+            if ($request->nuevo=='1') {
+                unset($request->objetivo_company);
+            }
+            if (!is_null($request->effect_id)) {
+                $efecto = json_encode($request->effect_id);
+            }
             $objective = Objective::create([
                 'matriz_priorizado_id' =>  $request->matriz_priorizado_id,
                 'process_id' => $request->process_id,
                 'perspective_id' => $request->perspective_id,
                 'descripcion' => $request->descripcion,
-                'efecto' => json_encode($request->effect_id)
+                'efecto' => $efecto,
+                'nuevo' => $request->nuevo,
+                'objectives_company_id' => $request->objetivo_company
             ]);
             return Response::json([
                 'status'=>'200',

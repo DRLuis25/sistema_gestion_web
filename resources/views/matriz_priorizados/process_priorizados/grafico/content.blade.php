@@ -217,53 +217,78 @@
           $$(go.Shape),
           $$(go.Shape, { toArrow: "Standard" })
         );
-        ///**************************************************************
-
         let nodeDataArray = [
-        {"key":"Pool1","text":"Mapa Estratégico","isGroup":true,"category":"Pool","loc":"26.598466491699217 0.5"},
-        {"key":"Lane1","text":"Financiera","isGroup":true,"group":"Pool1","color":"lightblue","loc":"53.12131399000715 0.5","size":"328.72167968750006 100"},
-        {"key":"Lane2","text":"Clientes","isGroup":true,"group":"Pool1","color":"lightgreen","loc":"53.12131399000715 99.5","size":"328.72167968750006 180"},
-        {"key":"Lane3","text":"Procesos Internos","isGroup":true,"group":"Pool1","color":"lightyellow","size":"328.72167968750006 86","loc":"53.12131399000715 278.5"},
-        {"key":"Lane4","text":"Aprendizaje y crecimiento","isGroup":true,"group":"Pool1","color":"orange","loc":"53.12131399000715 363.5","size":"328.72167968750006 86"},
-        {"key":"oneA","group":"Lane1","text":"Objetivo FA"},
-        {"key":"oneB","group":"Lane1","text":"Objetivo FB"},
-        {"key":"oneC","group":"Lane1","text":"Objetivo FC"},
-        {"key":"oneD","group":"Lane1","text":"Objetivo FD"},
-        {"key":"twoA","group":"Lane2","text":"Objetivo LA"},
-        {"key":"twoB","group":"Lane2","text":"Objetivo LB"},
-        {"key":"twoC","group":"Lane2","text":"Objetivo LC"},
-        {"key":"twoD","group":"Lane2","text":"Objetivo LD"},
-        {"key":"twoE","group":"Lane2","text":"Objetivo LE"},
-        {"key":"twoF","group":"Lane2","text":"Objetivo LF"},
-        {"key":"twoG","group":"Lane2","text":"Objetivo LG"},
-        {"key":"fourA","group":"Lane3","text":"Objetivo A"},
-        {"key":"fourB","group":"Lane3","text":"Objetivo B"},
-        {"key":"fourC","group":"Lane4","text":"Objetivo C"},
-        {"key":"fourD","group":"Lane4","text":"Objetivo D"},
-        ]
-        let linkDataArray = [
-            {"from":"oneA","to":"oneB"},
-            {"from":"oneA","to":"oneC"},
-            {"from":"oneB","to":"oneD"},
-            {"from":"oneC","to":"oneD"},
-            {"from":"twoA","to":"twoB"},
-            {"from":"twoA","to":"twoC"},
-            {"from":"twoA","to":"twoF"},
-            {"from":"twoB","to":"twoD"},
-            {"from":"twoC","to":"twoD"},
-            {"from":"twoD","to":"twoG"},
-            {"from":"twoE","to":"twoG"},
-            {"from":"twoF","to":"twoG"},
-            {"from":"fourA","to":"fourB"},
-            {"from":"fourC","to":"fourD"},
-            {"from":"fourD","to":"fourA"},
-            {"from":"fourD","to":"twoE"},
-            {"from":"twoC","to":"oneC"},
-            {"from":"fourC","to":"Lane3"},
-        ]
-        myDiagram.model = new go.GraphLinksModel(nodeDataArray,linkDataArray);
-        //myDiagram.model = go.Model.fromJson(document.getElementById("dataDiagram").value);
-        relayoutLanes();
+            {"key":"Pool1","text":"Mapa Estratégico","isGroup":true,"category":"Pool","loc":"26.598466491699217 0.5"},
+        ];
+        let linkDataArray = [];
+        ///**************************************************************
+        $.get(`/api/getPerspectivas/{{$process_id}}`, function(res, sta){
+            //console.log(res);
+            res.sort((a, b) => a.orden > b.orden ? 1 : -1);
+            //console.log(res);
+            res.forEach(element => {
+                myObject = {"key":"Lane"+element.id,"text":element.perspective_company.descripcion,"isGroup":true,"group":"Pool1","color": "#"+Math.floor(Math.random()*16777215).toString(16),"size":"328.72167968750006 86"};
+                //console.log(myObject);
+                nodeDataArray.push(myObject);
+            });
+            $.get(`/api/getObjectives/{{$matriz_priorizado_id}}/{{$process_id}}/99`, function(res, sta){
+                res.forEach(element => {
+                    console.log('elemento: ',element);
+                    myObject = {"key":"key"+element.id,"text":element.descripcion,"group":"Lane"+element.perspective_id};
+                    nodeDataArray.push(myObject);
+                    links = JSON.parse(element.efecto)??[];
+                    links.forEach(elemento=>{
+                        console.log(elemento);
+                        myObjectLink = {"from":"key"+element.id,"to":"key"+elemento};
+                        linkDataArray.push(myObjectLink);
+                    })
+                });
+                /*let linkDataArray = [
+                    {"from":"oneA","to":"oneB"},
+                    {"from":"oneA","to":"oneC"},
+                    {"from":"oneB","to":"oneD"},
+                    {"from":"oneC","to":"oneD"},
+                    {"from":"twoA","to":"twoB"},
+                    {"from":"twoA","to":"twoC"},
+                    {"from":"twoA","to":"twoF"},
+                    {"from":"twoB","to":"twoD"},
+                    {"from":"twoC","to":"twoD"},
+                    {"from":"twoD","to":"twoG"},
+                    {"from":"twoE","to":"twoG"},
+                    {"from":"twoF","to":"twoG"},
+                    {"from":"fourA","to":"fourB"},
+                    {"from":"fourC","to":"fourD"},
+                    {"from":"fourD","to":"fourA"},
+                    {"from":"fourD","to":"twoE"},
+                    {"from":"twoC","to":"oneC"},
+                    {"from":"fourC","to":"Lane3"},
+                ];*/
+                myDiagram.model = new go.GraphLinksModel(nodeDataArray,linkDataArray);
+                //myDiagram.model = go.Model.fromJson(document.getElementById("dataDiagram").value);
+                relayoutLanes();
+            });
+            /*nodeDataArray.push(
+            {"key":"Lane1","text":"Financiera","isGroup":true,"group":"Pool1","color":"lightblue"},
+            {"key":"Lane2","text":"Clientes","isGroup":true,"group":"Pool1","color":"lightgreen"},
+            {"key":"Lane3","text":"Procesos Internos","isGroup":true,"group":"Pool1","color":"lightyellow"},
+            {"key":"Lane4","text":"Aprendizaje y crecimiento","isGroup":true,"group":"Pool1","color":"orange"},
+            {"key":"oneA","group":"Lane1","text":"Objetivo FA"},
+            {"key":"oneB","group":"Lane1","text":"Objetivo FB"},
+            {"key":"oneC","group":"Lane1","text":"Objetivo FC"},
+            {"key":"oneD","group":"Lane1","text":"Objetivo FD"},
+            {"key":"twoA","group":"Lane2","text":"Objetivo LA"},
+            {"key":"twoB","group":"Lane2","text":"Objetivo LB"},
+            {"key":"twoC","group":"Lane2","text":"Objetivo LC"},
+            {"key":"twoD","group":"Lane2","text":"Objetivo LD"},
+            {"key":"twoE","group":"Lane2","text":"Objetivo LE"},
+            {"key":"twoF","group":"Lane2","text":"Objetivo LF"},
+            {"key":"twoG","group":"Lane2","text":"Objetivo LG"},
+            {"key":"fourA","group":"Lane3","text":"Objetivo A"},
+            {"key":"fourB","group":"Lane3","text":"Objetivo B"},
+            {"key":"fourC","group":"Lane4","text":"Objetivo C"},
+            {"key":"fourD","group":"Lane4","text":"Objetivo D"}
+            );*/
+        });
     }
 </script>
 

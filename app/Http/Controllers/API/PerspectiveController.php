@@ -10,10 +10,10 @@ class PerspectiveController extends AppBaseController
 {
     public function getPerspectivas($id, Request $request)
     {
-        if($request->ajax()){
+        //if($request->ajax()){
             /** @var Process $process */
-            $process = Perspective::where('process_id','=',$id)->get();
+            $process = Perspective::where('process_id','=',$id)->with('perspectiveCompany')->get();
             return response()->json($process);
-        }
+        //}
     }
 }

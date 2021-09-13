@@ -20,11 +20,13 @@ class IndicatorController extends AppBaseController
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index($id, $id2, $id3, $id4, Request $request)
     {
         if($request->ajax()){
             /** @var Indicator $indicators */
-            $indicators = Indicator::all();
+            $indicators = Indicator::where('matriz_priorizado_id', $id3)
+            ->where('process_id', $id4)
+            ->get();
             return DataTables::of($indicators)
             ->addColumn('action','indicators.actions')
             ->rawColumns(['action'])

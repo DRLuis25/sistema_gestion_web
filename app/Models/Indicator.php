@@ -8,22 +8,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Indicator
  * @package App\Models
- * @version August 26, 2021, 12:59 pm -05
+ * @version September 13, 2021, 2:23 am -05
  *
  * @property \App\Models\Frequency $frecuency
+ * @property \App\Models\MatrizPriorizado $matrizPriorizado
  * @property \App\Models\Process $process
  * @property \Illuminate\Database\Eloquent\Collection $dataFuentes
+ * @property integer $matriz_priorizado_id
  * @property integer $process_id
  * @property integer $frecuency_id
  * @property string $descripcion
+ * @property string $formula
+ * @property string $linea_base
  * @property string $objetivo
  * @property string $responsable
- * @property string $iniciativas
- * @property string $linea_base
  * @property string $meta
- * @property string $formula
- * @property integer $verde
+ * @property string $iniciativas
  * @property integer $rojo
+ * @property integer $verde
  */
 class Indicator extends Model
 {
@@ -40,17 +42,18 @@ class Indicator extends Model
 
 
     public $fillable = [
+        'matriz_priorizado_id',
         'process_id',
         'frecuency_id',
         'descripcion',
+        'formula',
+        'linea_base',
         'objetivo',
         'responsable',
-        'iniciativas',
-        'linea_base',
         'meta',
-        'formula',
-        'verde',
-        'rojo'
+        'iniciativas',
+        'rojo',
+        'verde'
     ];
 
     /**
@@ -60,17 +63,18 @@ class Indicator extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'matriz_priorizado_id' => 'integer',
         'process_id' => 'integer',
         'frecuency_id' => 'integer',
         'descripcion' => 'string',
+        'formula' => 'string',
+        'linea_base' => 'string',
         'objetivo' => 'string',
         'responsable' => 'string',
-        'iniciativas' => 'string',
-        'linea_base' => 'string',
         'meta' => 'string',
-        'formula' => 'string',
-        'verde' => 'integer',
-        'rojo' => 'integer'
+        'iniciativas' => 'string',
+        'rojo' => 'integer',
+        'verde' => 'integer'
     ];
 
     /**
@@ -79,17 +83,18 @@ class Indicator extends Model
      * @var array
      */
     public static $rules = [
+        'matriz_priorizado_id' => 'required',
         'process_id' => 'required',
         'frecuency_id' => 'required',
         'descripcion' => 'required|string|max:255',
+        'formula' => 'required|string',
+        'linea_base' => 'required|string',
         'objetivo' => 'required|string|max:255',
         'responsable' => 'required|string|max:255',
-        'iniciativas' => 'required|string',
-        'linea_base' => 'required|string',
         'meta' => 'required|string|max:255',
-        'formula' => 'required|string',
-        'verde' => 'required|integer',
+        'iniciativas' => 'required|string',
         'rojo' => 'required|integer',
+        'verde' => 'required|integer',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
@@ -101,6 +106,14 @@ class Indicator extends Model
     public function frecuency()
     {
         return $this->belongsTo(\App\Models\Frequency::class, 'frecuency_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function matrizPriorizado()
+    {
+        return $this->belongsTo(\App\Models\MatrizPriorizado::class, 'matriz_priorizado_id');
     }
 
     /**

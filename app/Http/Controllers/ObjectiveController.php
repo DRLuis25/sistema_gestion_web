@@ -24,7 +24,7 @@ class ObjectiveController extends AppBaseController
         if($request->ajax()){
             return DataTables::of($objetivos)
             ->addColumn('perpectiva',function($objetivo){
-                return $objetivo->perspective->descripcion;
+                return $objetivo->perspective->perspectiveCompany->descripcion;
             })
             ->addColumn('action','matriz_priorizados.process_priorizados.objetivos.actions')
             ->rawColumns(['action'])

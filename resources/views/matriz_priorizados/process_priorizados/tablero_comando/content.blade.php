@@ -7,16 +7,8 @@
             @can('registrar_data_fuente')
                 <div class="col-sm-6">
                     {{-- @include('matriz_priorizados.process_priorizados.objetivos.create') --}}
-                    <button type="button" class="btn btn-success float-right"
-                        data-toggle="modal" data-target="#objetivoModal"
-                        data-whatever="Registrar">
-                        Gráfico
-                    </button>
-                    <button type="button" class="btn btn-primary float-right"
-                        data-toggle="modal" data-target="#objetivoModal"
-                        data-whatever="Registrar">
-                        Data fuente
-                    </button>
+                    @include('matriz_priorizados.process_priorizados.tablero_comando.grafico')
+                    @include('matriz_priorizados.process_priorizados.tablero_comando.data_fuente.content')
                 </div>
             @endcan
         </div>

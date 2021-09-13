@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Perspective
  * @package App\Models
- * @version August 30, 2021, 2:14 pm -05
+ * @version September 13, 2021, 12:25 am -05
  *
+ * @property \App\Models\PerspectivesCompany $perspectiveCompany
  * @property \App\Models\Process $process
  * @property \Illuminate\Database\Eloquent\Collection $objectives
  * @property integer $process_id
- * @property string $descripcion
+ * @property integer $perspective_company_id
  * @property integer $orden
  */
 class Perspective extends Model
@@ -31,7 +32,7 @@ class Perspective extends Model
 
     public $fillable = [
         'process_id',
-        'descripcion',
+        'perspective_company_id',
         'orden'
     ];
 
@@ -43,7 +44,7 @@ class Perspective extends Model
     protected $casts = [
         'id' => 'integer',
         'process_id' => 'integer',
-        'descripcion' => 'string',
+        'perspective_company_id' => 'integer',
         'orden' => 'integer'
     ];
 
@@ -54,11 +55,19 @@ class Perspective extends Model
      */
     public static $rules = [
         'process_id' => 'required',
-        'descripcion' => 'required|string|max:255',
+        'perspective_company_id' => 'required',
         'orden' => 'required|integer',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function perspectiveCompany()
+    {
+        return $this->belongsTo(\App\Models\perspectiveCompany::class, 'perspective_company_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

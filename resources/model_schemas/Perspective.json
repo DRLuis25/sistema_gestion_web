@@ -24,10 +24,10 @@
         "inView": true
     },
     {
-        "name": "descripcion",
-        "dbType": "string,255",
-        "htmlType": "text",
-        "validations": "required|string|max:255",
+        "name": "perspective_company_id",
+        "dbType": "bigInteger,false,true",
+        "htmlType": null,
+        "validations": "required",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -70,6 +70,10 @@
         "inForm": false,
         "inIndex": false,
         "inView": false
+    },
+    {
+        "type": "relation",
+        "relation": "mt1,PerspectivesCompany,perspective_company_id"
     },
     {
         "type": "relation",

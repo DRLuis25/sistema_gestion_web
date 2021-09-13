@@ -18,8 +18,14 @@
                 {!! Form::hidden('process_id', $process_id) !!}
                 <div class="row">
                     <div class="form-group col-6">
-                        <label for="descripcion" class="col-form-label">@lang('models/objectives.fields.descripcion'):</label>
-                        <input type="text" id="descripcion" name="descripcion" required class="form-control">
+                        <label for="" class="col-form-label">@lang('models/objectives.fields.descripcion'):</label>
+                        <input type="checkbox" id="objetivo_empresa_check">
+                        <input type="hidden" name="nuevo" id="objetivo_empresa" value="1">
+                        <label for="objetivo_empresa">Empresa</label>
+                        <input type="text" id="descripcion_objetivo" name="descripcion" required class="form-control">
+                        <select name="objetivo_company" id="objetivo_company" hidden class="form-control">
+                            <option value="">Objetivo Empresa 1</option>
+                        </select>
                     </div>
                     <div class="form-group col-6">
                         <label for="perspective_id" class="col-form-label">@lang('models/objectives.fields.perspective_id'):</label>
@@ -29,10 +35,14 @@
                     </div>
                     <div class="form-group col-12">
                         <label for="description" class="col-form-label">@lang('models/objectives.fields.effect_id'):</label>
-                        <input type="checkbox" value="">
-                        <label for="">Perspectiva</label>
-                        <select name="effect_id[]" id="effect_id" class="form-control" multiple>
+                        <input type="checkbox" name="efecto_perpectiva" id="efecto_perpectiva">
+                        <label for="efecto_perpectiva">En perspectiva</label>
+                        <select name="effect_id[]" id="effect_id" class="form-control" multiple {{-- required --}}>
                             {{-- Dinámico --}}
+                        </select>
+                        <select name="effect_perspective_id[]" id="effect_perspective_id" class="form-control" multiple hidden>
+                            {{-- Dinámico perspectivas --}}
+                            <option value="">Perspectiva del proceso 1</option>
                         </select>
                     </div>
                 </div>
@@ -47,6 +57,26 @@
   </div>
 @push('scripts')
     <script>
+        $('#objetivo_empresa_check').change((evt)=>{
+            IsChecked = $('#objetivo_empresa_check')[0].checked;
+            $('#descripcion_objetivo').attr('hidden',IsChecked);
+            $('#objetivo_company').attr('hidden',!IsChecked);
+            $('#descripcion_objetivo').attr('required',!IsChecked);
+            $('#objetivo_company').attr('required',IsChecked);
+            if (IsChecked) {
+                $('#objetivo_empresa').val('0');
+            }
+            else{
+                $('#objetivo_empresa').val('1');
+            }
+        });
+        $('#efecto_perpectiva').change((evt)=>{
+            IsChecked = $('#efecto_perpectiva')[0].checked;
+            $('#effect_id').attr('hidden',IsChecked);
+            $('#effect_perspective_id').attr('hidden',!IsChecked);
+            //$('#effect_id').attr('required',!IsChecked);
+            //$('#effect_perspective_id').attr('required',IsChecked);
+        });
         $(document).ready(function() {
 
             //$('#effect_id').selectize();
@@ -56,16 +86,14 @@
             var recipient = button.data('whatever') // Extract info from data-* attributes
             var modal = $(this)
             $.get(`/api/getPerspectivas/{{$process_id}}`, function(res, sta){
-                console.log(res);
-                console.log(sta);
                 $("#perspective_id").empty();
-                $("#perspective_id").append(`<option value=""></option>`);
+                $("#perspective_id").append(`<option value="">--Seleccione uno--</option>`);
                 res.forEach(element => {
-                    $("#perspective_id").append(`<option value="${element.id}" data-orden="${element.orden}">${element.descripcion}</option>`);
+                    $("#perspective_id").append(`<option value="${element.id}" data-orden="${element.orden}">${element.perspective_company.descripcion}</option>`);
                 });
                 //$('#perspective_id').selectize();
             });
-            modal.find('.modal-title').text(recipient + ' objetivo matriz_priorizados_id:{{$matriz_priorizado_id}}')
+            modal.find('.modal-title').text(recipient + ' objetivo');
         });
         $("#perspective_id").change(event => {
             let orden = $("#perspective_id").val();
@@ -76,7 +104,6 @@
                 //$('#effect_id').prop('required',true);
                 //$("#effect_id").append(`<option value=''> </option>`);
                 res.forEach(element => {
-                    console.log(element.customer);
                     $("#effect_id").append(`<option value=${element.id}> ${element.descripcion} </option>`);
                 });
             });
@@ -108,7 +135,6 @@
                         console.log(data.e);
                         alert("Error al registrar. Registro duplicado");
                     }
-
                 },
             });
         });

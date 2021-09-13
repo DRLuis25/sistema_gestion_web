@@ -28,99 +28,17 @@
 @push('scripts')
 <script>
 $(function () {
-    //console.log('company_id: {{$company_id}}');
-    //console.log('processMap_id: {{$process_map_id}}');
     let table = $('.data-table-indicadores').DataTable({
-        "autoWidth": false,
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-        select:true,
-        columnDefs: [ {
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   0,
-            data: null,
-        } ],
-        select: {
-            style:    'multi',
-            selector: 'td:first-child'
-        },
-        dom: 'Bfrtip',
-        buttons: [
-            'pageLength',
-            'selectAll',
-            'selectNone',
-            'colvis',
-            {
-
-                extend: 'copyHtml5',
-                title: '',
-                text: 'Copiar',
-                exportOptions: {
-                    columns: function (idx, data, node) {
-                        if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
-                            return false;
-                        return true;
-                    }
-                }
-            },
-            {
-                extend: 'excelHtml5',
-                title: '',
-                exportOptions: {
-                    columns: function (idx, data, node) {
-                        if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
-                            return false;
-                        return true;
-                    }
-                }
-            },
-            {
-                extend: 'csvHtml5',
-                title: '',
-                exportOptions: {
-                    columns: function (idx, data, node) {
-                        if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
-                            return false;
-                        return true;
-                    }
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                title: '',
-                exportOptions: {
-                    columns: function (idx, data, node) {
-                        if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
-                            return false;
-                        return true;
-                    }
-                }
-            },
-            {
-                extend: 'print',
-                text: 'Imprimir',
-                title: '',
-                exportOptions: {
-                    columns: ':visible'/*
-                    columns: function (idx, data, node) {
-                        if (node.innerHTML == "x" || node.innerHTML == "Roles" || node.innerHTML == "Acciones" || node.hidden)
-                            return false;
-                        return true;
-                    }*/
-                }
-            },
-        ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('objective.index',[$company_id,$process_map_id,$matriz_priorizado_id,$process_id])}}",
+        ajax: "{{ route('indicators.index',[$company_id,$process_map_id,$matriz_priorizado_id,$process_id])}}",
         columns: [
             { "data":null, render:function(){return "";}},
             { data: 'descripcion', name: 'descripcion'},
             { data: 'perpectiva', name: 'perpectiva'},
             { data: 'action', name: 'Action', orderable: false, searchable: false},
         ],
-        orderCellsTop: true,
-        order: [[ 1, 'asc' ]],
         pageLength: 10,
     });
 });

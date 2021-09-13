@@ -115,36 +115,12 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipient = button.data('whatever') // Extract info from data-* attributes
             var modal = $(this)
-            $.get(`/api/getPerspectivas/{{$process_id}}`, function(res, sta){
-                console.log(res);
-                console.log(sta);
-                $("#perspective_id").empty();
-                $("#perspective_id").append(`<option value=""></option>`);
-                res.forEach(element => {
-                    $("#perspective_id").append(`<option value="${element.id}" data-orden="${element.orden}">${element.descripcion}</option>`);
-                });
-                //$('#perspective_id').selectize();
-            });
             modal.find('.modal-title').text(recipient + ' indicador matriz_priorizados_id:{{$matriz_priorizado_id}}')
-        });
-        $("#perspective_id").change(event => {
-            let orden = $("#perspective_id").val();
-            orden = $("#perspective_id").find(':selected').data('orden');
-            console.log('orden:',orden);
-            $.get(`/api/getindicators/{{$matriz_priorizado_id}}/{{$process_id}}/${orden}`, function(res, sta){
-                $("#effect_id").empty();
-                //$('#effect_id').prop('required',true);
-                //$("#effect_id").append(`<option value=''> </option>`);
-                res.forEach(element => {
-                    console.log(element.customer);
-                    $("#effect_id").append(`<option value=${element.id}> ${element.descripcion} </option>`);
-                });
-            });
         });
         $('#createIndicador-form').on('submit', function(e){
             e.preventDefault();
             console.log($('#createIndicador-form').serialize());
-            $.ajax({
+            /*$.ajax({
                 url: '/api/storeObjective', //this is the submit URL
                 type: 'POST', //or POST
                 headers: {
@@ -170,7 +146,7 @@
                     }
 
                 },
-            });
+            });*/
         });
     </script>
 

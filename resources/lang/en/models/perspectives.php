@@ -7,7 +7,7 @@ return array (
   array (
     'id' => 'Id',
     'process_id' => 'Process Id',
-    'descripcion' => 'Descripcion',
+    'perspective_company_id' => 'Perspective Company Id',
     'orden' => 'Orden',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',

@@ -34,5 +34,26 @@ class MapaEstrategicoSeeder extends Seeder
             'descripcion' => 'Aprendizaje y crecimiento',
             //'orden' => '4'
         ]);
+        //Perspectivas proceso 2
+        Perspective::create([
+            'process_id' => '2',
+            'perspective_company_id' => '1',
+            'orden' => '1'
+        ]);
+        Perspective::create([
+            'process_id' => '2',
+            'perspective_company_id' => '2',
+            'orden' => '2'
+        ]);
+        Perspective::create([
+            'process_id' => '2',
+            'perspective_company_id' => '3',
+            'orden' => '3'
+        ]);
+        Perspective::create([
+            'process_id' => '2',
+            'perspective_company_id' => '4',
+            'orden' => '4'
+        ]);
     }
 }

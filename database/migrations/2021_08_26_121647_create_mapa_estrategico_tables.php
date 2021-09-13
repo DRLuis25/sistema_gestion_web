@@ -64,6 +64,7 @@ class CreateMapaEstrategicoTables extends Migration
         });
         Schema::create('indicators', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('matriz_priorizado_id');
             $table->unsignedBigInteger('process_id');
             $table->unsignedBigInteger('frecuency_id');
             $table->string('descripcion');
@@ -77,6 +78,7 @@ class CreateMapaEstrategicoTables extends Migration
             $table->integer('verde');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
             $table->foreign('process_id')->references('id')->on('process');
             $table->foreign('frecuency_id')->references('id')->on('frequencies');
         });

@@ -1,8 +1,8 @@
 <?php
 
 return array (
-  'singular' => 'Mapa Proceso',
-  'plural' => 'Mapas de proceso',
+  'singular' => 'Administrar unidad',
+  'plural' => 'Administrar unidades',
   'fields' =>
   array (
     'id' => 'Id',

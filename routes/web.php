@@ -137,7 +137,7 @@ Route::delete('perspective/{id}','PerspectiveController@destroy')->name('perspec
 
 //Otros
 
-Route::resource('indicators', 'IndicatorController');
+Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/indicators', 'IndicatorController')->names('indicators');
 
 Route::resource('perspectives', 'PerspectiveController');
 
