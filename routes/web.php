@@ -124,26 +124,17 @@ Route::resource('/company/{id}/processMaps/{id2}/rols', 'RolController')->names(
 
 //Tercera Unidad
 //id3: id priorización | id4: proceso priorizado
-Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico', 'mapaEstrategicoController')->names('mapaEstrategico');
-Route::get('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/objective','ObjectiveController@index')->name('objective.index');
-Route::get('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/perspective','PerspectiveController@index')->name('perspective.index');
-//Falta validar el delete y hacer el edit
-Route::delete('objective/{id}','ObjectiveController@destroy')->name('objectives.destroy');
-Route::delete('perspective/{id}','PerspectiveController@destroy')->name('perspectives.destroy');
-
-
-
-
-
 //Otros
+Route::middleware('auth')->group(function () {
+    Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico', 'mapaEstrategicoController')->names('mapaEstrategico');
 
-Route::resource('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/indicators', 'IndicatorController')->names('indicators');
+    //Falta validar el delete y hacer el edit
+    Route::get('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/perspective','PerspectiveController@index')->name('perspective.index');
+    Route::delete('perspective/{id}','PerspectiveController@destroy')->name('perspectives.destroy');
 
-Route::resource('perspectives', 'PerspectiveController');
+    Route::get('/company/{id}/processMaps/{id2}/matrizPriorizados/{id3}/mapaEstrategico/{id4}/objective','ObjectiveController@index')->name('objective.index');
+    Route::delete('objective/{id}','ObjectiveController@destroy')->name('objectives.destroy');
 
-
-
-Route::resource('/company/{id}/perspectiveCompanies', 'perspectiveCompanyController')->names('perspectiveCompanies');
-
-
-Route::resource('/company/{id}/objectiveCompanies', 'objectiveCompanyController')->names('objectiveCompanies');
+    Route::resource('/company/{id}/perspectiveCompanies', 'perspectiveCompanyController')->names('perspectiveCompanies');
+    Route::resource('/company/{id}/objectiveCompanies', 'objectiveCompanyController')->names('objectiveCompanies');
+});

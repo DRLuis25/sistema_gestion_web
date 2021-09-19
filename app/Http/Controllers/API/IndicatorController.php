@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Requests\CreateIndicatorRequest;
 use App\Http\Requests\UpdateIndicatorRequest;
@@ -13,14 +13,8 @@ use Yajra\DataTables\DataTables;
 
 class IndicatorController extends AppBaseController
 {
-    /**
-     * Display a listing of the Indicator.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function index($id, $id2, $id3, $id4, Request $request)
+
+    public function index($id3, $id4, Request $request)
     {
         if($request->ajax()){
             /** @var Indicator $indicators */
@@ -32,26 +26,8 @@ class IndicatorController extends AppBaseController
             ->rawColumns(['action'])
             ->make(true);
         }
-        return view('indicators.index');
     }
 
-    /**
-     * Show the form for creating a new Indicator.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('indicators.create');
-    }
-
-    /**
-     * Store a newly created Indicator in storage.
-     *
-     * @param CreateIndicatorRequest $request
-     *
-     * @return Response
-     */
     public function store(CreateIndicatorRequest $request)
     {
         $input = $request->all();
@@ -64,56 +40,6 @@ class IndicatorController extends AppBaseController
         return redirect(route('indicators.index'));
     }
 
-    /**
-     * Display the specified Indicator.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        /** @var Indicator $indicator */
-        $indicator = Indicator::find($id);
-
-        if (empty($indicator)) {
-            Flash::error(__('models/indicators.singular').' '.__('messages.not_found'));
-
-            return redirect(route('indicators.index'));
-        }
-
-        return view('indicators.show')->with('indicator', $indicator);
-    }
-
-    /**
-     * Show the form for editing the specified Indicator.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        /** @var Indicator $indicator */
-        $indicator = Indicator::find($id);
-
-        if (empty($indicator)) {
-            Flash::error(__('messages.not_found', ['model' => __('models/indicators.singular')]));
-
-            return redirect(route('indicators.index'));
-        }
-
-        return view('indicators.edit')->with('indicator', $indicator);
-    }
-
-    /**
-     * Update the specified Indicator in storage.
-     *
-     * @param int $id
-     * @param UpdateIndicatorRequest $request
-     *
-     * @return Response
-     */
     public function update($id, UpdateIndicatorRequest $request)
     {
         /** @var Indicator $indicator */
@@ -133,15 +59,6 @@ class IndicatorController extends AppBaseController
         return redirect(route('indicators.index'));
     }
 
-    /**
-     * Remove the specified Indicator from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
     public function destroy($id)
     {
         /** @var Indicator $indicator */

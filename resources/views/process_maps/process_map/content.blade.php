@@ -272,7 +272,6 @@ function init() {
                 doc.image(imgdata,{ scale: 1/(imgResolutionFactor*96/72) });
             }
         }
-
         doc.end();
         stream.on('finish', function() { action(stream.toBlob('application/pdf')); });
     }

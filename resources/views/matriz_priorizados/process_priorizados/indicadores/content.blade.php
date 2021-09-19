@@ -32,11 +32,11 @@ $(function () {
         autoWidth: false,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('indicators.index',[$company_id,$process_map_id,$matriz_priorizado_id,$process_id])}}",
+        ajax: "{{ route('api.getIndicators',[$matriz_priorizado_id,$process_id])}}",
         columns: [
             { "data":null, render:function(){return "";}},
             { data: 'descripcion', name: 'descripcion'},
-            { data: 'perpectiva', name: 'perpectiva'},
+            { data: 'responsable', name: 'responsable'},
             { data: 'action', name: 'Action', orderable: false, searchable: false},
         ],
         pageLength: 10,

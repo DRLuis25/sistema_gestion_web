@@ -7,16 +7,16 @@
             <div class="col-sm-12">
                 @can('exportar_grafico_mapa_estrategico')
                     <button type="button" class="btn btn-primary float-right m-2"
-                    data-toggle="modal" data-target="#historial-tab"
+                    data-toggle="modal" data-target="#historial-grafico-tab"
                     data-whatever="@mdo">
                     Guardar en Historial
                     </button>
                 @endcan
                 @can('exportar_grafico_mapa_estrategico')
-                    <button {{-- onclick="exportImg()" --}} class="btn btn-primary float-right m-2">Exportar Img</button>
-                    <button {{-- onclick="exportPdf()" --}} class="btn btn-primary float-right m-2">Exportar PDF</button>
+                    <button onclick="exportImg()" class="btn btn-primary float-right m-2">Exportar Img</button>
+                    <button onclick="exportPdf()" class="btn btn-primary float-right m-2">Exportar PDF</button>
                 @endcan
-                {{-- @include('process_maps.historial.historial') --}}
+                @include('matriz_priorizados.process_priorizados.grafico.guardar')
             </div>
         </div>
     </div>
@@ -293,7 +293,6 @@
 </script>
 
 
-
 <script>
     var MINLENGTH = 500;  // this controls the minimum length of any swimlane
     var MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
@@ -356,5 +355,122 @@
       return new go.Size(MINLENGTH, MINBREADTH);
     }
 
+</script>
+<script>
+    function exportImg() {
+        var img = myDiagram.makeImage({
+            size : new go.Size (800,600)
+        })
+        var a = document.createElement('a');
+        a.download = `Mapa estratégico`;
+        a.target = '_blank';
+        a.href= img.src;
+        a.click();
+    }
+    function exportPdf() {
+        var pdfOptions =  // shared by both ways of generating PDF
+        {
+        showTemporary: true,     // default is false
+         layout: "portrait",  // instead of "portrait"
+         pageSize: "A4"        // instead of "LETTER"
+        };
+        generatePdf(function(blob) {
+            var datauri = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.style = "display: none";
+            a.href = datauri;
+            a.download = "Mapa Estratégico.pdf";
+            if (window.navigator.msSaveBlob !== undefined) {  // IE 11 & Edge
+                window.navigator.msSaveBlob(blob, a.download);
+                window.URL.revokeObjectURL(datauri);
+                return;
+            }
+            document.body.appendChild(a);
+            requestAnimationFrame(function() {
+                a.click();
+                window.URL.revokeObjectURL(datauri);
+                document.body.removeChild(a);
+            });
+        }, myDiagram, pdfOptions);
+    }
+    function generatePdf(action, diagram, options) {
+        if (!(diagram instanceof go.Diagram)) throw new Error("no Diagram provided when calling generatePdf");
+        if (!options) options = {};
+
+        var pageSize = options.pageSize || "LETTER";
+        pageSize = pageSize.toUpperCase();
+        if (pageSize !== "LETTER" && pageSize !== "A4") throw new Error("unknown page size: " + pageSize);
+        // LETTER: 612x792 pt == 816x1056 CSS units
+        // A4: 595.28x841.89 pt == 793.71x1122.52 CSS units
+        var pageWidth = (pageSize === "LETTER" ? 612 : 595.28) * 96 / 72;  // convert from pt to CSS units
+        var pageHeight = (pageSize === "LETTER" ? 792 : 841.89) * 96 / 72;
+
+        var layout = options.layout || "portrait";
+        layout = layout.toLowerCase();
+        if (layout !== "portrait" && layout !== "landscape") throw new Error("unknown layout: " + layout);
+        if (layout === "landscape") {
+            var temp = pageWidth;
+            pageWidth = pageHeight;
+            pageHeight = temp;
+        }
+
+        var margin = options.margin !== undefined ? options.margin : 36;  // pt: 0.5 inch margin on each side
+        var padding = options.padding !== undefined ? options.padding : diagram.padding;  // CSS units
+
+        var imgWidth = options.imgWidth !== undefined ? options.imgWidth : (pageWidth-margin/72*96*2);  // CSS units
+        var imgHeight = options.imgHeight !== undefined ? options.imgHeight : (pageHeight-margin/72*96*2);  // CSS units
+        var imgResolutionFactor = options.imgResolutionFactor !== undefined ? options.imgResolutionFactor : 3;
+
+        var pageOptions = {
+        size: pageSize,
+        margin: margin,  // pt
+        layout: layout
+        };
+        var doc = new PDFDocument(pageOptions);
+        var stream = doc.pipe(blobStream());
+        var bnds = diagram.documentBounds;
+
+        // add some descriptive text
+        //doc.text(diagram.nodes.count + " nodes, " + diagram.links.count + " links  Diagram size: " + bnds.width.toFixed(2) + " x " + bnds.height.toFixed(2));
+
+        var db = diagram.documentBounds.copy().subtractMargin(diagram.padding).addMargin(padding);
+        var p = db.position;
+        // iterate over page areas of document bounds
+        for (var j = 0; j < db.height; j += imgHeight) {
+            for (var i = 0; i < db.width; i += imgWidth) {
+
+                // if any page has no Parts partially or fully in it, skip rendering that page
+                var r = new go.Rect(p.x + i, p.y + j, imgWidth, imgHeight);
+                if (diagram.findPartsIn(r, true, false).count === 0) continue;
+
+                if (i > 0 || j > 0) doc.addPage(pageOptions);
+
+                var makeOptions = {};
+                if (options.parts !== undefined) makeOptions.parts = options.parts;
+                if (options.background !== undefined) makeOptions.background = options.background;
+                if (options.showTemporary !== undefined) makeOptions.showTemporary = options.showTemporary;
+                if (options.showGrid !== undefined) makeOptions.showGrid = options.showGrid;
+                makeOptions.scale = imgResolutionFactor;
+                makeOptions.position = new go.Point(p.x + i, p.y + j);
+                makeOptions.size = new go.Size(imgWidth*imgResolutionFactor, imgHeight*imgResolutionFactor);
+                makeOptions.maxSize = new go.Size(Infinity, Infinity);
+                /*doc.text(width/3+17, 45, `Empresa: {{$processMap->businessUnit->company->name}}`);
+            doc.text(width/3+17, 60, `Unidad de negocio: {{$processMap->businessUnit->name}}`);*/
+                doc.text('Empresa: {{$processMap->businessUnit->company->name}}');
+                doc.text('Unidad de negocio: {{$processMap->businessUnit->name}}');
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = dd + '-' + mm + '-' + yyyy;
+                doc.text(`Fecha de creación: ${today}`);
+                var imgdata = diagram.makeImageData(makeOptions);
+                doc.image(imgdata,{ scale: 1/(imgResolutionFactor*96/72) });
+            }
+        }
+        doc.end();
+        stream.on('finish', function() { action(stream.toBlob('application/pdf')); });
+    }
 </script>
 @endpush

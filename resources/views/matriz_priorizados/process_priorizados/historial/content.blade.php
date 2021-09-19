@@ -27,7 +27,7 @@
                 autoWidth: false,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('historials.index')}}",
+                ajax: "{{ route('api.getStrategicMaps',[$matriz_priorizado_id,$process_id])}}",
                 columns: [
                     { "data":null, render:function(){return "";}},
                     { data: 'description', name: 'description'},

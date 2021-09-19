@@ -91,6 +91,17 @@ class CreateMapaEstrategicoTables extends Migration
             $table->timestamps();
             $table->foreign('indicator_id')->references('id')->on('indicators');
         });
+        Schema::create('historial_maps',function (Blueprint $table){
+            $table->id();
+            $table->unsignedBigInteger('matriz_priorizado_id');
+            $table->unsignedBigInteger('process_id');
+            $table->string('description');//comentario nullable
+            $table->longText('data');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
+            $table->foreign('process_id')->references('id')->on('process');
+        });
     }
 
     /**

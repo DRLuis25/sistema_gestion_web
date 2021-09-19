@@ -24,7 +24,10 @@
                         <label for="objetivo_empresa">Empresa</label>
                         <input type="text" id="descripcion_objetivo" name="descripcion" required class="form-control">
                         <select name="objetivo_company" id="objetivo_company" hidden class="form-control">
-                            <option value="">Objetivo Empresa 1</option>
+                            <option value="">--Seleccione uno--</option>
+                            @foreach ($objetivos_empresa as $item)
+                            <option value="{{$item->id}}">{{$item->descripcion}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group col-6">
@@ -40,6 +43,7 @@
                         <select name="effect_id[]" id="effect_id" class="form-control" multiple {{-- required --}}>
                             {{-- Dinámico --}}
                         </select>
+                        <input type="hidden" name="efecto_en_perspectiva" id="efecto_en_perspectiva" value="0">
                         <select name="effect_perspective_id[]" id="effect_perspective_id" class="form-control" multiple hidden>
                             {{-- Dinámico perspectivas --}}
                             <option value="">Perspectiva del proceso 1</option>
@@ -74,12 +78,13 @@
             IsChecked = $('#efecto_perpectiva')[0].checked;
             $('#effect_id').attr('hidden',IsChecked);
             $('#effect_perspective_id').attr('hidden',!IsChecked);
-            //$('#effect_id').attr('required',!IsChecked);
-            //$('#effect_perspective_id').attr('required',IsChecked);
-        });
-        $(document).ready(function() {
-
-            //$('#effect_id').selectize();
+            console.log(IsChecked);
+            if (IsChecked) {
+                $('#efecto_en_perspectiva').val('1');
+            }
+            else{
+                $('#efecto_en_perspectiva').val('0');
+            }
         });
         $('#objetivoModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
@@ -96,16 +101,22 @@
             modal.find('.modal-title').text(recipient + ' objetivo');
         });
         $("#perspective_id").change(event => {
-            let orden = $("#perspective_id").val();
-            orden = $("#perspective_id").find(':selected').data('orden');
-            console.log('orden:',orden);
+            let orden = $("#perspective_id").find(':selected').data('orden');
+            //En objetivo
             $.get(`/api/getObjectives/{{$matriz_priorizado_id}}/{{$process_id}}/${orden}`, function(res, sta){
                 $("#effect_id").empty();
-                //$('#effect_id').prop('required',true);
-                //$("#effect_id").append(`<option value=''> </option>`);
                 res.forEach(element => {
                     $("#effect_id").append(`<option value=${element.id}> ${element.descripcion} </option>`);
                 });
+            });
+            //En perspectiva
+            $.get(`/api/getPerspectivasOrden/{{$process_id}}/${orden}`, function(res, sta){
+                $("#effect_perspective_id").empty();
+
+                res.forEach(element => {
+                    $("#effect_perspective_id").append(`<option value="${element.id}" data-orden="${element.orden}">${element.perspective_company.descripcion}</option>`);
+                });
+                //$('#perspective_id').selectize();
             });
         });
         $('#createObjective-form').on('submit', function(e){

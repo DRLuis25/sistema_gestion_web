@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatematrizPriorizadoRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Criterio;
 use App\Models\matrizPriorizado;
+use App\Models\objectiveCompany;
 use App\Models\Process;
 use App\Models\processCriterio;
 use Illuminate\Http\Request;
@@ -114,8 +115,10 @@ class matrizPriorizadoController extends AppBaseController
             Flash::error("Completar la Matriz de Priorización de procesos críticos");
             return redirect(route('processCriterios.index', [$id, $id2]))->with('company_id',$id)->with('process_map_id',$id2);
         }
-
-        return view('matriz_priorizados.show')->with('company_id', $id)->with('process_map_id', $id2)->with('matrizPriorizados',$id3);
+        return view('matriz_priorizados.show')
+        ->with('company_id', $id)
+        ->with('process_map_id', $id2)
+        ->with('matrizPriorizados',$id3);
     }
 
     /**
