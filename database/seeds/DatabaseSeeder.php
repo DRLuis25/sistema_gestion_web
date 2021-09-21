@@ -402,5 +402,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MapaProcesoSeeder::class);
 
         $this->call(MapaEstrategicoSeeder::class);
+
+        $this->call(PriorizacionSeeder::class);
     }
 }

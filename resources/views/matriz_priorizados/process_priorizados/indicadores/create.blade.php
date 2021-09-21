@@ -28,8 +28,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
-                        <label for="frecuency_id" class="col-form-label">@lang('models/indicators.fields.frecuency_id'):</label>
-                        <input type="text" id="frecuency_id" name="frecuency_id" required class="form-control">
+                        <label for="indicador_frequency_id" class="col-form-label">@lang('models/indicators.fields.frecuency_id'):</label>
+                        <select name="frecuency_id" id="indicador_frequency_id" class="form-control" required>
+                        </select>
                     </div>
                     <div class="form-group col-6">
                         <label for="linea_base" class="col-form-label">@lang('models/indicators.fields.linea_base'):</label>
@@ -115,7 +116,14 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipient = button.data('whatever') // Extract info from data-* attributes
             var modal = $(this)
-            modal.find('.modal-title').text(recipient + ' indicador matriz_priorizados_id:{{$matriz_priorizado_id}}')
+            modal.find('.modal-title').text('Registrar Indicador');
+            $.get(`/api/frequencies`, function(res, sta){
+                $("#indicador_frequency_id").empty();
+                    $("#indicador_frequency_id").append(`<option value=''> -- Seleccione -- </option>`);
+                res.forEach(element => {
+                    $("#indicador_frequency_id").append(`<option value=${element.id}> ${element.descripcion} </option>`);
+                });
+            });
         });
         $('#createIndicador-form').on('submit', function(e){
             e.preventDefault();

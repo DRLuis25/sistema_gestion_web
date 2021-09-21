@@ -31,3 +31,6 @@ Route::post('storeStrategicMap','historialStrategicMapController@store')->name('
 
 //Indicadores routes
 Route::get('getIndicators/{id}/{id2}','IndicatorController@index')->name('getIndicators');
+
+
+Route::resource('frequencies', 'FrequencyAPIController');

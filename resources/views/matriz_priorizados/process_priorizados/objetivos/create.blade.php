@@ -46,7 +46,6 @@
                         <input type="hidden" name="efecto_en_perspectiva" id="efecto_en_perspectiva" value="0">
                         <select name="effect_perspective_id[]" id="effect_perspective_id" class="form-control" multiple hidden>
                             {{-- Dinámico perspectivas --}}
-                            <option value="">Perspectiva del proceso 1</option>
                         </select>
                     </div>
                 </div>
