@@ -7,6 +7,7 @@ use App\Models\Perspective;
 use App\Models\Process;
 use App\Models\processMap;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class mapaEstrategicoController extends Controller
 {
@@ -24,5 +25,11 @@ class mapaEstrategicoController extends Controller
         ->with('process_id',$id4)
         ->with('objetivos_empresa',$objetivosEmpresa)
         ->with('processMap',$processMap);
+    }
+    public function indicador(Request $request)
+    {
+        $indicador_select = 1;
+        return Redirect::back()
+        ->with('indicador_select',$indicador_select);
     }
 }

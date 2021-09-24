@@ -1,8 +1,5 @@
 {!! Form::open(['route' => ['indicators.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('indicators.show', [$id]) }}" class='btn btn-default btn-xs'>
-        <i class="far fa-eye"> Ver</i>
-    </a>
     <a href="{{ route('indicators.edit', [$id]) }}" class='btn btn-default btn-xs'>
         <i class="far fa-edit"></i>
     </a>

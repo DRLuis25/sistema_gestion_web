@@ -31,6 +31,7 @@ class Perspective extends Model
 
 
     public $fillable = [
+        'matriz_priorizado_id',
         'process_id',
         'perspective_company_id',
         'orden'
@@ -43,6 +44,7 @@ class Perspective extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'matriz_priorizado_id'=>'integer',
         'process_id' => 'integer',
         'perspective_company_id' => 'integer',
         'orden' => 'integer'
@@ -54,6 +56,7 @@ class Perspective extends Model
      * @var array
      */
     public static $rules = [
+        'matriz_priorizado_id' => 'required',
         'process_id' => 'required',
         'perspective_company_id' => 'required',
         'orden' => 'required|integer',

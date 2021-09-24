@@ -65,35 +65,35 @@
                     <div class="col-12">
                         <label class="col-form-label">Semáforo:</label>
                     </div>
-                </div>
-                <div class="container my-2">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-1 align-self-center">
-                            <i class="fa fa-circle fa-3x" style="color: red"></i>
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <h1 style="text-align: center;vertical-align: middle;"><</h1>
-                        </div>
-                        <div class="col-2 align-self-center">
-                            <input type="number" class="form-control">
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <h1 style="text-align: center;vertical-align: middle;"><=</h1>
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <i class="fa fa-circle fa-3x" style="color: yellow"></i>
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <h1 style="text-align: center;vertical-align: middle;"><=</h1>
-                        </div>
-                        <div class="col-2 align-self-center">
-                            <input type="number" class="form-control">
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <h1 style="text-align: center;vertical-align: middle;"><</h1>
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <i class="fa fa-circle fa-3x" style="color: green"></i>
+                    <div class="container my-2">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-1 align-self-center">
+                                <i class="fa fa-circle fa-3x" style="color: red"></i>
+                            </div>
+                            <div class="col-1 align-self-center">
+                                <h1 style="text-align: center;vertical-align: middle;"><</h1>
+                            </div>
+                            <div class="col-2 align-self-center">
+                                <input type="number" class="form-control" name="rojo">
+                            </div>
+                            <div class="col-1 align-self-center">
+                                <h1 style="text-align: center;vertical-align: middle;"><=</h1>
+                            </div>
+                            <div class="col-1 align-self-center">
+                                <i class="fa fa-circle fa-3x" style="color: yellow"></i>
+                            </div>
+                            <div class="col-1 align-self-center">
+                                <h1 style="text-align: center;vertical-align: middle;"><=</h1>
+                            </div>
+                            <div class="col-2 align-self-center">
+                                <input type="number" class="form-control" name="verde">
+                            </div>
+                            <div class="col-1 align-self-center">
+                                <h1 style="text-align: center;vertical-align: middle;"><</h1>
+                            </div>
+                            <div class="col-1 align-self-center">
+                                <i class="fa fa-circle fa-3x" style="color: green"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,10 +108,6 @@
   </div>
 @push('scripts')
     <script>
-        $(document).ready(function() {
-
-            //$('#effect_id').selectize();
-        });
         $('#IndicadorModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipient = button.data('whatever') // Extract info from data-* attributes
@@ -128,8 +124,8 @@
         $('#createIndicador-form').on('submit', function(e){
             e.preventDefault();
             console.log($('#createIndicador-form').serialize());
-            /*$.ajax({
-                url: '/api/storeObjective', //this is the submit URL
+            $.ajax({
+                url: '/api/indicators', //this is the submit URL
                 type: 'POST', //or POST
                 headers: {
                     'X-CSRF-Token': '{{ csrf_token() }}',
@@ -141,21 +137,17 @@
                         alert('Registrado correctamente');
                         $('#createIndicador-form').trigger('reset');
                         $('#IndicadorModal').modal('toggle');
-                        $('.data-table-objetivos').DataTable().ajax.reload();
+                        $('.data-table-indicadores').DataTable().ajax.reload();
                         console.log("reload");
                         console.log(data.e);
-                        $("#effect_id").empty();
-                        //Recargar gráfico init();
-                        //replaceDiagram(); Update Mapa proceso
                     }
                     else if (data.status==500) {
                         console.log(data.e);
-                        alert("Error al registrar. Registro duplicado");
+                        alert("Error al registrar. ");
                     }
 
                 },
-            });*/
+            });
         });
     </script>
-
-  @endpush
+@endpush

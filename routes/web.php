@@ -138,3 +138,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/company/{id}/perspectiveCompanies', 'perspectiveCompanyController')->names('perspectiveCompanies');
     Route::resource('/company/{id}/objectiveCompanies', 'objectiveCompanyController')->names('objectiveCompanies');
 });
+
+//Indicadores routes
+Route::get('getIndicators/{id}/{id2}','IndicatorController@index')->name('getIndicators');
+
+Route::resource('indicators', 'IndicatorController');
+
+Route::post('mapaEstrategico','mapaEstrategicoController@indicador')->name('mapaEstrategico.indicador');

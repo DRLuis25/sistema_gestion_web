@@ -17,7 +17,7 @@
     <thead>
         <tr>
             <th style="color:white">x</th>
-            <th>@lang('models/perspectives.fields.perspective_company_id') (cambiar)</th>
+            <th>@lang('models/perspectives.fields.perspective_company_id')</th>
             <th>@lang('models/perspectives.fields.orden')</th>
             <th width="100px">@lang('crud.action')</th>
         </tr>
@@ -115,7 +115,7 @@ $(function () {
         ajax: "{{ route('perspective.index',[$company_id,$process_map_id,$matriz_priorizado_id,$process_id])}}",
         columns: [
             { "data":null, render:function(){return "";}},
-            { data: 'perspective_company_id', name: 'perspective_company_id'},
+            { data: 'perspective_name', name: 'perspective_name'},
             { data: 'orden', name: 'orden'},
             { data: 'action', name: 'Action', orderable: false, searchable: false},
         ],

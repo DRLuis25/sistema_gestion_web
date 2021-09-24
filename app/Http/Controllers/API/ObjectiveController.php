@@ -17,7 +17,7 @@ class ObjectiveController extends AppBaseController
         //id2: process_id
         //id3: perspective_id
         //if($request->ajax()){
-            $objetivos = Objective::where('matriz_priorizado_id',$id)
+            $objetivos = Objective::where('objectives.matriz_priorizado_id',$id)
             ->where('objectives.process_id',$id2)
             ->where('orden','<=',$id3)
             ->selectRaw('objectives.id,

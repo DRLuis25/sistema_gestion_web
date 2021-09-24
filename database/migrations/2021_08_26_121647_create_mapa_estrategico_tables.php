@@ -30,9 +30,12 @@ class CreateMapaEstrategicoTables extends Migration
         //Perspectivas: Financiera, Clientes, Procesos internos, Aprendizaje y crecimiento
         Schema::create('perspectives', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('matriz_priorizado_id');
             $table->unsignedBigInteger('process_id');
             $table->unsignedBigInteger('perspective_company_id');
             $table->integer('orden');
+            $table->unique(['matriz_priorizado_id', 'process_id','perspective_company_id'],'perspectives_unique_key');
+            $table->foreign('matriz_priorizado_id')->references('id')->on('matriz_priorizado');
             $table->foreign('process_id')->references('id')->on('process');
             $table->foreign('perspective_company_id')->references('id')->on('perspectives_companies');
             $table->timestamps();

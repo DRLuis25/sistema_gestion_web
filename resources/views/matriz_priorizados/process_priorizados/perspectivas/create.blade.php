@@ -19,7 +19,8 @@
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="descripcion" class="col-form-label">@lang('models/perspectives.fields.descripcion'):</label>
-                        <input type="text" id="descripcion" name="descripcion" required class="form-control">
+                        <select name="perspective_company_id" id="perspective_company_id" required class="form-control">
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -40,13 +41,20 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipient = button.data('whatever') // Extract info from data-* attributes
             var modal = $(this)
-            modal.find('.modal-title').text(recipient + ' Perspectiva ')
+            modal.find('.modal-title').text(recipient + ' perspectiva')
+            $.get(`/api/getPerspectivasEmpresa/{{$company_id}}`, function(res, sta){
+                $("#perspective_company_id").empty();
+                $("#perspective_company_id").append(`<option value=''> -- Seleccione -- </option>`);
+                res.forEach(element => {
+                    $("#perspective_company_id").append(`<option value=${element.id}> ${element.descripcion} </option>`);
+                });
+            });
         });
         $('#createPerspective-form').on('submit', function(e){
             e.preventDefault();
             console.log($('#createPerspective-form').serialize());
             $.ajax({
-                url: '/api/store', //this is the submit URL
+                url: '/api/storePerspectiva', //this is the submit URL
                 type: 'POST', //or POST
                 headers: {
                     'X-CSRF-Token': '{{ csrf_token() }}',
@@ -61,7 +69,6 @@
                         $('.data-table-perspective').DataTable().ajax.reload();
                         console.log("reload");
                         console.log(data.e);
-                        $("#effect_id").empty();
                         //Recargar gráfico init();
                         //replaceDiagram(); Update Mapa proceso
                     }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Indicator
  * @package App\Models
- * @version September 13, 2021, 2:23 am -05
+ * @version September 21, 2021, 2:34 pm -05
  *
  * @property \App\Models\Frequency $frecuency
  * @property \App\Models\MatrizPriorizado $matrizPriorizado
@@ -32,7 +32,7 @@ class Indicator extends Model
     use SoftDeletes;
 
     public $table = 'indicators';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -103,7 +103,7 @@ class Indicator extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function frecuency()
+    public function frequency()
     {
         return $this->belongsTo(\App\Models\Frequency::class, 'frecuency_id');
     }
@@ -129,6 +129,6 @@ class Indicator extends Model
      **/
     public function dataFuentes()
     {
-        return $this->hasMany(\App\Models\DataFuente::class, 'indicator_id');
+        return $this->hasMany(\App\Models\dataFuente::class, 'indicator_id');
     }
 }

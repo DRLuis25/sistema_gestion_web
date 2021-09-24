@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateIndicatorRequest;
 use App\Http\Requests\UpdateIndicatorRequest;
@@ -8,6 +8,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Indicator;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Redirect;
 use Response;
 use Yajra\DataTables\DataTables;
 
@@ -73,7 +74,7 @@ class IndicatorController extends AppBaseController
         $indicator->delete();
 
         Flash::success(__('messages.deleted', ['model' => __('models/indicators.singular')]));
-
+        return Redirect::back();
         return redirect(route('indicators.index'));
     }
 }

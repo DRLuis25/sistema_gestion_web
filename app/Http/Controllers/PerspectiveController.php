@@ -29,6 +29,9 @@ class PerspectiveController extends AppBaseController
             ->get();
             return DataTables::of($perspectives)
             ->addColumn('action','matriz_priorizados.process_priorizados.perspectivas.actions')
+            ->addColumn('perspective_name',function($perspective){
+                return $perspective->perspectiveCompany->descripcion;
+            })
             ->rawColumns(['action'])
             ->make(true);
         }

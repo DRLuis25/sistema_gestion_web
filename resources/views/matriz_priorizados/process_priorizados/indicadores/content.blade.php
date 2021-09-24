@@ -32,7 +32,7 @@ $(function () {
         autoWidth: false,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.getIndicators',[$matriz_priorizado_id,$process_id])}}",
+        ajax: "{{ route('getIndicators',[$matriz_priorizado_id,$process_id])}}",
         columns: [
             { "data":null, render:function(){return "";}},
             { data: 'descripcion', name: 'descripcion'},

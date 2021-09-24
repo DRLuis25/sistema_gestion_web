@@ -56,7 +56,7 @@ class MapaProcesoSeeder extends Seeder
         ]);
         $process2 = Process::create([
             'process_map_id' => $processMap1->id,
-            'name' => 'Gestión Financiera',
+            'name' => 'Asesoría y venta al cliente',
             'description' => ' ',
             'unidad' => 'minutos',
             'parent_process_id' => null,
